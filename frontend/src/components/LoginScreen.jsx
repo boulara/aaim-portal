@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TEAM_COLORS, FONT_SANS } from "../constants";
 import { GLOBAL_STYLES } from "./Shared";
 import { api } from "../api";
+import { APP_VERSION } from "../version";
 
 function ConduitMark({ height = 80, color = "#14B8A6" }) {
   return (
@@ -138,6 +139,7 @@ export default function LoginScreen({ onLogin }) {
         </div>
         <div style={{ textAlign: "center", marginTop: 20, fontSize: 11, color: "#334155", letterSpacing: 1 }}>
           Conduit — Patient Access Communications
+          <span style={{ marginLeft: 10, fontFamily: "monospace", fontSize: 10, color: "#1E3A4A" }}>v{APP_VERSION}</span>
         </div>
       </div>
       <style>{GLOBAL_STYLES}</style>
