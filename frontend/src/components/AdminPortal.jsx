@@ -729,7 +729,7 @@ export default function AdminPortal({ currentUser }) {
 
               <div style={{ marginTop: 32, padding: "16px 20px", background: theme.surfaceBg2, border: `1px solid ${theme.border}`, borderRadius: 8, textAlign: "center" }}>
                 <div style={{ fontSize: 11, color: theme.textFaint, letterSpacing: 1 }}>CONFIDENTIAL — This document contains proprietary and confidential information. Distribution restricted to authorized recipients only.</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, marginTop: 8 }}>Conduit — Patient Access Communications · v1.0 · March 2026</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, marginTop: 8 }}>Conduit — Every Team. One Channel. · v1.0 · March 2026</div>
               </div>
             </Section>
           )}

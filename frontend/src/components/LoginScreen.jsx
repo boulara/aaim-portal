@@ -73,7 +73,7 @@ export default function LoginScreen({ onLogin }) {
             <span style={{ color: "#F1F5F9" }}>onduit</span>
           </div>
           <div style={{ fontSize: 11, letterSpacing: "3px", color: "#334155", textTransform: "uppercase", marginTop: 8 }}>
-            Patient Access Communications
+            Every Team. One Channel.
           </div>
         </div>
 
@@ -138,7 +138,7 @@ export default function LoginScreen({ onLogin }) {
           </div>
         </div>
         <div style={{ textAlign: "center", marginTop: 20, fontSize: 11, color: "#334155", letterSpacing: 1 }}>
-          Conduit — Patient Access Communications
+          Conduit — Every Team. One Channel.
           <span style={{ marginLeft: 10, fontFamily: "monospace", fontSize: 10, color: "#1E3A4A" }}>v{APP_VERSION}</span>
         </div>
       </div>

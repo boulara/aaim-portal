@@ -543,7 +543,7 @@ function DemoTab({ activeSlide, setActiveSlide }) {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div style={{ fontSize: 13, color: "rgba(130,160,200,0.7)", marginBottom: 14, textAlign: "center", letterSpacing: 1 }}>Conduit — Patient Access Communications</div>
+      <div style={{ fontSize: 13, color: "rgba(130,160,200,0.7)", marginBottom: 14, textAlign: "center", letterSpacing: 1 }}>Conduit — Every Team. One Channel.</div>
       {/* Slide container */}
       <div style={{ borderRadius: 16, overflow: "hidden", height: 520, position: "relative", boxShadow: "0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)" }}>
         <SlideComp />

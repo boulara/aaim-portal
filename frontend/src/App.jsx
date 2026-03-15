@@ -44,7 +44,7 @@ function NavLogo() {
           <span style={{ color: "#14B8A6" }}>C</span>
           <span style={{ color: "#F1F5F9" }}>onduit</span>
         </div>
-        <div style={{ fontSize: 8, letterSpacing: "2px", color: "#475569", textTransform: "uppercase", marginTop: 1 }}>Patient Access</div>
+        <div style={{ fontSize: 8, letterSpacing: "2px", color: "#475569", textTransform: "uppercase", marginTop: 1 }}>Every Team. One Channel.</div>
       </div>
     </div>
   );
