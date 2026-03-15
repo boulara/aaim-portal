@@ -105,12 +105,19 @@ export default function LoginScreen({ onLogin }) {
           <div style={{ marginTop: 24, padding: "16px", background: "rgba(255,255,255,0.02)", borderRadius: 8, border: "1px solid #1E3A4A" }}>
             <div style={{ fontSize: 10, color: "#334155", marginBottom: 10, letterSpacing: 2, textTransform: "uppercase" }}>Demo — Click to Sign In</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {[["Home Office", "sarah.johnson"], ["NCM", "lisa.torres"], ["SP", "amy.patel"], ["Sales", "diana.reyes"]].map(([team, u]) => {
+              {[
+                ["Home Office", "sarah.johnson",  "pass123"],
+                ["NCM",         "lisa.torres",    "pass123"],
+                ["SP",          "amy.patel",      "pass123"],
+                ["Sales",       "diana.reyes",    "pass123"],
+                ["Home Office", "nick.milero",    "pass123"],
+                ["Home Office", "rick.boulanger", "123"],
+              ].map(([team, u, pass]) => {
                 const accent = TEAM_COLORS[team]?.accent || "#14B8A6";
                 return (
-                  <button key={team} onClick={async () => {
+                  <button key={u} onClick={async () => {
                       setLoading(true);
-                      try { const user = await api.login(u, "pass123"); localStorage.setItem("conduit_user", JSON.stringify(user)); onLogin(user); }
+                      try { const user = await api.login(u, pass); localStorage.setItem("conduit_user", JSON.stringify(user)); onLogin(user); }
                       catch { setError("Login failed."); }
                       finally { setLoading(false); }
                     }}
@@ -119,7 +126,7 @@ export default function LoginScreen({ onLogin }) {
                       {u.split(".").map(w => w[0]).join("").toUpperCase()}
                     </div>
                     <div>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: accent }}>{team}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: accent }}>{team}{u === "nick.milero" || u === "rick.boulanger" ? " · Admin" : ""}</div>
                       <div style={{ fontSize: 11, color: "#475569" }}>{u}</div>
                     </div>
                     <div style={{ marginLeft: "auto", fontSize: 11, color: "#334155" }}>tap →</div>
