@@ -18,12 +18,13 @@ function TourToggle() {
   const { active, start, stop } = useWalkthrough();
   return (
     <button data-tour="tour-toggle" onClick={active ? stop : start}
-      style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 20,
-        background: active ? "rgba(79,142,247,0.2)" : "rgba(255,255,255,0.06)",
-        border: `1px solid ${active ? "#4f8ef7" : "rgba(255,255,255,0.15)"}`,
-        color: active ? "#4f8ef7" : "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 700, cursor: "pointer",
-        transition: "all 0.2s", boxShadow: active ? "0 0 12px rgba(79,142,247,0.3)" : "none" }}>
-      <span style={{ fontSize: 14 }}>🗺</span>
+      style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 20,
+        background: active ? "rgba(79,142,247,0.18)" : "#4f8ef711",
+        border: `1.5px solid ${active ? "#4f8ef7" : "#4f8ef755"}`,
+        color: active ? "#4f8ef7" : "#4f8ef7", fontSize: 12, fontWeight: 700, cursor: "pointer",
+        transition: "all 0.2s", boxShadow: active ? "0 0 14px rgba(79,142,247,0.4)" : "none",
+        animation: active ? "pulse 1.8s infinite" : "none" }}>
+      <span style={{ fontSize: 13 }}>🗺</span>
       {active ? "Exit Tour" : "Guide"}
     </button>
   );
