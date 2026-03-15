@@ -1148,10 +1148,10 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
       <div style={{ fontSize: 24, fontWeight: 700, color: theme.text, marginBottom: 20 }}>Settings</div>
 
       {/* Tab bar */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 24, borderBottom: `1px solid ${theme.border}`, paddingBottom: 0 }}>
+      <div style={{ display: "flex", gap: 6, marginBottom: 24, borderBottom: `1px solid ${theme.border}`, paddingBottom: 0, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
-            style={{ padding: "10px 18px", background: "none", border: "none", borderBottom: `2px solid ${activeTab === t.id ? "#4f8ef7" : "transparent"}`, color: activeTab === t.id ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1 }}>
+            style={{ padding: "10px 18px", background: "none", border: "none", borderBottom: `2px solid ${activeTab === t.id ? "#4f8ef7" : "transparent"}`, color: activeTab === t.id ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1, flexShrink: 0, whiteSpace: "nowrap" }}>
             {t.label}
           </button>
         ))}
