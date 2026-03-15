@@ -117,7 +117,7 @@ function UserModal({ user, onSave, onClose }) {
         {error && <div style={{ fontSize: 12, color: "#e74c3c", marginBottom: 10 }}>{error}</div>}
         <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
           <button onClick={handleSave} disabled={saving}
-            style={{ flex: 1, padding: "11px", background: "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            style={{ flex: 1, padding: "11px", background: "#14B8A6", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
             {saving ? "Saving…" : "Save"}
           </button>
           <button onClick={onClose}
@@ -190,7 +190,7 @@ function PatientModal({ patient, onSave, onClose }) {
         </div>
         <div style={{ padding: "16px 24px", borderTop: `1px solid ${theme.border}`, display: "flex", gap: 10 }}>
           <button onClick={handleSave} disabled={saving}
-            style={{ flex: 1, padding: "11px", background: "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            style={{ flex: 1, padding: "11px", background: "#14B8A6", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
             {saving ? "Saving…" : "Save Changes"}
           </button>
           <button onClick={onClose}
@@ -222,19 +222,19 @@ function Slide1() {
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "radial-gradient(ellipse at 50% 40%, #0d1f5c 0%, #060d26 60%, #000 100%)", position: "relative", overflow: "hidden" }}>
       {/* Animated glow rings */}
-      <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(79,142,247,0.15)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
-      <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", border: "1px solid rgba(79,142,247,0.08)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
-      <div style={{ position: "absolute", width: 800, height: 800, borderRadius: "50%", border: "1px solid rgba(79,142,247,0.04)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+      <div style={{ position: "absolute", width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(20,184,166,0.15)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+      <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", border: "1px solid rgba(20,184,166,0.08)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+      <div style={{ position: "absolute", width: 800, height: 800, borderRadius: "50%", border: "1px solid rgba(20,184,166,0.04)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
       {/* Glow blob */}
       <div style={{ position: "absolute", width: 280, height: 180, borderRadius: "50%", background: "radial-gradient(circle, rgba(170,255,68,0.18) 0%, transparent 70%)", top: "42%", left: "50%", transform: "translate(-50%,-50%)" }} />
       <div style={{ position: "relative", zIndex: 1, textAlign: "center" }}>
         <FireflyLogo size={100} />
-        <div style={{ marginTop: 12, fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 600 }}>FireFly Software LLC</div>
-        <div style={{ marginTop: 18, fontSize: 46, fontWeight: 800, color: "#fff", letterSpacing: -1, lineHeight: 1.1 }}>AAIM Portal</div>
+        <div style={{ marginTop: 12, fontSize: 11, letterSpacing: 3, color: "#14B8A6", textTransform: "uppercase", fontWeight: 600 }}>Conduit</div>
+        <div style={{ marginTop: 18, fontSize: 46, fontWeight: 800, color: "#fff", letterSpacing: -1, lineHeight: 1.1 }}>Conduit</div>
         <div style={{ marginTop: 14, fontSize: 17, color: "rgba(180,210,255,0.85)", fontWeight: 400, maxWidth: 480, lineHeight: 1.55 }}>
           The Future of Specialty Pharmacy<br />Case Management
         </div>
-        <div style={{ marginTop: 28, display: "inline-block", padding: "8px 24px", border: "1px solid rgba(79,142,247,0.4)", borderRadius: 40, fontSize: 12, color: "rgba(140,180,255,0.8)", letterSpacing: 1.5, textTransform: "uppercase" }}>
+        <div style={{ marginTop: 28, display: "inline-block", padding: "8px 24px", border: "1px solid rgba(20,184,166,0.4)", borderRadius: 40, fontSize: 12, color: "rgba(140,180,255,0.8)", letterSpacing: 1.5, textTransform: "uppercase" }}>
           Purpose-Built · Real-Time · Team-Centric
         </div>
       </div>
@@ -268,7 +268,7 @@ function Slide2() {
 
 function Slide3() {
   const teams = [
-    { label: "Home Office", angle: 270, color: "#4f8ef7" },
+    { label: "Home Office", angle: 270, color: "#14B8A6" },
     { label: "NCM", angle: 0, color: "#2ecc71" },
     { label: "SP", angle: 90, color: "#e67e22" },
     { label: "Sales", angle: 180, color: "#9b59b6" },
@@ -276,13 +276,13 @@ function Slide3() {
   const cx = 130, cy = 130, r = 90, bubbleR = 36;
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, #03091f 0%, #071840 50%, #03091f 100%)", padding: "24px 20px" }}>
-      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>The Solution</div>
+      <div style={{ fontSize: 11, letterSpacing: 3, color: "#14B8A6", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>The Solution</div>
       <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 6, lineHeight: 1.2 }}>One Platform. Every Team. Real Time.</div>
       <div style={{ fontSize: 13, color: "rgba(160,200,255,0.7)", marginBottom: 24, textAlign: "center" }}>Unified communication and case visibility across every stakeholder.</div>
       <svg width={260} height={260} viewBox="0 0 260 260">
         <defs>
           <radialGradient id="hubGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#4f8ef7" />
+            <stop offset="0%" stopColor="#14B8A6" />
             <stop offset="100%" stopColor="#1a3a8a" />
           </radialGradient>
         </defs>
@@ -300,7 +300,7 @@ function Slide3() {
           );
         })}
         <circle cx={cx} cy={cy} r={34} fill="url(#hubGrad)" />
-        <text x={cx} y={cy - 5} textAnchor="middle" fill="#fff" fontSize="9" fontWeight="700">AAIM</text>
+        <text x={cx} y={cy - 5} textAnchor="middle" fill="#fff" fontSize="9" fontWeight="700">Conduit</text>
         <text x={cx} y={cy + 9} textAnchor="middle" fill="rgba(200,220,255,0.8)" fontSize="8">Portal</text>
       </svg>
     </div>
@@ -319,10 +319,10 @@ function Slide4() {
     { icon: "🔐", title: "Access Control", desc: "Role-based team permissions and per-user data isolation" },
     { icon: "🎨", title: "Branded Themes", desc: "Dark and light mode with persistent user preference" },
   ];
-  const colors = ["#4f8ef7", "#1abc9c", "#e67e22", "#2ecc71", "#4f8ef7", "#f39c12", "#9b59b6", "#e74c3c", "#aaaaff"];
+  const colors = ["#14B8A6", "#1abc9c", "#e67e22", "#2ecc71", "#14B8A6", "#f39c12", "#9b59b6", "#e74c3c", "#aaaaff"];
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg, #080e1f 0%, #0d1530 100%)", padding: "20px 24px" }}>
-      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>Features</div>
+      <div style={{ fontSize: 11, letterSpacing: 3, color: "#14B8A6", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>Features</div>
       <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 16 }}>Everything Your Team Needs</div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", maxWidth: 680 }}>
         {features.map((f, i) => (
@@ -348,18 +348,18 @@ function Slide5() {
   ];
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg, #050d20 0%, #0a1530 50%, #050d20 100%)", padding: "32px 24px" }}>
-      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Workflow</div>
+      <div style={{ fontSize: 11, letterSpacing: 3, color: "#14B8A6", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Workflow</div>
       <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 30 }}>How It Works</div>
       <div style={{ display: "flex", alignItems: "center", gap: 0, width: "100%", maxWidth: 680, flexWrap: "wrap", justifyContent: "center" }}>
         {steps.map((s, i) => (
           <div key={s.n} style={{ display: "flex", alignItems: "center" }}>
             <div style={{ textAlign: "center", width: 140 }}>
-              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #4f8ef7, #1a3a8a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 800, color: "#fff", margin: "0 auto 10px" }}>{s.n}</div>
+              <div style={{ width: 48, height: 48, borderRadius: "50%", background: "linear-gradient(135deg, #14B8A6, #1a3a8a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 800, color: "#fff", margin: "0 auto 10px" }}>{s.n}</div>
               <div style={{ fontSize: 13, fontWeight: 700, color: "#aaccff", marginBottom: 5 }}>{s.title}</div>
               <div style={{ fontSize: 11, color: "rgba(160,190,240,0.65)", lineHeight: 1.45 }}>{s.desc}</div>
             </div>
             {i < steps.length - 1 && (
-              <div style={{ width: 32, textAlign: "center", color: "rgba(79,142,247,0.5)", fontSize: 18, flexShrink: 0 }}>→</div>
+              <div style={{ width: 32, textAlign: "center", color: "rgba(20,184,166,0.5)", fontSize: 18, flexShrink: 0 }}>→</div>
             )}
           </div>
         ))}
@@ -377,7 +377,7 @@ function Slide6() {
   ];
   // SVG bar chart: sample case stage data
   const bars = [
-    { label: "New", value: 6, color: "#4f8ef7" },
+    { label: "New", value: 6, color: "#14B8A6" },
     { label: "Active", value: 10, color: "#2ecc71" },
     { label: "On Hold", value: 4, color: "#f39c12" },
     { label: "Pending", value: 3, color: "#9b59b6" },
@@ -419,10 +419,10 @@ function Slide6() {
 function Slide7() {
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg, #030c1f 0%, #061535 50%, #030c1f 100%)", padding: "32px 28px" }}>
-      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Communication</div>
+      <div style={{ fontSize: 11, letterSpacing: 3, color: "#14B8A6", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Communication</div>
       <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 24 }}>Instant Cross-Team Collaboration</div>
       {/* Mock notification card */}
-      <div style={{ background: "rgba(79,142,247,0.1)", border: "1px solid rgba(79,142,247,0.4)", borderRadius: 14, padding: "18px 22px", maxWidth: 420, width: "100%", marginBottom: 20 }}>
+      <div style={{ background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.4)", borderRadius: 14, padding: "18px 22px", maxWidth: 420, width: "100%", marginBottom: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
           <div>
             <div style={{ fontSize: 12, color: "#aaccff", marginBottom: 3 }}>From <span style={{ fontWeight: 700, color: "#fff" }}>SP Team</span> → <span style={{ fontWeight: 700, color: "#2ecc71" }}>NCM</span></div>
@@ -434,7 +434,7 @@ function Slide7() {
           SP status updated to <strong style={{ color: "#fff" }}>"On Hold – PA Required"</strong>. NCM review needed within 24h to prevent lapse.
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          <div style={{ padding: "5px 14px", background: "rgba(79,142,247,0.2)", border: "1px solid rgba(79,142,247,0.4)", borderRadius: 6, fontSize: 11, color: "#7ab8ff", fontWeight: 600 }}>✓ Acknowledge</div>
+          <div style={{ padding: "5px 14px", background: "rgba(20,184,166,0.2)", border: "1px solid rgba(20,184,166,0.4)", borderRadius: 6, fontSize: 11, color: "#7ab8ff", fontWeight: 600 }}>✓ Acknowledge</div>
           <div style={{ padding: "5px 14px", background: "rgba(231,76,60,0.1)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 6, fontSize: 11, color: "#ff8888", fontWeight: 600 }}>⚡ Escalate</div>
         </div>
       </div>
@@ -491,7 +491,7 @@ function Slide9() {
         <FireflyLogo size={90} />
       </div>
       <div style={{ flex: 1, maxWidth: 480 }}>
-        <div style={{ fontSize: 11, letterSpacing: 3, color: "#f39c12", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Why FireFly Software</div>
+        <div style={{ fontSize: 11, letterSpacing: 3, color: "#f39c12", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Why Conduit</div>
         <div style={{ fontSize: 28, fontWeight: 800, color: "#fff", marginBottom: 6, lineHeight: 1.2 }}>Purpose-Built.<br />Rapidly Deployed.</div>
         <div style={{ fontSize: 13, color: "rgba(240,200,100,0.6)", marginBottom: 24 }}>We don't adapt generic tools — we build for specialty pharma from scratch.</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -526,7 +526,7 @@ function Slide10() {
         <div style={{ marginTop: 28, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(243,156,18,0.25)", borderRadius: 12, padding: "18px 28px", display: "inline-block" }}>
           <div style={{ fontSize: 13, color: "rgba(240,200,140,0.8)", marginBottom: 6 }}>✉️ <span style={{ fontWeight: 600, color: "#f5c842" }}>nick@fireflysoftware.com</span></div>
           <div style={{ fontSize: 13, color: "rgba(240,200,140,0.6)" }}>🌐 <span style={{ color: "#f5c842" }}>fireflysoftware.com</span></div>
-          <div style={{ marginTop: 10, fontSize: 11, letterSpacing: 2, color: "rgba(240,200,140,0.4)", textTransform: "uppercase" }}>FireFly Software LLC</div>
+          <div style={{ marginTop: 10, fontSize: 11, letterSpacing: 2, color: "rgba(240,200,140,0.4)", textTransform: "uppercase" }}>Conduit</div>
         </div>
       </div>
     </div>
@@ -543,7 +543,7 @@ function DemoTab({ activeSlide, setActiveSlide }) {
 
   return (
     <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div style={{ fontSize: 13, color: "rgba(130,160,200,0.7)", marginBottom: 14, textAlign: "center", letterSpacing: 1 }}>AAIM Portal — Product Presentation</div>
+      <div style={{ fontSize: 13, color: "rgba(130,160,200,0.7)", marginBottom: 14, textAlign: "center", letterSpacing: 1 }}>Conduit — Patient Access Communications</div>
       {/* Slide container */}
       <div style={{ borderRadius: 16, overflow: "hidden", height: 520, position: "relative", boxShadow: "0 8px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06)" }}>
         <SlideComp />
@@ -551,18 +551,18 @@ function DemoTab({ activeSlide, setActiveSlide }) {
       {/* Controls */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 20 }}>
         <button onClick={() => go(-1)} disabled={activeSlide === 0}
-          style={{ width: 40, height: 40, borderRadius: "50%", background: activeSlide === 0 ? "rgba(255,255,255,0.04)" : "rgba(79,142,247,0.18)", border: `1px solid ${activeSlide === 0 ? "rgba(255,255,255,0.08)" : "rgba(79,142,247,0.4)"}`, color: activeSlide === 0 ? "rgba(255,255,255,0.2)" : "#7ab8ff", fontSize: 18, cursor: activeSlide === 0 ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          style={{ width: 40, height: 40, borderRadius: "50%", background: activeSlide === 0 ? "rgba(255,255,255,0.04)" : "rgba(20,184,166,0.18)", border: `1px solid ${activeSlide === 0 ? "rgba(255,255,255,0.08)" : "rgba(20,184,166,0.4)"}`, color: activeSlide === 0 ? "rgba(255,255,255,0.2)" : "#7ab8ff", fontSize: 18, cursor: activeSlide === 0 ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           ‹
         </button>
         {/* Dot indicators */}
         <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
           {SLIDES.map((_, i) => (
             <button key={i} onClick={() => setActiveSlide(i)}
-              style={{ width: i === activeSlide ? 20 : 7, height: 7, borderRadius: 4, background: i === activeSlide ? "#4f8ef7" : "rgba(255,255,255,0.18)", border: "none", cursor: "pointer", transition: "width 0.2s, background 0.2s", padding: 0 }} />
+              style={{ width: i === activeSlide ? 20 : 7, height: 7, borderRadius: 4, background: i === activeSlide ? "#14B8A6" : "rgba(255,255,255,0.18)", border: "none", cursor: "pointer", transition: "width 0.2s, background 0.2s", padding: 0 }} />
           ))}
         </div>
         <button onClick={() => go(1)} disabled={activeSlide === total - 1}
-          style={{ width: 40, height: 40, borderRadius: "50%", background: activeSlide === total - 1 ? "rgba(255,255,255,0.04)" : "rgba(79,142,247,0.18)", border: `1px solid ${activeSlide === total - 1 ? "rgba(255,255,255,0.08)" : "rgba(79,142,247,0.4)"}`, color: activeSlide === total - 1 ? "rgba(255,255,255,0.2)" : "#7ab8ff", fontSize: 18, cursor: activeSlide === total - 1 ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          style={{ width: 40, height: 40, borderRadius: "50%", background: activeSlide === total - 1 ? "rgba(255,255,255,0.04)" : "rgba(20,184,166,0.18)", border: `1px solid ${activeSlide === total - 1 ? "rgba(255,255,255,0.08)" : "rgba(20,184,166,0.4)"}`, color: activeSlide === total - 1 ? "rgba(255,255,255,0.2)" : "#7ab8ff", fontSize: 18, cursor: activeSlide === total - 1 ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           ›
         </button>
       </div>
@@ -628,9 +628,9 @@ function AboutTab() {
       {/* Hero banner — full width dark */}
       <div style={{ background: "linear-gradient(135deg, #030c20 0%, #051830 50%, #030c20 100%)", borderRadius: 16, padding: "48px 40px", textAlign: "center", marginBottom: 32, display: "flex", flexDirection: "column", alignItems: "center", gap: 14, boxShadow: "0 4px 40px rgba(0,0,0,0.5)" }}>
         <FireflyLogo size={80} />
-        <div style={{ fontSize: 34, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>FireFly Software LLC</div>
+        <div style={{ fontSize: 34, fontWeight: 800, color: "#fff", letterSpacing: -0.5 }}>Conduit</div>
         <div style={{ fontSize: 16, color: "rgba(160,200,255,0.75)", fontStyle: "italic" }}>Illuminating Healthcare Operations</div>
-        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #4f8ef7, transparent)", marginTop: 6 }} />
+        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #14B8A6, transparent)", marginTop: 6 }} />
       </div>
 
       {/* Constrained content area */}
@@ -638,14 +638,14 @@ function AboutTab() {
 
         {/* Mission statement */}
         <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "28px 32px", marginBottom: 28, textAlign: "center" }}>
-          <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 700, marginBottom: 14 }}>Our Mission</div>
+          <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#14B8A6", textTransform: "uppercase", fontWeight: 700, marginBottom: 14 }}>Our Mission</div>
           <div style={{ fontSize: 16, color: theme.text, lineHeight: 1.7, maxWidth: 620, margin: "0 auto" }}>
             We build purpose-built software for specialty pharmacy and rare disease patient access teams. Our mission is to eliminate operational silos and accelerate patient access to life-changing therapies.
           </div>
         </div>
 
         {/* Leadership */}
-        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Leadership Team</div>
+        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#14B8A6", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Leadership Team</div>
         <div style={{ display: "flex", gap: 20, marginBottom: 28, flexWrap: "wrap" }}>
           {/* CEO */}
           <div style={leadershipCardStyle}>
@@ -657,7 +657,7 @@ function AboutTab() {
               </div>
             </div>
             <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.65, marginBottom: 18 }}>
-              Nick brings 15+ years of specialty pharmacy and rare disease market access expertise. He has led patient access programs at multiple top-10 pharma companies and understands the operational challenges teams face every day. Nick founded FireFly Software to turn his vision of seamless multi-team coordination into reality.
+              Nick brings 15+ years of specialty pharmacy and rare disease market access expertise. He has led patient access programs at multiple top-10 pharma companies and understands the operational challenges teams face every day. Nick founded Conduit to turn his vision of seamless multi-team coordination into reality.
             </div>
             <div>
               {["Market Access", "Rare Disease", "Business Development"].map(s => (
@@ -668,25 +668,25 @@ function AboutTab() {
           {/* CTO */}
           <div style={leadershipCardStyle}>
             <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-              <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, #4f8ef7, #1a5ab8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, color: "#fff", flexShrink: 0, boxShadow: "0 4px 16px rgba(79,142,247,0.35)" }}>RB</div>
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: "linear-gradient(135deg, #14B8A6, #1a5ab8)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, color: "#fff", flexShrink: 0, boxShadow: "0 4px 16px rgba(20,184,166,0.35)" }}>RB</div>
               <div>
                 <div style={{ fontSize: 18, fontWeight: 800, color: theme.text }}>Rick Boulanger</div>
-                <div style={{ fontSize: 12, color: "#4f8ef7", fontWeight: 600, marginTop: 2 }}>Co-Founder & CTO</div>
+                <div style={{ fontSize: 12, color: "#14B8A6", fontWeight: 600, marginTop: 2 }}>Co-Founder & CTO</div>
               </div>
             </div>
             <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.65, marginBottom: 18 }}>
-              Rick is a full-stack software engineer with deep experience building enterprise SaaS platforms. He architected the AAIM Portal from the ground up — designing the real-time communication engine, analytics pipeline, and mobile-first interface. Rick believes technology should disappear into the workflow.
+              Rick is a full-stack software engineer with deep experience building enterprise SaaS platforms. He architected Conduit from the ground up — designing the real-time communication engine, analytics pipeline, and mobile-first interface. Rick believes technology should disappear into the workflow.
             </div>
             <div>
               {["Software Architecture", "Cloud Infrastructure", "Product Design"].map(s => (
-                <span key={s} style={chipStyle("#4f8ef7")}>{s}</span>
+                <span key={s} style={chipStyle("#14B8A6")}>{s}</span>
               ))}
             </div>
           </div>
         </div>
 
         {/* Company stats */}
-        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Company Overview</div>
+        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#14B8A6", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Company Overview</div>
         <div style={{ display: "flex", gap: 14, marginBottom: 28, flexWrap: "wrap" }}>
           {[
             { value: "2024", label: "Founded" },
@@ -702,12 +702,12 @@ function AboutTab() {
         </div>
 
         {/* Product philosophy */}
-        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Product Philosophy</div>
+        <div style={{ fontSize: 11, letterSpacing: 2.5, color: "#14B8A6", textTransform: "uppercase", fontWeight: 700, marginBottom: 16 }}>Product Philosophy</div>
         <div style={{ display: "flex", gap: 16, marginBottom: 28, flexWrap: "wrap" }}>
           {[
             { icon: "⚡", title: "Speed Over Complexity", desc: "Every feature ships in days, not months.", color: "#f39c12" },
             { icon: "🏥", title: "Healthcare First", desc: "Built around specialty pharma workflows, not adapted from generic tools.", color: "#2ecc71" },
-            { icon: "👥", title: "Team-Centric Design", desc: "Designed for the people in the trenches — NCMs, SP partners, and access coordinators.", color: "#4f8ef7" },
+            { icon: "👥", title: "Team-Centric Design", desc: "Designed for the people in the trenches — NCMs, SP partners, and access coordinators.", color: "#14B8A6" },
           ].map(p => (
             <div key={p.title} style={pillarCardStyle}>
               <div style={{ fontSize: 28, marginBottom: 10 }}>{p.icon}</div>
@@ -722,7 +722,7 @@ function AboutTab() {
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <FireflyLogo size={44} />
             <div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: "#fff" }}>FireFly Software LLC</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#fff" }}>Conduit</div>
               <div style={{ fontSize: 12, color: "rgba(160,200,255,0.6)", marginTop: 2 }}>Illuminating Healthcare Operations</div>
             </div>
           </div>
@@ -830,10 +830,10 @@ function UploadSection({ title, description, templateFile, templateContent, prev
 
       <div style={{ margin: "18px 0 14px", borderTop: `1px solid ${theme.border}` }} />
 
-      <label style={{ display: "block", padding: "20px 24px", border: `2px dashed ${parsed ? "#4f8ef7" : theme.border}`, borderRadius: 10, textAlign: "center", cursor: "pointer", background: parsed ? "rgba(79,142,247,0.05)" : "transparent", transition: "all 0.2s" }}>
+      <label style={{ display: "block", padding: "20px 24px", border: `2px dashed ${parsed ? "#14B8A6" : theme.border}`, borderRadius: 10, textAlign: "center", cursor: "pointer", background: parsed ? "rgba(20,184,166,0.05)" : "transparent", transition: "all 0.2s" }}>
         <input ref={fileRef} type="file" accept=".csv" onChange={handleFile} style={{ display: "none" }} />
         <div style={{ fontSize: 24, marginBottom: 6 }}>📄</div>
-        <div style={{ fontSize: 13, color: parsed ? "#4f8ef7" : theme.textMuted, fontWeight: parsed ? 600 : 400 }}>
+        <div style={{ fontSize: 13, color: parsed ? "#14B8A6" : theme.textMuted, fontWeight: parsed ? 600 : 400 }}>
           {parsed ? `${parsed.rows.length} rows loaded — click to change` : "Click to select a CSV file"}
         </div>
       </label>
@@ -865,7 +865,7 @@ function UploadSection({ title, description, templateFile, templateContent, prev
 
       {parsed && (
         <button onClick={handleUpload} disabled={uploading || !parsed.rows.length}
-          style={{ marginTop: 16, padding: "10px 28px", background: "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+          style={{ marginTop: 16, padding: "10px 28px", background: "#14B8A6", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
           {uploading ? "Uploading…" : `${submitLabel} (${parsed.rows.length} rows)`}
         </button>
       )}
@@ -901,7 +901,7 @@ function ImportTab() {
       <UploadSection
         title="👥 Import Users"
         description={`Add login accounts for your team. Valid teams: Home Office, NCM, SP, Sales. Valid roles: admin, partner.`}
-        templateFile="aaim_users_template.csv"
+        templateFile="conduit_users_template.csv"
         templateContent={USER_TEMPLATE}
         previewHeaders={USER_HEADERS}
         submitLabel="Import Users"
@@ -912,7 +912,7 @@ function ImportTab() {
       <UploadSection
         title="🗂 Import Cases"
         description="Upload your patient case data. The prescriber field is required; all other fields are optional. Dates should be in YYYY-MM-DD format."
-        templateFile="aaim_cases_template.csv"
+        templateFile="conduit_cases_template.csv"
         templateContent={PATIENT_TEMPLATE}
         previewHeaders={["prescriber","referral_date","latest_sp_partner","latest_sp_status","primary_channel","region"]}
         submitLabel="Import Cases"
@@ -1001,7 +1001,7 @@ function AdminTab() {
                     <td style={{ ...cellStyle, fontWeight: 600, color: theme.text }}>{l.name}</td>
                     <td style={{ ...cellStyle }}>{l.username}</td>
                     <td style={{ ...cellStyle }}>
-                      <span style={{ padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, background: "rgba(79,142,247,0.12)", color: "#4f8ef7" }}>{l.team}</span>
+                      <span style={{ padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, background: "rgba(20,184,166,0.12)", color: "#14B8A6" }}>{l.team}</span>
                     </td>
                     <td style={{ ...cellStyle }}>{l.logged_in_at ? new Date(l.logged_in_at).toLocaleString() : "—"}</td>
                     <td style={{ ...cellStyle, fontFamily: "monospace", fontSize: 11 }}>{l.ip_address || "—"}</td>
@@ -1027,7 +1027,7 @@ function AdminTab() {
           <div style={{ display: "flex", gap: 0, background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 8, overflow: "hidden" }}>
             {ADMIN_TABLES.map(t => (
               <button key={t} onClick={() => setSelectedTable(t)}
-                style={{ padding: "8px 14px", background: selectedTable === t ? "#4f8ef722" : "none", border: "none", borderRight: `1px solid ${theme.border}`, color: selectedTable === t ? "#4f8ef7" : theme.textMuted, fontSize: 12, fontWeight: selectedTable === t ? 700 : 500, cursor: "pointer" }}>
+                style={{ padding: "8px 14px", background: selectedTable === t ? "#14B8A622" : "none", border: "none", borderRight: `1px solid ${theme.border}`, color: selectedTable === t ? "#14B8A6" : theme.textMuted, fontSize: 12, fontWeight: selectedTable === t ? 700 : 500, cursor: "pointer" }}>
                 {t.replace("_", " ")}
               </button>
             ))}
@@ -1069,7 +1069,7 @@ function AdminTab() {
 }
 
 // ── Main Settings page ───────────────────────────────────────────────────────
-export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
+export default function SettingsPage({ themeName, onSetTheme, currentUser }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
 
@@ -1151,7 +1151,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
       <div style={{ display: "flex", gap: 6, marginBottom: 24, borderBottom: `1px solid ${theme.border}`, paddingBottom: 0, overflowX: "auto", WebkitOverflowScrolling: "touch" }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
-            style={{ padding: "10px 18px", background: "none", border: "none", borderBottom: `2px solid ${activeTab === t.id ? "#4f8ef7" : "transparent"}`, color: activeTab === t.id ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1, flexShrink: 0, whiteSpace: "nowrap" }}>
+            style={{ padding: "10px 18px", background: "none", border: "none", borderBottom: `2px solid ${activeTab === t.id ? "#14B8A6" : "transparent"}`, color: activeTab === t.id ? "#14B8A6" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", marginBottom: -1, flexShrink: 0, whiteSpace: "nowrap" }}>
             {t.label}
           </button>
         ))}
@@ -1172,20 +1172,21 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
         <SectionCard>
           <div style={{ padding: 24 }}>
             <div style={{ fontSize: 15, fontWeight: 700, color: theme.text, marginBottom: 6 }}>Theme</div>
-            <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>Choose between dark and light mode</div>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
+            <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>Choose your preferred color scheme</div>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: 14 }}>
               {[
-                { id: "dark",  label: "Dark Mode",  icon: "🌙", desc: "Easy on the eyes at night" },
-                { id: "light", label: "Light Mode",  icon: "☀️", desc: "Clean and bright" },
+                { id: "conduit", label: "Conduit",    icon: "◎", desc: "Brand default — navy & teal" },
+                { id: "dark",    label: "Dark Mode",  icon: "🌙", desc: "Classic dark" },
+                { id: "light",   label: "Light Mode", icon: "☀️", desc: "Clean and bright" },
               ].map(opt => {
-                const isSelected = isDark === (opt.id === "dark");
+                const isSelected = themeName === opt.id;
                 return (
-                  <button key={opt.id} onClick={() => { if (!isSelected) onToggleTheme(); }}
-                    style={{ padding: "20px 24px", background: isSelected ? "rgba(79,142,247,0.12)" : theme.surfaceBg2, border: `2px solid ${isSelected ? "#4f8ef7" : theme.border}`, borderRadius: 12, cursor: "pointer", textAlign: "left" }}>
+                  <button key={opt.id} onClick={() => onSetTheme(opt.id)}
+                    style={{ padding: "20px 24px", background: isSelected ? "rgba(20,184,166,0.10)" : theme.surfaceBg2, border: `2px solid ${isSelected ? "#14B8A6" : theme.border}`, borderRadius: 12, cursor: "pointer", textAlign: "left" }}>
                     <div style={{ fontSize: 32, marginBottom: 10 }}>{opt.icon}</div>
                     <div style={{ fontSize: 15, fontWeight: 700, color: theme.text, marginBottom: 4 }}>{opt.label}</div>
                     <div style={{ fontSize: 12, color: theme.textMuted }}>{opt.desc}</div>
-                    {isSelected && <div style={{ marginTop: 10, fontSize: 11, color: "#4f8ef7", fontWeight: 700 }}>✓ Active</div>}
+                    {isSelected && <div style={{ marginTop: 10, fontSize: 11, color: "#14B8A6", fontWeight: 700 }}>✓ Active</div>}
                   </button>
                 );
               })}
@@ -1200,7 +1201,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
           <div style={{ padding: "16px 20px", borderBottom: `1px solid ${theme.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ fontSize: 15, fontWeight: 600, color: theme.text }}>Users <span style={{ fontSize: 13, color: theme.textFaint, fontWeight: 400 }}>({users.length})</span></div>
             <button onClick={() => setEditingUser({})}
-              style={{ padding: "7px 16px", background: "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>+ Add User</button>
+              style={{ padding: "7px 16px", background: "#14B8A6", border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>+ Add User</button>
           </div>
           {loadingUsers ? <div style={{ padding: 32, textAlign: "center", color: theme.textFaint }}>Loading…</div> : isMobile ? (
             <div style={{ padding: 12 }}>
@@ -1219,7 +1220,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
                       <span style={{ padding: "3px 10px", background: theme.isDark ? tc.light + "22" : tc.light, color: theme.isDark ? tc.accent : tc.lightText, borderRadius: 20, fontSize: 11, fontWeight: 700 }}>{u.team}</span>
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
-                      <button onClick={() => setEditingUser(u)} style={{ flex: 1, padding: 8, background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.3)", borderRadius: 6, color: "#4f8ef7", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Edit</button>
+                      <button onClick={() => setEditingUser(u)} style={{ flex: 1, padding: 8, background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.3)", borderRadius: 6, color: "#14B8A6", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Edit</button>
                       <button onClick={() => handleUserDelete(u.id)} disabled={deletingId === u.id} style={{ flex: 1, padding: 8, background: "rgba(231,76,60,0.1)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 6, color: "#e74c3c", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{deletingId === u.id ? "…" : "Delete"}</button>
                     </div>
                   </div>
@@ -1257,7 +1258,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
                       <td style={{ padding: "12px 20px", fontSize: 13, color: theme.textMuted, textTransform: "capitalize" }}>{u.role}</td>
                       <td style={{ padding: "12px 20px" }}>
                         <div style={{ display: "flex", gap: 8 }}>
-                          <button onClick={() => setEditingUser(u)} style={{ padding: "5px 14px", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.3)", borderRadius: 6, color: "#4f8ef7", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Edit</button>
+                          <button onClick={() => setEditingUser(u)} style={{ padding: "5px 14px", background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.3)", borderRadius: 6, color: "#14B8A6", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Edit</button>
                           <button onClick={() => handleUserDelete(u.id)} disabled={deletingId === u.id} style={{ padding: "5px 14px", background: "rgba(231,76,60,0.1)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 6, color: "#e74c3c", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{deletingId === u.id ? "…" : "Delete"}</button>
                         </div>
                       </td>
@@ -1286,7 +1287,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
                   <div style={{ fontSize: 14, fontWeight: 700, color: theme.text, marginBottom: 2 }}>{p.prescriber}</div>
                   <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 10 }}>{p.territory} · {p.region} · {p.primary_channel}</div>
                   <div style={{ display: "flex", gap: 8 }}>
-                    <button onClick={() => setEditingPatient(p)} style={{ flex: 1, padding: 8, background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.3)", borderRadius: 6, color: "#4f8ef7", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Edit</button>
+                    <button onClick={() => setEditingPatient(p)} style={{ flex: 1, padding: 8, background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.3)", borderRadius: 6, color: "#14B8A6", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>Edit</button>
                     <button onClick={() => handlePatientDelete(p.id)} disabled={deletingId === p.id} style={{ flex: 1, padding: 8, background: "rgba(231,76,60,0.1)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 6, color: "#e74c3c", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>{deletingId === p.id ? "…" : "Delete"}</button>
                   </div>
                 </div>
@@ -1314,7 +1315,7 @@ export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
                     <td style={{ padding: "11px 16px", fontSize: 12, color: theme.textMuted }}>{p.aging_of_status}d</td>
                     <td style={{ padding: "11px 16px" }}>
                       <div style={{ display: "flex", gap: 8 }}>
-                        <button onClick={() => setEditingPatient(p)} style={{ padding: "5px 12px", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.3)", borderRadius: 6, color: "#4f8ef7", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Edit</button>
+                        <button onClick={() => setEditingPatient(p)} style={{ padding: "5px 12px", background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.3)", borderRadius: 6, color: "#14B8A6", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Edit</button>
                         <button onClick={() => handlePatientDelete(p.id)} disabled={deletingId === p.id} style={{ padding: "5px 12px", background: "rgba(231,76,60,0.1)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 6, color: "#e74c3c", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{deletingId === p.id ? "…" : "Delete"}</button>
                       </div>
                     </td>

@@ -1,5 +1,7 @@
+export const FONT_SANS = "-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif";
+
 export const BUCKETS = [
-  { id: "all",       label: "All Cases",       color: "#4f8ef7" },
+  { id: "all",       label: "All Cases",       color: "#14B8A6" },
   { id: "new",       label: "New Referral",     color: "#a78bfa" },
   { id: "ttrp",      label: "TTRP",             color: "#f472b6" },
   { id: "pa",        label: "Prior Auth (PA)",  color: "#34d399" },
@@ -13,7 +15,7 @@ export const BUCKETS = [
 ];
 
 export const TEAM_COLORS = {
-  "Home Office": { bg: "#1a2744", accent: "#4f8ef7", light: "#e8f0fe", lightText: "#1a56c4" },
+  "Home Office": { bg: "#0d2a28", accent: "#14B8A6", light: "#e6faf8", lightText: "#0a7a70" },
   NCM:           { bg: "#1a3a2a", accent: "#2ecc71", light: "#e6f9f0", lightText: "#1a7a45" },
   SP:            { bg: "#3a1a2a", accent: "#e056b0", light: "#fce8f5", lightText: "#a0208a" },
   Sales:         { bg: "#2a2a1a", accent: "#f0a500", light: "#fff8e1", lightText: "#a06800" },
@@ -22,7 +24,7 @@ export const TEAM_COLORS = {
 export const STATUS_COLORS = {
   pending:      "#f0a500",
   acknowledged: "#2ecc71",
-  replied:      "#4f8ef7",
+  replied:      "#14B8A6",
   dismissed:    "#888",
 };
 

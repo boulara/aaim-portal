@@ -115,7 +115,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
       <div style={{ width: isMobile ? "100%" : "min(860px, 100%)", height: isMobile ? "92vh" : "auto", maxHeight: isMobile ? "92vh" : "90vh", background: theme.panelBg, border: `1px solid ${theme.border}`, borderRadius: isMobile ? "16px 16px 0 0" : 16, overflow: "hidden", display: "flex", flexDirection: "column" }}>
 
         {/* Header */}
-        <div style={{ padding: "20px 28px", background: "rgba(79,142,247,0.1)", borderBottom: `1px solid ${theme.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div style={{ padding: "20px 28px", background: "rgba(20,184,166,0.1)", borderBottom: `1px solid ${theme.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
             <div style={{ fontSize: 19, fontWeight: 700, color: theme.text }}>{p.prescriber}</div>
             <div style={{ fontSize: 13, color: theme.textMuted, marginTop: 3 }}>
@@ -134,7 +134,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
             ["new",           "New Notification"],
           ].map(([t, label]) => (
             <button key={t} onClick={() => setTab(t)}
-              style={{ padding: "14px 18px", background: "none", border: "none", borderBottom: `2px solid ${tab === t ? "#4f8ef7" : "transparent"}`, color: tab === t ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", letterSpacing: 0.3 }}>
+              style={{ padding: "14px 18px", background: "none", border: "none", borderBottom: `2px solid ${tab === t ? "#14B8A6" : "transparent"}`, color: tab === t ? "#14B8A6" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", letterSpacing: 0.3 }}>
               {label}
             </button>
           ))}
@@ -166,8 +166,8 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                 </div>
               ))}
               {p.last_comment && (
-                <div style={{ gridColumn: "1/-1", background: "rgba(79,142,247,0.08)", padding: "14px 16px", borderRadius: 8, border: "1px solid rgba(79,142,247,0.2)" }}>
-                  <div style={{ fontSize: 10, letterSpacing: 1.5, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 5 }}>Last Comment</div>
+                <div style={{ gridColumn: "1/-1", background: "rgba(20,184,166,0.08)", padding: "14px 16px", borderRadius: 8, border: "1px solid rgba(20,184,166,0.2)" }}>
+                  <div style={{ fontSize: 10, letterSpacing: 1.5, color: "#14B8A6", textTransform: "uppercase", marginBottom: 5 }}>Last Comment</div>
                   <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.6 }}>{p.last_comment}</div>
                 </div>
               )}
@@ -187,10 +187,10 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                   <div style={{ flex: 1, minWidth: 180 }}>
                     <label style={{ fontSize: 10, letterSpacing: 1.5, color: theme.textMuted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>Follow-up Date (optional)</label>
                     <input type="date" value={followUpDate} onChange={e => setFollowUpDate(e.target.value)}
-                      style={{ width: "100%", padding: "9px 12px", background: theme.inputBg, border: `1px solid ${followUpDate ? "#4f8ef7" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none", fontFamily: "inherit" }} />
+                      style={{ width: "100%", padding: "9px 12px", background: theme.inputBg, border: `1px solid ${followUpDate ? "#14B8A6" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none", fontFamily: "inherit" }} />
                   </div>
                   <button onClick={handleSaveNote} disabled={!noteText.trim() || savingNote}
-                    style={{ padding: "10px 24px", background: noteText.trim() ? "#4f8ef7" : theme.inputBg, border: "none", borderRadius: 8, color: noteText.trim() ? "#fff" : theme.textFaint, fontSize: 13, fontWeight: 600, cursor: noteText.trim() ? "pointer" : "not-allowed" }}>
+                    style={{ padding: "10px 24px", background: noteText.trim() ? "#14B8A6" : theme.inputBg, border: "none", borderRadius: 8, color: noteText.trim() ? "#fff" : theme.textFaint, fontSize: 13, fontWeight: 600, cursor: noteText.trim() ? "pointer" : "not-allowed" }}>
                     {savingNote ? "Saving…" : "Save Note"}
                   </button>
                 </div>
@@ -201,7 +201,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                 ? <div style={{ textAlign: "center", color: theme.textFaint, padding: "32px 0", fontSize: 14 }}>No notes yet for this patient</div>
                 : notes.map(n => {
                   const isDone = !!n.completed_at;
-                  const accentColor = isDone ? "#2ecc71" : n.follow_up_date ? "#4f8ef7" : theme.border;
+                  const accentColor = isDone ? "#2ecc71" : n.follow_up_date ? "#14B8A6" : theme.border;
                   const isBusy = updatingNoteId === n.id;
                   return (
                     <div key={n.id} style={{ background: theme.surfaceBg, border: `1px solid ${accentColor}44`, borderLeft: `4px solid ${accentColor}`, borderRadius: 10, padding: "14px 16px", marginBottom: 10, opacity: isDone ? 0.75 : 1 }}>
@@ -218,10 +218,10 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                               </span>
                             )}
                             {!isDone && n.follow_up_date && (
-                              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: "#4f8ef7", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.25)", borderRadius: 20, padding: "2px 8px 2px 10px" }}>
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: "#14B8A6", background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.25)", borderRadius: 20, padding: "2px 8px 2px 10px" }}>
                                 📅 {new Date(n.follow_up_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                                 <button onClick={() => handleClearDate(n.id)} disabled={isBusy} title="Clear follow-up date"
-                                  style={{ background: "none", border: "none", color: "#4f8ef7", cursor: "pointer", fontSize: 12, padding: "0 0 0 2px", lineHeight: 1, opacity: 0.7 }}>✕</button>
+                                  style={{ background: "none", border: "none", color: "#14B8A6", cursor: "pointer", fontSize: 12, padding: "0 0 0 2px", lineHeight: 1, opacity: 0.7 }}>✕</button>
                               </span>
                             )}
                           </div>
@@ -272,7 +272,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   {teams.map(t => (
                     <button key={t} onClick={() => setTargetTeam(t)}
-                      style={{ padding: "8px 20px", background: targetTeam === t ? (TEAM_COLORS[t]?.accent || "#4f8ef7") : theme.inputBg, border: `1px solid ${targetTeam === t ? (TEAM_COLORS[t]?.accent || "#4f8ef7") : theme.borderInput}`, borderRadius: 8, color: targetTeam === t ? "#fff" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+                      style={{ padding: "8px 20px", background: targetTeam === t ? (TEAM_COLORS[t]?.accent || "#14B8A6") : theme.inputBg, border: `1px solid ${targetTeam === t ? (TEAM_COLORS[t]?.accent || "#14B8A6") : theme.borderInput}`, borderRadius: 8, color: targetTeam === t ? "#fff" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
                       {t}
                     </button>
                   ))}
@@ -282,7 +282,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
               <div style={{ marginBottom: 20 }}>
                 <label style={{ fontSize: 11, letterSpacing: 2, color: theme.textMuted, textTransform: "uppercase", display: "block", marginBottom: 10 }}>Priority</label>
                 <div style={{ display: "flex", gap: 8 }}>
-                  {[["normal","Normal","#4f8ef7"],["high","High","#f0a500"],["urgent","Urgent","#e74c3c"]].map(([v, l, c]) => (
+                  {[["normal","Normal","#14B8A6"],["high","High","#f0a500"],["urgent","Urgent","#e74c3c"]].map(([v, l, c]) => (
                     <button key={v} onClick={() => setPriority(v)}
                       style={{ padding: "6px 16px", background: priority === v ? c + "22" : theme.inputBg, border: `1px solid ${priority === v ? c : theme.border}`, borderRadius: 6, color: priority === v ? c : theme.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                       {l}
@@ -299,7 +299,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
               </div>
 
               <button onClick={handleSubmit} disabled={!comment.trim() || sending}
-                style={{ padding: "12px 32px", background: comment.trim() ? "#4f8ef7" : theme.inputBg, border: "none", borderRadius: 8, color: comment.trim() ? "#fff" : theme.textFaint, fontSize: 14, fontWeight: 600, cursor: comment.trim() ? "pointer" : "not-allowed" }}>
+                style={{ padding: "12px 32px", background: comment.trim() ? "#14B8A6" : theme.inputBg, border: "none", borderRadius: 8, color: comment.trim() ? "#fff" : theme.textFaint, fontSize: 14, fontWeight: 600, cursor: comment.trim() ? "pointer" : "not-allowed" }}>
                 {sending ? "Sending…" : "Send Notification →"}
               </button>
             </div>

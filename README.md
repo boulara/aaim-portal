@@ -1,6 +1,6 @@
-# AAIM Portal
+# Conduit — Patient Access Communications
 
-A secure team collaboration platform for managing patient case workflows and interdepartmental notifications, built by **FireFly Software LLC**.
+A patient access communications platform for managing case workflows and interdepartmental notifications, built by **Conduit**.
 
 Teams — **Home Office**, **NCM**, **SP**, and **Sales** — can view a shared patient dashboard, send notifications to each other, reply, acknowledge, add private case notes, and set follow-up reminders.
 
@@ -23,7 +23,7 @@ Log in as an admin (`sarah.johnson` / `pass123`), go to **Settings → Patients*
 
 ### Step 3 — Import your users
 1. Go to **Settings → Import**
-2. Under **Import Users**, click **Download Template** to get `aaim_users_template.csv`
+2. Under **Import Users**, click **Download Template** to get `conduit_users_template.csv`
 3. Fill in your team's login accounts:
 
 | Column | Description | Values |
@@ -37,7 +37,7 @@ Log in as an admin (`sarah.johnson` / `pass123`), go to **Settings → Patients*
 4. Upload the filled CSV — duplicate usernames are skipped automatically.
 
 ### Step 4 — Import your case data
-1. Under **Import Cases**, click **Download Template** to get `aaim_cases_template.csv`
+1. Under **Import Cases**, click **Download Template** to get `conduit_cases_template.csv`
 2. Fill in your patient/case records:
 
 | Column | Description |
@@ -71,6 +71,9 @@ Send each user their `username` and `password`. They log in at your Railway URL.
 
 ## Feature Log
 
+### v2.0.0 — 2026-03-15
+- **Full Conduit rebrand** — App renamed from Conduit Portal to Conduit. Conduit brand guidelines applied throughout: navy `#0B1829` background, teal `#14B8A6` accent, Inter/system-ui font stack, Conduit logomark (node-network SVG) in nav and login. Conduit theme added as the default alongside existing Dark and Light options. All Conduit references removed.
+
 ### v1.7.0 — 2026-03-15
 - **Admin Panel** — New 🔒 Admin tab in Settings, visible only to users with `role = admin`.
   - **Login Audit Log** — Every successful login records the user, team, timestamp, IP address, and browser user-agent. Displayed in a sortable table (most recent first, last 500 events).
@@ -94,7 +97,7 @@ Send each user their `username` and `password`. They log in at your Railway URL.
 
 ### v1.5.0 — 2026-03-14
 - **Favicon** — FireFly Software SVG firefly logo as browser tab icon (glowing green abdomen, blue body, wings, antennae on dark circle background).
-- **Version badge** — `vX.Y.Z` version tag displayed in the nav bar next to the AAIM Portal logo on both desktop and mobile.
+- **Version badge** — `vX.Y.Z` version tag displayed in the nav bar next to the Conduit Portal logo on both desktop and mobile.
 - **Guided Tour** — 🗺 Guide button in the nav launches an 11-step interactive walkthrough. Spotlight effect dims the page and highlights each feature with a pulsing blue ring. Keyboard ← → and Esc supported. Progress dots allow jumping to any step.
 - **Per-user follow-up privacy** — Follow-up notes and calendar are scoped to the logged-in user. You see only your own follow-ups; other users' private notes are never surfaced.
 - **Follow-up nav badge** — Live badge on the Follow-Ups nav item: red count if any follow-ups are overdue, blue count if upcoming, no badge if none. Updates immediately as notes are added or deleted.

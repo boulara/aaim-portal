@@ -1,7 +1,7 @@
 const BASE = "/api";
 
 function getUser() {
-  try { return JSON.parse(localStorage.getItem("aaim_user")); } catch { return null; }
+  try { return JSON.parse(localStorage.getItem("conduit_user")); } catch { return null; }
 }
 
 async function req(method, path, body) {

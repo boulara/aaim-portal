@@ -46,12 +46,12 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
     }
   };
 
-  const priorityColors = { urgent: "#e74c3c", high: "#f0a500", normal: "#4f8ef7" };
-  const pc = priorityColors[n.priority] || "#4f8ef7";
+  const priorityColors = { urgent: "#e74c3c", high: "#f0a500", normal: "#14B8A6" };
+  const pc = priorityColors[n.priority] || "#14B8A6";
 
   const statusConfig = {
     pending:      { label: "Pending",      color: "#f0a500" },
-    replied:      { label: "Reply Sent",   color: "#4f8ef7" },
+    replied:      { label: "Reply Sent",   color: "#14B8A6" },
     acknowledged: { label: "Acknowledged", color: "#2ecc71" },
   };
   const sc = statusConfig[n.status] || statusConfig.pending;
@@ -106,7 +106,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
                   </span>
                   {entry.isOriginal && <span style={{ fontSize: 10, color: theme.textFaintest, fontStyle: "italic" }}>original</span>}
                 </div>
-                <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.55, background: isMe ? "rgba(79,142,247,0.08)" : theme.surfaceBg2, border: `1px solid ${isMe ? "rgba(79,142,247,0.15)" : theme.border}`, borderRadius: 8, padding: "8px 12px" }}>
+                <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.55, background: isMe ? "rgba(20,184,166,0.08)" : theme.surfaceBg2, border: `1px solid ${isMe ? "rgba(20,184,166,0.15)" : theme.border}`, borderRadius: 8, padding: "8px 12px" }}>
                   {entry.text}
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
                 style={{ width: "100%", padding: "10px 14px", background: theme.inputBg, border: `1px solid ${theme.borderInput}`, borderRadius: 7, color: theme.text, fontSize: 13, resize: "none", outline: "none", lineHeight: 1.55, fontFamily: "inherit" }} />
               <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                 <button onClick={submitReply} disabled={!reply.trim() || busy}
-                  style={{ padding: "7px 18px", background: reply.trim() ? "rgba(79,142,247,0.2)" : theme.inputBg, border: `1px solid ${reply.trim() ? "rgba(79,142,247,0.4)" : theme.border}`, borderRadius: 7, color: reply.trim() ? "#4f8ef7" : theme.textFaint, fontSize: 12, fontWeight: 700, cursor: reply.trim() ? "pointer" : "not-allowed" }}>
+                  style={{ padding: "7px 18px", background: reply.trim() ? "rgba(20,184,166,0.2)" : theme.inputBg, border: `1px solid ${reply.trim() ? "rgba(20,184,166,0.4)" : theme.border}`, borderRadius: 7, color: reply.trim() ? "#14B8A6" : theme.textFaint, fontSize: 12, fontWeight: 700, cursor: reply.trim() ? "pointer" : "not-allowed" }}>
                   {busy ? "Sending…" : "Send Reply"}
                 </button>
                 <button onClick={() => { setShowReply(false); setReply(""); }}

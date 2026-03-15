@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { BUCKETS, TEAM_COLORS, assignBuckets, initials, agingColor } from "./constants";
+import { BUCKETS, TEAM_COLORS, FONT_SANS, assignBuckets, initials, agingColor } from "./constants";
 import { AgingBadge, TeamBadge, GLOBAL_STYLES } from "./components/Shared";
-import { ThemeContext, dark, light } from "./ThemeContext";
+import { ThemeContext, dark, light, conduit } from "./ThemeContext";
 import { WalkthroughProvider, useWalkthrough } from "./WalkthroughContext.jsx";
 import { useIsMobile } from "./useIsMobile";
 import LoginScreen from "./components/LoginScreen";
@@ -14,37 +14,36 @@ import TourOverlay from "./components/TourOverlay";
 import { api } from "./api";
 import { APP_VERSION } from "./version";
 
-const ALL_LOGOS = [
-  "/img/relayrx_option_A.svg",
-  "/img/relayrx_option_B.svg",
-  "/img/relayrx_option_C.svg",
-  "/img/relayrx_option_D.svg",
-  "/img/conduit_option_E.svg",
-  "/img/conduit_option_F.svg",
-  "/img/conduit_option_G.svg",
-  "/img/conduit_option_H.svg",
-];
+const FONT_SANS_STACK = FONT_SANS;
 
-// Pick 2 different random logos once per session
-function pickTwo() {
-  const a = Math.floor(Math.random() * ALL_LOGOS.length);
-  let b = Math.floor(Math.random() * (ALL_LOGOS.length - 1));
-  if (b >= a) b++;
-  return [a, b];
+function ConduitMark({ height = 32, color = "#14B8A6" }) {
+  return (
+    <svg viewBox="-128 -52 256 100" height={height} style={{ display: "block", flexShrink: 0 }}>
+      <path d="M-108,14 C-80,14 -68,-28 -36,-28 C-4,-28 4,28 36,28 C68,28 80,-10 108,-10"
+            stroke={color} strokeWidth="2.5" fill="none" opacity="0.45"/>
+      <circle cx="-108" cy="14"  r="20" fill={color} fillOpacity="0.14" stroke={color} strokeWidth="2.5" strokeOpacity="1.0"/>
+      <circle cx="-36"  cy="-28" r="20" fill={color} fillOpacity="0.10" stroke={color} strokeWidth="2.0" strokeOpacity="0.78"/>
+      <circle cx="36"   cy="28"  r="20" fill={color} fillOpacity="0.07" stroke={color} strokeWidth="2.0" strokeOpacity="0.55"/>
+      <circle cx="108"  cy="-10" r="20" fill={color} fillOpacity="0.04" stroke={color} strokeWidth="2.0" strokeOpacity="0.35"/>
+      <circle cx="-72" cy="-8" r="2.5" fill={color} opacity="0.3"/>
+      <circle cx="-14" cy="10"  r="2.5" fill={color} opacity="0.3"/>
+      <circle cx="32"  cy="24"  r="2.5" fill={color} opacity="0.3"/>
+      <circle cx="76"  cy="4"   r="2.5" fill={color} opacity="0.3"/>
+    </svg>
+  );
 }
-const [LOGO_A, LOGO_B] = pickTwo();
 
 function NavLogo() {
-  const [idx, setIdx] = useState(0);
-  useEffect(() => {
-    const t = setInterval(() => setIdx(i => (i + 1) % 2), 4000);
-    return () => clearInterval(t);
-  }, []);
-  const src = idx === 0 ? ALL_LOGOS[LOGO_A] : ALL_LOGOS[LOGO_B];
   return (
-    <div style={{ borderRadius: 8, overflow: "hidden", height: 38, flexShrink: 0 }}>
-      <img key={src} src={src} alt="logo"
-        style={{ height: "100%", width: "auto", display: "block", animation: "logoFadeIn 0.5s ease" }} />
+    <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+      <ConduitMark height={30} color="#14B8A6" />
+      <div style={{ fontFamily: FONT_SANS_STACK, lineHeight: 1.1 }}>
+        <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.5px" }}>
+          <span style={{ color: "#14B8A6" }}>C</span>
+          <span style={{ color: "#F1F5F9" }}>onduit</span>
+        </div>
+        <div style={{ fontSize: 8, letterSpacing: "2px", color: "#475569", textTransform: "uppercase", marginTop: 1 }}>Patient Access</div>
+      </div>
     </div>
   );
 }
@@ -54,10 +53,10 @@ function TourToggle() {
   return (
     <button data-tour="tour-toggle" onClick={active ? stop : start}
       style={{ display: "flex", alignItems: "center", gap: 5, padding: "6px 12px", borderRadius: 20,
-        background: active ? "rgba(79,142,247,0.18)" : "#4f8ef711",
-        border: `1.5px solid ${active ? "#4f8ef7" : "#4f8ef755"}`,
-        color: active ? "#4f8ef7" : "#4f8ef7", fontSize: 12, fontWeight: 700, cursor: "pointer",
-        transition: "all 0.2s", boxShadow: active ? "0 0 14px rgba(79,142,247,0.4)" : "none",
+        background: active ? "rgba(20,184,166,0.18)" : "#14B8A611",
+        border: `1.5px solid ${active ? "#14B8A6" : "#14B8A655"}`,
+        color: active ? "#14B8A6" : "#14B8A6", fontSize: 12, fontWeight: 700, cursor: "pointer",
+        transition: "all 0.2s", boxShadow: active ? "0 0 14px rgba(20,184,166,0.4)" : "none",
         animation: active ? "pulse 1.8s infinite" : "none" }}>
       <span style={{ fontSize: 13 }}>🗺</span>
       {active ? "Exit Tour" : "Guide"}
@@ -67,18 +66,17 @@ function TourToggle() {
 
 function AppInner() {
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("aaim_user")); } catch { return null; }
+    try { return JSON.parse(localStorage.getItem("conduit_user")); } catch { return null; }
   });
-  const [isDark, setIsDark] = useState(() => localStorage.getItem("aaim_theme") !== "light");
-  const theme    = isDark ? dark : light;
+  const [themeName, setThemeName] = useState(() => localStorage.getItem("conduit_theme") || "conduit");
+  const _themeMap = { conduit, dark, light };
+  const theme    = _themeMap[themeName] || conduit;
+  const isDark   = theme.isDark;
   const isMobile = useIsMobile();
 
-  const toggleTheme = () => {
-    setIsDark(d => {
-      const next = !d;
-      localStorage.setItem("aaim_theme", next ? "dark" : "light");
-      return next;
-    });
+  const setTheme = (name) => {
+    setThemeName(name);
+    localStorage.setItem("conduit_theme", name);
   };
 
   const [patients, setPatients]               = useState([]);
@@ -144,7 +142,7 @@ function AppInner() {
               id:      n.id + "_toast_" + Date.now(),
               message: `New notification from ${n.from_team}`,
               detail:  `${patient?.prescriber || "Unknown"} · ${n.priority !== "normal" ? n.priority.toUpperCase() + " · " : ""}${n.comment.slice(0, 60)}${n.comment.length > 60 ? "…" : ""}`,
-              color:   TEAM_COLORS[n.from_team]?.accent || "#4f8ef7",
+              color:   TEAM_COLORS[n.from_team]?.accent || "#14B8A6",
             };
             setToasts(prev => [...prev, toast]);
             setTimeout(() => setToasts(prev => prev.filter(t => t.id !== toast.id)), 6000);
@@ -159,8 +157,8 @@ function AppInner() {
     return () => clearInterval(interval);
   }, [patients]);
 
-  const handleLogin = (u) => { setUser(u); localStorage.setItem("aaim_user", JSON.stringify(u)); };
-  const handleLogout = () => { setUser(null); localStorage.removeItem("aaim_user"); setView("dashboard"); };
+  const handleLogin = (u) => { setUser(u); localStorage.setItem("conduit_user", JSON.stringify(u)); };
+  const handleLogout = () => { setUser(null); localStorage.removeItem("conduit_user"); setView("dashboard"); };
 
   const handleNotificationUpdate = (updated) => {
     knownIdsRef.current.add(updated.id);
@@ -222,7 +220,7 @@ function AppInner() {
 
   return (
     <ThemeContext.Provider value={theme}>
-      <div style={{ minHeight: "100vh", background: theme.pageBg, fontFamily: "'Georgia', serif", color: theme.text }}>
+      <div style={{ minHeight: "100vh", background: theme.pageBg, fontFamily: "FONT_SANS", color: theme.text }}>
         <style>{GLOBAL_STYLES}</style>
 
         {/* ── OVERDUE FOLLOW-UP ALERT ── */}
@@ -303,7 +301,7 @@ function AppInner() {
                       <span style={{ marginLeft: 6, background: "#e74c3c", color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{overdueNotes.length}</span>
                     )}
                     {id === "followups" && overdueNotes.length === 0 && myFollowUps.length > 0 && (
-                      <span style={{ marginLeft: 6, background: "#4f8ef7", color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{myFollowUps.length}</span>
+                      <span style={{ marginLeft: 6, background: "#14B8A6", color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{myFollowUps.length}</span>
                     )}
                   </button>
                 ))}
@@ -340,7 +338,7 @@ function AppInner() {
         <div style={{ padding: isMobile ? "16px 12px 80px" : "28px 32px" }}>
 
           {/* ── SETTINGS ── */}
-          {view === "settings" && <SettingsPage isDark={isDark} onToggleTheme={toggleTheme} currentUser={user} />}
+          {view === "settings" && <SettingsPage themeName={themeName} onSetTheme={setTheme} currentUser={user} />}
 
           {/* ── ANALYTICS ── */}
           {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}
@@ -372,7 +370,7 @@ function AppInner() {
               {/* Summary cards — 2 cols on mobile, 4 on desktop */}
               <div data-tour="summary-cards" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
                 {[
-                  ["Showing",              filtered.length,                                           "#4f8ef7",          null],
+                  ["Showing",              filtered.length,                                           "#14B8A6",          null],
                   ["Active Notifications", notifications.filter(n => n.status === "pending").length,  "#f0a500",          null],
                   ["My Inbox",             myInbox.length,                                            tc.accent,          "inbox"],
                   ["Avg Aging",            avgAging + "d",                                            agingColor(avgAging),"analytics"],
@@ -398,12 +396,12 @@ function AppInner() {
                     { value: filterPayer,   onChange: setFilterPayer,   options: payers,     all: "All Payers"   },
                   ].map(({ value, onChange, options, all }) => (
                     <select key={all} value={value} onChange={e => onChange(e.target.value)}
-                      style={{ padding: "10px 12px", background: value !== "All" ? theme.inputBg : theme.selectBg, border: `1px solid ${value !== "All" ? "#4f8ef7" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none" }}>
+                      style={{ padding: "10px 12px", background: value !== "All" ? theme.inputBg : theme.selectBg, border: `1px solid ${value !== "All" ? "#14B8A6" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none" }}>
                       {options.map(o => <option key={o} value={o}>{o === "All" ? all : o}</option>)}
                     </select>
                   ))}
                   <select value={filterAging} onChange={e => setFilterAging(e.target.value)}
-                    style={{ padding: "10px 12px", background: filterAging !== "All" ? theme.inputBg : theme.selectBg, border: `1px solid ${filterAging !== "All" ? "#4f8ef7" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none" }}>
+                    style={{ padding: "10px 12px", background: filterAging !== "All" ? theme.inputBg : theme.selectBg, border: `1px solid ${filterAging !== "All" ? "#14B8A6" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none" }}>
                     <option value="All">All Aging</option>
                     <option value="green">{"< 10 days"}</option>
                     <option value="yellow">10–20 days</option>
@@ -480,7 +478,7 @@ function AppInner() {
                             </td>
                             <td style={{ padding: "13px 16px" }}>
                               <button onClick={e => { e.stopPropagation(); setSelectedPatient(p); }}
-                                style={{ padding: "5px 14px", background: "rgba(79,142,247,0.15)", border: "1px solid rgba(79,142,247,0.3)", borderRadius: 6, color: "#4f8ef7", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                                style={{ padding: "5px 14px", background: "rgba(20,184,166,0.15)", border: "1px solid rgba(20,184,166,0.3)", borderRadius: 6, color: "#14B8A6", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                                 Open →
                               </button>
                             </td>
@@ -528,7 +526,7 @@ function AppInner() {
                           <span style={{ fontSize: 12, color: theme.text, fontWeight: 600 }}>{patient?.prescriber || n.patient_name}</span>
                           <span style={{ fontSize: 11, color: theme.textFaint }}>·</span>
                           <span style={{ fontSize: 11, color: theme.textMuted }}>{patient?.territory}</span>
-                          {isReply && <span style={{ fontSize: 10, color: "#4f8ef7", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.25)", borderRadius: 4, padding: "1px 7px", fontWeight: 700 }}>REPLY RECEIVED</span>}
+                          {isReply && <span style={{ fontSize: 10, color: "#14B8A6", background: "rgba(20,184,166,0.12)", border: "1px solid rgba(20,184,166,0.25)", borderRadius: 4, padding: "1px 7px", fontWeight: 700 }}>REPLY RECEIVED</span>}
                         </div>
                         <NotificationCard notification={n} currentUser={user} onUpdate={handleNotificationUpdate} />
                       </div>
@@ -579,7 +577,7 @@ function AppInner() {
                   <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: "#e74c3c", color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{overdueNotes.length}</span>
                 )}
                 {id === "followups" && overdueNotes.length === 0 && myFollowUps.length > 0 && (
-                  <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: "#4f8ef7", color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{myFollowUps.length}</span>
+                  <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: "#14B8A6", color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{myFollowUps.length}</span>
                 )}
               </button>
             ))}

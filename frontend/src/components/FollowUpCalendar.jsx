@@ -75,7 +75,7 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
   const selectedNotes = selected ? (byDate[selected] || []) : [];
   const patientMap = Object.fromEntries((patients || []).map(p => [p.id, p]));
 
-  function NoteCard({ n, color = "#4f8ef7" }) {
+  function NoteCard({ n, color = "#14B8A6" }) {
     const pat = patientMap[n.patient_id];
     const isDone = !!n.completed_at;
     const isBusy = busyId === n.id;
@@ -160,17 +160,17 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
                   const isPast    = k < todayKey;
                   return (
                     <div key={k} onClick={() => setSelected(isSelected ? null : k)}
-                      style={{ background: isSelected ? "rgba(79,142,247,0.15)" : theme.surfaceBg, minHeight: 70, padding: "8px 10px", cursor: hasNotes ? "pointer" : "default", position: "relative",
-                        border: isSelected ? "2px solid #4f8ef7" : "2px solid transparent" }}>
-                      <div style={{ fontSize: 13, fontWeight: isToday ? 700 : 400, color: isToday ? "#4f8ef7" : isPast ? theme.textFaint : theme.text,
+                      style={{ background: isSelected ? "rgba(20,184,166,0.15)" : theme.surfaceBg, minHeight: 70, padding: "8px 10px", cursor: hasNotes ? "pointer" : "default", position: "relative",
+                        border: isSelected ? "2px solid #14B8A6" : "2px solid transparent" }}>
+                      <div style={{ fontSize: 13, fontWeight: isToday ? 700 : 400, color: isToday ? "#14B8A6" : isPast ? theme.textFaint : theme.text,
                         width: 24, height: 24, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                        background: isToday ? "rgba(79,142,247,0.15)" : "none" }}>
+                        background: isToday ? "rgba(20,184,166,0.15)" : "none" }}>
                         {d}
                       </div>
                       {hasNotes && (
                         <div style={{ marginTop: 4, display: "flex", flexDirection: "column", gap: 2 }}>
                           {byDate[k].slice(0, 3).map((n, ni) => (
-                            <div key={ni} style={{ height: 4, borderRadius: 2, background: isPast ? "#e74c3c" : "#4f8ef7", opacity: 0.85 }} />
+                            <div key={ni} style={{ height: 4, borderRadius: 2, background: isPast ? "#e74c3c" : "#14B8A6", opacity: 0.85 }} />
                           ))}
                           {byDate[k].length > 3 && (
                             <div style={{ fontSize: 9, color: theme.textFaint }}>+{byDate[k].length - 3}</div>
@@ -192,7 +192,7 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
                 </div>
                 {selectedNotes.length === 0
                   ? <div style={{ color: theme.textFaint, fontSize: 13 }}>No follow-ups on this date</div>
-                  : selectedNotes.map(n => <NoteCard key={n.id} n={n} color={selected < todayKey ? "#e74c3c" : "#4f8ef7"} />)
+                  : selectedNotes.map(n => <NoteCard key={n.id} n={n} color={selected < todayKey ? "#e74c3c" : "#14B8A6"} />)
                 }
               </div>
             )}
@@ -201,7 +201,7 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
           {/* ── Upcoming sidebar ── */}
           <div>
             <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 14, overflow: "hidden" }}>
-              <div style={{ padding: "14px 18px", borderBottom: `1px solid ${theme.border}`, fontSize: 11, letterSpacing: 2, color: "#4f8ef7", textTransform: "uppercase", fontWeight: 700 }}>
+              <div style={{ padding: "14px 18px", borderBottom: `1px solid ${theme.border}`, fontSize: 11, letterSpacing: 2, color: "#14B8A6", textTransform: "uppercase", fontWeight: 700 }}>
                 Upcoming Follow-Ups
               </div>
               <div style={{ padding: 14, maxHeight: isMobile ? "none" : 600, overflowY: "auto" }}>
@@ -215,12 +215,12 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
                     const dueDate = toLocalDate(n.follow_up_date);
                     const diffDays = Math.round((dueDate - today) / 86400000);
                     const dueLabel = diffDays === 0 ? "Today" : diffDays === 1 ? "Tomorrow" : `In ${diffDays} days`;
-                    const dueColor = diffDays === 0 ? "#f0a500" : diffDays < 0 ? "#e74c3c" : "#4f8ef7";
+                    const dueColor = diffDays === 0 ? "#f0a500" : diffDays < 0 ? "#e74c3c" : "#14B8A6";
                     const isBusy = busyId === n.id;
                     return (
                       <div key={n.id}
                         style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 10, padding: "12px 14px", marginBottom: 8 }}
-                        onMouseEnter={e => e.currentTarget.style.borderColor = "#4f8ef7"}
+                        onMouseEnter={e => e.currentTarget.style.borderColor = "#14B8A6"}
                         onMouseLeave={e => e.currentTarget.style.borderColor = theme.border}>
                         <div onClick={() => { setYear(dueDate.getFullYear()); setMonth(dueDate.getMonth()); setSelected(n.follow_up_date); }}
                           style={{ cursor: "pointer" }}>
@@ -245,9 +245,9 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
             {/* Stats */}
             <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
               {[
-                { label: "Total Notes",    value: notes.length,       color: "#4f8ef7" },
+                { label: "Total Notes",    value: notes.length,       color: "#14B8A6" },
                 { label: "With Follow-Up", value: notes.filter(n => n.follow_up_date).length, color: "#2ecc71" },
-                { label: "Upcoming",       value: upcoming.length,    color: "#4f8ef7" },
+                { label: "Upcoming",       value: upcoming.length,    color: "#14B8A6" },
                 { label: "Overdue",        value: overdue.length,     color: overdue.length > 0 ? "#e74c3c" : "#2ecc71" },
                 { label: "Completed",      value: completed.length,   color: "#2ecc71" },
               ].map(({ label, value, color }) => (

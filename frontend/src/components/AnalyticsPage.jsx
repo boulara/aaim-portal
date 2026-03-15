@@ -34,8 +34,8 @@ function DonutChart({ data, size = 180, label, sublabel }) {
           onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
           transform={hovered === i ? `translate(${Math.cos((segments[i] ? (segments[i].sa + (segments[i].sa + (data[i].value / total) * 2 * Math.PI)) / 2 : 0)) * 4}, ${Math.sin(0) * 4})` : ""} />
       ))}
-      <text x={cx} y={cy - 8} textAnchor="middle" fontSize={hovered !== null ? 11 : 20} fontWeight={700} fill={hovered !== null ? "#888" : (data[hovered]?.color || "#4f8ef7")} fontFamily="Georgia, serif">{displayLabel}</text>
-      <text x={cx} y={cy + 10} textAnchor="middle" fontSize={10} fill="#888" fontFamily="Georgia, serif">{displaySub}</text>
+      <text x={cx} y={cy - 8} textAnchor="middle" fontSize={hovered !== null ? 11 : 20} fontWeight={700} fill={hovered !== null ? "#888" : (data[hovered]?.color || "#14B8A6")} fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">{displayLabel}</text>
+      <text x={cx} y={cy + 10} textAnchor="middle" fontSize={10} fill="#888" fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">{displaySub}</text>
     </svg>
   );
 }
@@ -58,8 +58,8 @@ function ArcGauge({ value, max, color, size = 140 }) {
     <svg width={size} height={size * 0.7} style={{ overflow: "visible" }}>
       <path d={bgPath} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={14} strokeLinecap="round" />
       <path d={fgPath} fill="none" stroke={color} strokeWidth={14} strokeLinecap="round" style={{ filter: `drop-shadow(0 0 6px ${color}88)` }} />
-      <text x={cx} y={cy - 10} textAnchor="middle" fontSize={26} fontWeight={700} fill={color} fontFamily="Georgia, serif">{value}d</text>
-      <text x={cx} y={cy + 8} textAnchor="middle" fontSize={10} fill="#888" fontFamily="Georgia, serif">avg aging</text>
+      <text x={cx} y={cy - 10} textAnchor="middle" fontSize={26} fontWeight={700} fill={color} fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">{value}d</text>
+      <text x={cx} y={cy + 8} textAnchor="middle" fontSize={10} fill="#888" fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">avg aging</text>
     </svg>
   );
 }
@@ -171,14 +171,14 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
   const channelMap = {};
   patients.forEach(p => { if (p.primary_channel) channelMap[p.primary_channel] = (channelMap[p.primary_channel] || 0) + 1; });
   const channels = Object.entries(channelMap).sort((a, b) => b[1] - a[1]);
-  const CHAN_COLORS = ["#4f8ef7", "#2ecc71", "#f0a500", "#e056b0", "#a78bfa", "#fb923c", "#2dd4bf", "#f87171"];
+  const CHAN_COLORS = ["#14B8A6", "#2ecc71", "#f0a500", "#e056b0", "#a78bfa", "#fb923c", "#2dd4bf", "#f87171"];
   const channelDonut = channels.map(([label, value], i) => ({ label, value, color: CHAN_COLORS[i % CHAN_COLORS.length] }));
 
   // ── Region
   const regionMap = {};
   patients.forEach(p => { if (p.region) regionMap[p.region] = (regionMap[p.region] || 0) + 1; });
   const regions = Object.entries(regionMap).sort((a, b) => b[1] - a[1]);
-  const REG_COLORS = ["#4f8ef7", "#34d399", "#a78bfa", "#f472b6", "#fb923c", "#2dd4bf"];
+  const REG_COLORS = ["#14B8A6", "#34d399", "#a78bfa", "#f472b6", "#fb923c", "#2dd4bf"];
   const regionDonut = regions.map(([label, value], i) => ({ label, value, color: REG_COLORS[i % REG_COLORS.length] }));
 
   // ── SP Partner with avg aging
@@ -197,13 +197,13 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
   const payerMap = {};
   patients.forEach(p => { if (p.primary_payer) payerMap[p.primary_payer] = (payerMap[p.primary_payer] || 0) + 1; });
   const payers = Object.entries(payerMap).sort((a, b) => b[1] - a[1]).slice(0, 10);
-  const PAYER_COLORS = ["#4f8ef7", "#34d399", "#f0a500", "#e056b0", "#a78bfa", "#fb923c", "#2dd4bf", "#f87171", "#818cf8", "#6b7280"];
+  const PAYER_COLORS = ["#14B8A6", "#34d399", "#f0a500", "#e056b0", "#a78bfa", "#fb923c", "#2dd4bf", "#f87171", "#818cf8", "#6b7280"];
 
   // ── Language
   const langMap = {};
   patients.forEach(p => { if (p.language) langMap[p.language] = (langMap[p.language] || 0) + 1; });
   const languages = Object.entries(langMap).sort((a, b) => b[1] - a[1]);
-  const LANG_COLORS = ["#4f8ef7", "#f0a500", "#e056b0", "#34d399", "#a78bfa", "#fb923c"];
+  const LANG_COLORS = ["#14B8A6", "#f0a500", "#e056b0", "#34d399", "#a78bfa", "#fb923c"];
   const langDonut = languages.map(([label, value], i) => ({ label, value, color: LANG_COLORS[i % LANG_COLORS.length] }));
 
   // ── Program Type
@@ -267,7 +267,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
       {/* ── KPI HERO ROW ── */}
       <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(6, 1fr)", gap: 10, marginBottom: 20 }}>
         {[
-          { label: "Total Cases",     value: total,                                                     color: "#4f8ef7", sub: `${regions.length} regions` },
+          { label: "Total Cases",     value: total,                                                     color: "#14B8A6", sub: `${regions.length} regions` },
           { label: "Active Bridge",   value: activeBridge,                                              color: "#2ecc71", sub: `${Math.round((activeBridge/total)*100)}% of cases` },
           { label: "Avg Aging",       value: `${avgAging}d`,                                            color: agingColor(avgAging), sub: `max ${maxAging}d` },
           { label: "Critical (20+d)", value: agingRed,                                                  color: "#e74c3c", sub: `${Math.round((agingRed/total)*100)}% of cases` },
@@ -276,7 +276,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
         ].map(({ label, value, color, sub }) => (
           <div key={label} style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderLeft: `4px solid ${color}`, borderRadius: 12, padding: isMobile ? "14px 12px" : "16px 18px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", right: -10, top: -10, width: 60, height: 60, borderRadius: "50%", background: color + "10" }} />
-            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, color, fontFamily: "'Georgia', serif" }}>{value}</div>
+            <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, color, fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif" }}>{value}</div>
             <div style={{ fontSize: 11, color: theme.textMuted, marginTop: 3, letterSpacing: 0.3 }}>{label}</div>
             <div style={{ fontSize: 10, color: theme.textFaint, marginTop: 2 }}>{sub}</div>
           </div>
@@ -410,7 +410,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
       </Card>
 
       {/* ── SP PARTNER ANALYSIS ── */}
-      <Card title="Specialty Pharmacy Performance" accent="#4f8ef7" style={{ marginBottom: 16 }}>
+      <Card title="Specialty Pharmacy Performance" accent="#14B8A6" style={{ marginBottom: 16 }}>
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : `repeat(${spPartners.length}, 1fr)`, gap: 12 }}>
           {spPartners.map((sp, i) => {
             const c = CHAN_COLORS[i % CHAN_COLORS.length];
@@ -459,7 +459,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
         </Card>
 
         {/* Region donut */}
-        <Card title="Cases by Region" accent="#4f8ef7">
+        <Card title="Cases by Region" accent="#14B8A6">
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
             <DonutChart data={regionDonut} size={isMobile ? 160 : 180} label={regions.length} sublabel="regions" />
             <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 4 }}>
@@ -510,7 +510,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
         <Card title="Program Type Distribution" accent="#fb923c">
           <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
             {programs.map(([prog, count], i) => {
-              const colors = ["#4f8ef7", "#f0a500", "#94a3b8"];
+              const colors = ["#14B8A6", "#f0a500", "#94a3b8"];
               const c = colors[i] || "#888";
               return (
                 <div key={prog} style={{ flex: 1, background: c + "14", border: `1px solid ${c}30`, borderRadius: 12, padding: "14px 12px", textAlign: "center" }}>
@@ -522,12 +522,12 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
             })}
           </div>
           {avgDaysToFirst !== null && (
-            <div style={{ padding: "12px 14px", background: "#4f8ef712", border: "1px solid #4f8ef722", borderRadius: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ padding: "12px 14px", background: "#14B8A612", border: "1px solid #14B8A622", borderRadius: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <div style={{ fontSize: 11, color: theme.textFaint }}>Avg days referral → first ship</div>
                 <div style={{ fontSize: 10, color: theme.textFaint, marginTop: 2 }}>based on {daysToFirst.length} cases</div>
               </div>
-              <div style={{ fontSize: 26, fontWeight: 700, color: "#4f8ef7" }}>{avgDaysToFirst}d</div>
+              <div style={{ fontSize: 26, fontWeight: 700, color: "#14B8A6" }}>{avgDaysToFirst}d</div>
             </div>
           )}
         </Card>
@@ -537,7 +537,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
           <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
             {[
               { label: "Written",    value: written,    color: "#2ecc71" },
-              { label: "Electronic", value: electronic, color: "#4f8ef7" },
+              { label: "Electronic", value: electronic, color: "#14B8A6" },
               { label: "Missing",    value: noConsent,  color: "#e74c3c" },
             ].map(({ label, value, color }) => (
               <div key={label} style={{ flex: 1, background: color + "14", border: `1px solid ${color}30`, borderRadius: 12, padding: "14px 12px", textAlign: "center" }}>
@@ -553,7 +553,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
                 <circle cx={28} cy={28} r={22} fill="none" stroke={theme.isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"} strokeWidth={6} />
                 <circle cx={28} cy={28} r={22} fill="none" stroke={consentRate >= 80 ? "#2ecc71" : "#e74c3c"} strokeWidth={6}
                   strokeDasharray={`${(consentRate / 100) * 138.2} 138.2`} strokeLinecap="round" transform="rotate(-90 28 28)" />
-                <text x={28} y={33} textAnchor="middle" fontSize={13} fontWeight={700} fill={consentRate >= 80 ? "#2ecc71" : "#e74c3c"} fontFamily="Georgia, serif">{consentRate}%</text>
+                <text x={28} y={33} textAnchor="middle" fontSize={13} fontWeight={700} fill={consentRate >= 80 ? "#2ecc71" : "#e74c3c"} fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">{consentRate}%</text>
               </svg>
             </div>
             <div>
@@ -572,7 +572,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
               {[
                 { label: "Pending",      value: pending,      color: "#f0a500" },
-                { label: "Replied",      value: replied,      color: "#4f8ef7" },
+                { label: "Replied",      value: replied,      color: "#14B8A6" },
                 { label: "Acknowledged", value: acknowledged, color: "#2ecc71" },
               ].map(({ label, value, color }) => (
                 <div key={label} style={{ flex: 1, background: color + "14", border: `1px solid ${color}30`, borderRadius: 10, padding: "10px 8px", textAlign: "center" }}>
@@ -588,7 +588,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
                   <circle cx={32} cy={32} r={26} fill="none" stroke={theme.isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"} strokeWidth={7} />
                   <circle cx={32} cy={32} r={26} fill="none" stroke={resolutionRate >= 60 ? "#2ecc71" : "#f0a500"} strokeWidth={7}
                     strokeDasharray={`${(resolutionRate / 100) * 163.4} 163.4`} strokeLinecap="round" transform="rotate(-90 32 32)" />
-                  <text x={32} y={37} textAnchor="middle" fontSize={14} fontWeight={700} fill={resolutionRate >= 60 ? "#2ecc71" : "#f0a500"} fontFamily="Georgia, serif">{resolutionRate}%</text>
+                  <text x={32} y={37} textAnchor="middle" fontSize={14} fontWeight={700} fill={resolutionRate >= 60 ? "#2ecc71" : "#f0a500"} fontFamily="-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif">{resolutionRate}%</text>
                 </svg>
               </div>
               <div>
@@ -607,7 +607,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser }) 
                   <span style={{ fontSize: 12, color: theme.text, fontWeight: 600 }}>{team}</span>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                     {stats.pending > 0 && <Pill label={`${stats.pending} pending`} color="#f0a500" />}
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#4f8ef7" }}>{stats.received}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#14B8A6" }}>{stats.received}</span>
                   </div>
                 </div>
               ))}
