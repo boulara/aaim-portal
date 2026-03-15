@@ -106,10 +106,10 @@ export default function LoginScreen({ onLogin }) {
             <div style={{ fontSize: 10, color: "#334155", marginBottom: 10, letterSpacing: 2, textTransform: "uppercase" }}>Demo — Click to Sign In</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {[
-                ["Home Office", "sarah.johnson",  "pass123"],
-                ["NCM",         "lisa.torres",    "pass123"],
-                ["SP",          "amy.patel",      "pass123"],
-                ["Sales",       "diana.reyes",    "pass123"],
+                ["Home Office", "kate.morrison",  "pass123"],
+                ["NCM",         "morgan.hayes",   "pass123"],
+                ["SP",          "jessica.ford",   "pass123"],
+                ["Sales",       "paula.ortega",   "pass123"],
                 ["Home Office", "nick.milero",    "pass123"],
                 ["Home Office", "rick.boulanger", "123"],
               ].map(([team, u, pass]) => {
