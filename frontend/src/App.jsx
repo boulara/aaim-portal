@@ -340,7 +340,7 @@ function AppInner() {
         <div style={{ padding: isMobile ? "16px 12px 80px" : "28px 32px" }}>
 
           {/* ── SETTINGS ── */}
-          {view === "settings" && <SettingsPage isDark={isDark} onToggleTheme={toggleTheme} />}
+          {view === "settings" && <SettingsPage isDark={isDark} onToggleTheme={toggleTheme} currentUser={user} />}
 
           {/* ── ANALYTICS ── */}
           {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}

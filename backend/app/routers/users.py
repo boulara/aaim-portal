@@ -1,8 +1,8 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import User
+from ..models import User, AuditLog
 from ..schemas import UserOut, LoginRequest, UserCreate, UserUpdate, BulkResult
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ def list_users(db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=UserOut)
-def login(body: LoginRequest, db: Session = Depends(get_db)):
+def login(body: LoginRequest, request: Request, db: Session = Depends(get_db)):
     user = db.query(User).filter(
         User.username == body.username.strip().lower(),
         User.password == body.password,
@@ -24,7 +24,12 @@ def login(body: LoginRequest, db: Session = Depends(get_db)):
     if not user:
         logger.warning("Failed login attempt for username '%s'", body.username)
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    logger.info("User '%s' logged in (%s)", user.username, user.team)
+    # Record audit entry
+    ip = request.headers.get("x-forwarded-for", "").split(",")[0].strip() or (request.client.host if request.client else None)
+    ua = request.headers.get("user-agent", "")[:500]
+    db.add(AuditLog(user_id=user.id, username=user.username, name=user.name, team=user.team, ip_address=ip, user_agent=ua))
+    db.commit()
+    logger.info("User '%s' logged in (%s) from %s", user.username, user.team, ip)
     return user
 
 

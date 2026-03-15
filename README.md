@@ -71,6 +71,12 @@ Send each user their `username` and `password`. They log in at your Railway URL.
 
 ## Feature Log
 
+### v1.7.0 — 2026-03-15
+- **Admin Panel** — New 🔒 Admin tab in Settings, visible only to users with `role = admin`.
+  - **Login Audit Log** — Every successful login records the user, team, timestamp, IP address, and browser user-agent. Displayed in a sortable table (most recent first, last 500 events).
+  - **Database Table Viewer** — Browse raw rows from all six database tables: `patients`, `users`, `notifications`, `notification_replies`, `case_notes`, `audit_logs`. Live filter, sticky header, up to 2000 rows per query.
+- **API: Admin endpoints** — `GET /api/admin/audit-logs` and `GET /api/admin/tables/{table}`.
+
 ### v1.6.4 — 2026-03-15
 - **Bug fix: logos not loading** — FastAPI was only serving `/assets/` as static files; `/img/*.svg` requests were falling through to the SPA catch-all and returning `index.html`. Fixed by mounting `/img` as a dedicated static directory. Affects all brand logos on login page and nav bar.
 
@@ -205,6 +211,8 @@ Or click any user card on the login screen for one-click login.
 | `POST` | `/api/notes/` | Create case note |
 | `PATCH` | `/api/notes/{id}` | Update note |
 | `DELETE` | `/api/notes/{id}` | Delete note |
+| `GET` | `/api/admin/audit-logs` | Last 500 login events (admin UI) |
+| `GET` | `/api/admin/tables/{table}` | Raw rows from any DB table; tables: `patients`, `users`, `notifications`, `notification_replies`, `case_notes`, `audit_logs` |
 
 ---
 

@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from sqlalchemy import text
 from .database import engine, Base
-from .routers import patients, notifications, users, notes
+from .routers import patients, notifications, users, notes, admin
 from . import seed as seeder
 
 # ── Logging ───────────────────────────────────────────────────────────────────
@@ -42,6 +42,16 @@ def _run_migrations():
         return
     migrations = [
         "ALTER TABLE case_notes ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP",
+        """CREATE TABLE IF NOT EXISTS audit_logs (
+            id SERIAL PRIMARY KEY,
+            user_id VARCHAR NOT NULL,
+            username VARCHAR NOT NULL,
+            name VARCHAR NOT NULL,
+            team VARCHAR NOT NULL,
+            ip_address VARCHAR,
+            user_agent VARCHAR,
+            logged_in_at TIMESTAMP DEFAULT NOW()
+        )""",
     ]
     with engine.connect() as conn:
         for sql in migrations:
@@ -71,6 +81,7 @@ app.include_router(patients.router)
 app.include_router(notifications.router)
 app.include_router(users.router)
 app.include_router(notes.router)
+app.include_router(admin.router)
 
 # ── Serve built React frontend ────────────────────────────────────────────────
 static_dir = os.path.join(os.path.dirname(__file__), "..", "static")

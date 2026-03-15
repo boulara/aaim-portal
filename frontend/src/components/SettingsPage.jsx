@@ -942,8 +942,134 @@ function ImportTab() {
   );
 }
 
+// ── Admin Tab ─────────────────────────────────────────────────────────────────
+const ADMIN_TABLES = ["patients", "users", "notifications", "notification_replies", "case_notes", "audit_logs"];
+
+function AdminTab() {
+  const theme = useTheme();
+  const [auditLogs, setAuditLogs]     = useState([]);
+  const [auditLoading, setAuditLoading] = useState(true);
+  const [tableData, setTableData]     = useState([]);
+  const [tableLoading, setTableLoading] = useState(false);
+  const [selectedTable, setSelectedTable] = useState("patients");
+  const [tableSearch, setTableSearch] = useState("");
+
+  useEffect(() => {
+    api.getAuditLogs().then(d => { setAuditLogs(d); setAuditLoading(false); }).catch(() => setAuditLoading(false));
+  }, []);
+
+  useEffect(() => {
+    setTableLoading(true);
+    setTableSearch("");
+    api.getAdminTable(selectedTable).then(d => { setTableData(d); setTableLoading(false); }).catch(() => setTableLoading(false));
+  }, [selectedTable]);
+
+  const cols = tableData.length > 0 ? Object.keys(tableData[0]) : [];
+  const filtered = tableSearch
+    ? tableData.filter(row => Object.values(row).some(v => String(v ?? "").toLowerCase().includes(tableSearch.toLowerCase())))
+    : tableData;
+
+  const cellStyle = { padding: "10px 12px", fontSize: 11, color: theme.textMuted, borderBottom: `1px solid ${theme.border}`, whiteSpace: "nowrap", maxWidth: 220, overflow: "hidden", textOverflow: "ellipsis" };
+  const headStyle = { padding: "10px 12px", fontSize: 10, letterSpacing: 1.2, color: theme.textFaint, textTransform: "uppercase", fontWeight: 700, background: theme.surfaceBg2, borderBottom: `1px solid ${theme.border}`, whiteSpace: "nowrap" };
+
+  return (
+    <div>
+      {/* ── Login Audit Log ── */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ fontSize: 15, fontWeight: 700, color: theme.text, marginBottom: 4 }}>🔐 Login Audit Log</div>
+        <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 16 }}>
+          Every successful login — user, time, IP address, and browser.
+        </div>
+        <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 12, overflow: "auto" }}>
+          {auditLoading ? (
+            <div style={{ padding: 32, textAlign: "center", color: theme.textFaint, fontSize: 13 }}>Loading…</div>
+          ) : auditLogs.length === 0 ? (
+            <div style={{ padding: 32, textAlign: "center", color: theme.textFaint, fontSize: 13 }}>No logins recorded yet. Logins are captured from now on.</div>
+          ) : (
+            <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 700 }}>
+              <thead>
+                <tr>
+                  {["#", "User", "Username", "Team", "Logged In At", "IP Address", "Browser / Agent"].map(h => (
+                    <th key={h} style={headStyle}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {auditLogs.map((l, i) => (
+                  <tr key={l.id}>
+                    <td style={{ ...cellStyle, color: theme.textFaint }}>{i + 1}</td>
+                    <td style={{ ...cellStyle, fontWeight: 600, color: theme.text }}>{l.name}</td>
+                    <td style={{ ...cellStyle }}>{l.username}</td>
+                    <td style={{ ...cellStyle }}>
+                      <span style={{ padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, background: "rgba(79,142,247,0.12)", color: "#4f8ef7" }}>{l.team}</span>
+                    </td>
+                    <td style={{ ...cellStyle }}>{l.logged_in_at ? new Date(l.logged_in_at).toLocaleString() : "—"}</td>
+                    <td style={{ ...cellStyle, fontFamily: "monospace", fontSize: 11 }}>{l.ip_address || "—"}</td>
+                    <td style={{ ...cellStyle, maxWidth: 280 }} title={l.user_agent}>{l.user_agent || "—"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div style={{ fontSize: 11, color: theme.textFaint, marginTop: 6 }}>Showing last {auditLogs.length} login events (max 500)</div>
+      </div>
+
+      {/* ── Database Table Viewer ── */}
+      <div>
+        <div style={{ fontSize: 15, fontWeight: 700, color: theme.text, marginBottom: 4 }}>🗄 Database Table Viewer</div>
+        <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 16 }}>
+          Inspect raw rows from any database table. Read-only.
+        </div>
+
+        {/* Table selector + search */}
+        <div style={{ display: "flex", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 0, background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 8, overflow: "hidden" }}>
+            {ADMIN_TABLES.map(t => (
+              <button key={t} onClick={() => setSelectedTable(t)}
+                style={{ padding: "8px 14px", background: selectedTable === t ? "#4f8ef722" : "none", border: "none", borderRight: `1px solid ${theme.border}`, color: selectedTable === t ? "#4f8ef7" : theme.textMuted, fontSize: 12, fontWeight: selectedTable === t ? 700 : 500, cursor: "pointer" }}>
+                {t.replace("_", " ")}
+              </button>
+            ))}
+          </div>
+          <input value={tableSearch} onChange={e => setTableSearch(e.target.value)} placeholder="Filter rows…"
+            style={{ flex: "1 1 180px", padding: "8px 12px", background: theme.inputBg, border: `1px solid ${theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none" }} />
+        </div>
+
+        <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 12, overflow: "auto", maxHeight: 480 }}>
+          {tableLoading ? (
+            <div style={{ padding: 32, textAlign: "center", color: theme.textFaint, fontSize: 13 }}>Loading…</div>
+          ) : filtered.length === 0 ? (
+            <div style={{ padding: 32, textAlign: "center", color: theme.textFaint, fontSize: 13 }}>No rows{tableSearch ? " match your filter" : " in this table"}.</div>
+          ) : (
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead style={{ position: "sticky", top: 0, zIndex: 2 }}>
+                <tr>{cols.map(c => <th key={c} style={headStyle}>{c}</th>)}</tr>
+              </thead>
+              <tbody>
+                {filtered.map((row, i) => (
+                  <tr key={i} onMouseEnter={e => e.currentTarget.style.background = theme.rowHover} onMouseLeave={e => e.currentTarget.style.background = ""}>
+                    {cols.map(c => (
+                      <td key={c} style={cellStyle} title={String(row[c] ?? "")}>
+                        {row[c] === null || row[c] === undefined ? <span style={{ color: theme.textFaint, fontStyle: "italic" }}>null</span> : String(row[c])}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <div style={{ fontSize: 11, color: theme.textFaint, marginTop: 6 }}>
+          {filtered.length} of {tableData.length} rows · table: <code style={{ fontFamily: "monospace" }}>{selectedTable}</code> · max 2000 rows per query
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Main Settings page ───────────────────────────────────────────────────────
-export default function SettingsPage({ isDark, onToggleTheme }) {
+export default function SettingsPage({ isDark, onToggleTheme, currentUser }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
 
@@ -1008,6 +1134,7 @@ export default function SettingsPage({ isDark, onToggleTheme }) {
     { id: "users",      label: "👥  Users" },
     { id: "patients",   label: "🗂  Patients" },
     { id: "import",     label: "📥  Import" },
+    ...(currentUser?.role === "admin" ? [{ id: "admin", label: "🔒  Admin" }] : []),
   ];
 
   const SectionCard = ({ children }) => (
@@ -1017,7 +1144,7 @@ export default function SettingsPage({ isDark, onToggleTheme }) {
   );
 
   return (
-    <div style={{ maxWidth: activeTab === "about" ? "none" : 860, margin: "0 auto" }}>
+    <div style={{ maxWidth: activeTab === "about" || activeTab === "admin" ? "none" : 860, margin: "0 auto" }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: theme.text, marginBottom: 20 }}>Settings</div>
 
       {/* Tab bar */}
@@ -1201,6 +1328,9 @@ export default function SettingsPage({ isDark, onToggleTheme }) {
 
       {/* ── IMPORT ── */}
       {activeTab === "import" && <ImportTab />}
+
+      {/* ── ADMIN ── */}
+      {activeTab === "admin" && <AdminTab />}
 
       {editingUser   !== null && <UserModal    user={editingUser}       onSave={handleUserSave}    onClose={() => setEditingUser(null)} />}
       {editingPatient !== null && <PatientModal patient={editingPatient} onSave={handlePatientSave} onClose={() => setEditingPatient(null)} />}

@@ -47,6 +47,10 @@ export const api = {
   // Bulk import
   bulkCreateUsers:    (rows)               => req("POST", "/users/bulk", rows),
 
+  // Admin
+  getAuditLogs:       ()                   => req("GET", "/admin/audit-logs"),
+  getAdminTable:      (name)               => req("GET", `/admin/tables/${name}`),
+
   // Case notes
   getNotes:           (patientId, userId)  => {
     const p = new URLSearchParams();
