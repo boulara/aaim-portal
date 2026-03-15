@@ -70,6 +70,37 @@ def run():
                 db.commit()
                 logger.info("Migrated %d ISS users → Sales", len(iss_users))
 
+            # Scrub patient data: update prescriber names and SP partner names by ID
+            PATIENT_UPDATES = {p["id"]: {"prescriber": p["prescriber"], "latest_sp_partner": p["latest_sp_partner"], "last_comment": p["last_comment"]} for p in PATIENTS}
+            for patient in db.query(Patient).all():
+                if patient.id in PATIENT_UPDATES:
+                    upd = PATIENT_UPDATES[patient.id]
+                    if patient.prescriber != upd["prescriber"] or patient.latest_sp_partner != upd["latest_sp_partner"]:
+                        patient.prescriber         = upd["prescriber"]
+                        patient.latest_sp_partner  = upd["latest_sp_partner"]
+                        patient.last_comment       = upd["last_comment"]
+                        logger.info("Updated patient id=%s → %s", patient.id, upd["prescriber"])
+            db.commit()
+
+            # Scrub user data: rename legacy usernames to fictional equivalents
+            USER_RENAMES = {
+                "sarah.johnson": {"username": "kate.morrison",  "name": "Kate Morrison"},
+                "mike.chen":     {"username": "brandon.scott",  "name": "Brandon Scott"},
+                "lisa.torres":   {"username": "morgan.hayes",   "name": "Morgan Hayes"},
+                "james.wright":  {"username": "derek.collins",  "name": "Derek Collins"},
+                "amy.patel":     {"username": "jessica.ford",   "name": "Jessica Ford"},
+                "robert.kim":    {"username": "tyler.nash",     "name": "Tyler Nash"},
+                "diana.reyes":   {"username": "paula.ortega",   "name": "Paula Ortega"},
+                "carlos.vega":   {"username": "marcus.bell",    "name": "Marcus Bell"},
+            }
+            for old_username, new_vals in USER_RENAMES.items():
+                u = db.query(User).filter(User.username == old_username).first()
+                if u:
+                    u.username = new_vals["username"]
+                    u.name     = new_vals["name"]
+                    logger.info("Renamed user %s → %s", old_username, new_vals["username"])
+            db.commit()
+
             # Ensure superadmin accounts exist
             superadmin_usernames = [s["username"] for s in SUPERADMINS]
             for sa in SUPERADMINS:
