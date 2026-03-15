@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../ThemeContext";
 import { useIsMobile } from "../useIsMobile";
-import { TEAM_COLORS } from "../constants";
+import { TEAM_COLORS, TIMEZONES, formatTs } from "../constants";
 import { api } from "../api";
 
 const TEAMS = ["Home Office", "NCM", "SP", "Sales"];
@@ -1003,7 +1003,7 @@ function AdminTab() {
                     <td style={{ ...cellStyle }}>
                       <span style={{ padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, background: "rgba(20,184,166,0.12)", color: "#14B8A6" }}>{l.team}</span>
                     </td>
-                    <td style={{ ...cellStyle }}>{l.logged_in_at ? new Date(l.logged_in_at).toLocaleString() : "—"}</td>
+                    <td style={{ ...cellStyle }}>{formatTs(l.logged_in_at)}</td>
                     <td style={{ ...cellStyle, fontFamily: "monospace", fontSize: 11 }}>{l.ip_address || "—"}</td>
                     <td style={{ ...cellStyle, maxWidth: 280 }} title={l.user_agent}>{l.user_agent || "—"}</td>
                   </tr>
@@ -1069,7 +1069,7 @@ function AdminTab() {
 }
 
 // ── Main Settings page ───────────────────────────────────────────────────────
-export default function SettingsPage({ themeName, onSetTheme, currentUser }) {
+export default function SettingsPage({ themeName, onSetTheme, timezone, onSetTimezone, currentUser }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
 
@@ -1190,6 +1190,23 @@ export default function SettingsPage({ themeName, onSetTheme, currentUser }) {
                   </button>
                 );
               })}
+            </div>
+
+            <div style={{ marginTop: 28, paddingTop: 24, borderTop: `1px solid ${theme.border}` }}>
+              <div style={{ fontSize: 15, fontWeight: 700, color: theme.text, marginBottom: 6 }}>Time Zone</div>
+              <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 16 }}>All timestamps across the app will display in the selected zone</div>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                {TIMEZONES.map(tz => {
+                  const isSelected = timezone === tz.id;
+                  return (
+                    <button key={tz.id} onClick={() => onSetTimezone(tz.id)}
+                      style={{ padding: "10px 18px", background: isSelected ? "rgba(20,184,166,0.12)" : theme.surfaceBg2, border: `2px solid ${isSelected ? "#14B8A6" : theme.border}`, borderRadius: 10, cursor: "pointer", textAlign: "center" }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: isSelected ? "#14B8A6" : theme.text }}>{tz.abbr}</div>
+                      <div style={{ fontSize: 11, color: theme.textMuted, marginTop: 2 }}>{tz.label}</div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </SectionCard>

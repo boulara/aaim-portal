@@ -57,6 +57,28 @@ export function initials(name) {
   return (name || "?").split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 }
 
+export const TIMEZONES = [
+  { id: "America/New_York",    label: "Eastern (ET)",  abbr: "ET" },
+  { id: "America/Chicago",     label: "Central (CT)",  abbr: "CT" },
+  { id: "America/Denver",      label: "Mountain (MT)", abbr: "MT" },
+  { id: "America/Los_Angeles", label: "Pacific (PT)",  abbr: "PT" },
+  { id: "UTC",                 label: "UTC",           abbr: "UTC" },
+];
+
+export function getTz() {
+  return localStorage.getItem("conduit_tz") || "America/New_York";
+}
+
+export function formatTs(iso, opts = {}) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("en-US", {
+    timeZone: getTz(),
+    month: "short", day: "numeric",
+    hour: "numeric", minute: "2-digit",
+    ...opts,
+  });
+}
+
 export function formatDate(d) {
   if (!d) return "—";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TEAM_COLORS, initials } from "../constants";
+import { TEAM_COLORS, initials, formatTs } from "../constants";
 import { TeamBadge } from "./Shared";
 import { useTheme } from "../ThemeContext";
 import { api } from "../api";
@@ -102,7 +102,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 4 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: entryColor }}>{entry.from_user}</span>
                   <span style={{ fontSize: 10, color: theme.textFaint }}>
-                    {new Date(entry.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+                    {formatTs(entry.created_at)}
                   </span>
                   {entry.isOriginal && <span style={{ fontSize: 10, color: theme.textFaintest, fontStyle: "italic" }}>original</span>}
                 </div>
@@ -118,7 +118,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
       {/* Acknowledged receipt */}
       {n.status === "acknowledged" && n.acknowledged_by && (
         <div style={{ padding: "8px 18px", borderTop: "1px solid rgba(46,204,113,0.15)", background: "rgba(46,204,113,0.06)", fontSize: 11, color: "rgba(46,204,113,0.7)" }}>
-          ✓ Acknowledged by {n.acknowledged_by} · {new Date(n.acknowledged_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
+          ✓ Acknowledged by {n.acknowledged_by} · {formatTs(n.acknowledged_at)}
         </div>
       )}
 

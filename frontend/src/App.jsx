@@ -70,6 +70,7 @@ function AppInner() {
     try { return JSON.parse(localStorage.getItem("conduit_user")); } catch { return null; }
   });
   const [themeName, setThemeName] = useState(() => localStorage.getItem("conduit_theme") || "conduit");
+  const [timezone, setTimezoneState] = useState(() => localStorage.getItem("conduit_tz") || "America/New_York");
   const _themeMap = { conduit, dark, light };
   const theme    = _themeMap[themeName] || conduit;
   const isDark   = theme.isDark;
@@ -78,6 +79,11 @@ function AppInner() {
   const setTheme = (name) => {
     setThemeName(name);
     localStorage.setItem("conduit_theme", name);
+  };
+
+  const setTimezone = (tz) => {
+    setTimezoneState(tz);
+    localStorage.setItem("conduit_tz", tz);
   };
 
   const [patients, setPatients]               = useState([]);
@@ -343,7 +349,7 @@ function AppInner() {
           {view === "admin-portal" && <AdminPortal currentUser={user} />}
 
           {/* ── SETTINGS ── */}
-          {view === "settings" && <SettingsPage themeName={themeName} onSetTheme={setTheme} currentUser={user} />}
+          {view === "settings" && <SettingsPage themeName={themeName} onSetTheme={setTheme} timezone={timezone} onSetTimezone={setTimezone} currentUser={user} />}
 
           {/* ── ANALYTICS ── */}
           {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}
