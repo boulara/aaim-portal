@@ -6,6 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from sqlalchemy import text
 from .database import engine, Base
 from .routers import patients, notifications, users, notes, admin, reports
@@ -59,6 +60,8 @@ def _run_migrations():
             created_at TIMESTAMP DEFAULT NOW(),
             expires_at TIMESTAMP NOT NULL
         )""",
+        # Rename misspelled column hippa_consent → hipaa_consent
+        "ALTER TABLE patients RENAME COLUMN hippa_consent TO hipaa_consent",
     ]
     with engine.connect() as conn:
         for sql in migrations:
@@ -83,6 +86,22 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None)  # disable public API docs in prod
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Add HIPAA-relevant security headers to every response."""
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Frame-Options"]           = "DENY"
+        response.headers["X-Content-Type-Options"]    = "nosniff"
+        response.headers["Referrer-Policy"]            = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"]         = "camera=(), microphone=(), geolocation=()"
+        response.headers["Strict-Transport-Security"]  = "max-age=31536000; includeSubDomains"
+        response.headers["Cache-Control"]              = "no-store"
+        return response
+
+
+app.add_middleware(SecurityHeadersMiddleware)
 
 _allowed_origins = os.environ.get("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 app.add_middleware(

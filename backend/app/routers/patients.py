@@ -14,7 +14,7 @@ _UPDATABLE_PATIENT_FIELDS = {
     "prescriber", "referral_date", "latest_sp_partner", "latest_sp_status",
     "latest_sp_substatus", "aging_of_status", "last_comment",
     "latest_hub_sub_status", "primary_channel", "primary_payer", "primary_pbm",
-    "secondary_channel", "territory", "region", "language", "hippa_consent",
+    "secondary_channel", "territory", "region", "language", "hipaa_consent",
     "program_type", "first_ship_date", "last_ship_date",
 }
 
@@ -39,7 +39,15 @@ def list_patients(
         q = q.filter(Patient.region == region)
     if channel and channel != "All":
         q = q.filter(Patient.primary_channel == channel)
-    return q.all()
+    results = q.all()
+    logger.info(
+        "[PHI ACCESS] user=%s team=%s accessed patient list (n=%d search=%r region=%r channel=%r)",
+        _current.username, _current.team, len(results),
+        search or None,
+        region if region != "All" else None,
+        channel if channel != "All" else None,
+    )
+    return results
 
 
 @router.post("/bulk", response_model=BulkResult)
@@ -72,6 +80,7 @@ def get_patient(
     patient = db.query(Patient).filter(Patient.id == patient_id).first()
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
+    logger.info("[PHI ACCESS] user=%s team=%s accessed patient id=%s", _current.username, _current.team, patient_id)
     return patient
 
 

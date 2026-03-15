@@ -5,13 +5,16 @@ POST /api/reports/share   – authenticated; creates a 7-day share token
 GET  /api/reports/{token} – public; returns a data snapshot or 410 if expired
 """
 
+import logging
 from datetime import datetime, timedelta
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.orm import Session
 
 from ..database import get_db
 from ..models import SharedReport, Patient, Notification, NotificationReply
 from ..auth import get_current_user
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])
 
@@ -33,7 +36,7 @@ def create_share_link(
 
 
 @router.get("/{token}")
-def get_shared_report(token: str, response: Response, db: Session = Depends(get_db)):
+def get_shared_report(token: str, request: Request, response: Response, db: Session = Depends(get_db)):
     """Return a data snapshot for the given share token. Returns 410 if expired."""
     report = db.query(SharedReport).filter(SharedReport.id == token).first()
 
@@ -42,6 +45,10 @@ def get_shared_report(token: str, response: Response, db: Session = Depends(get_
 
     if datetime.utcnow() > report.expires_at:
         raise HTTPException(status_code=410, detail="This report link has expired")
+
+    ip = (request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+          or (request.client.host if request.client else "unknown"))
+    logger.info("[PHI ACCESS] shared_report token=%s accessed from ip=%s", token, ip)
 
     patients = db.query(Patient).all()
     notifications = db.query(Notification).all()
@@ -64,7 +71,7 @@ def get_shared_report(token: str, response: Response, db: Session = Depends(get_
             "territory": p.territory,
             "region": p.region,
             "language": p.language,
-            "hippa_consent": p.hippa_consent,
+            "hipaa_consent": p.hipaa_consent,
             "program_type": p.program_type,
             "first_ship_date": p.first_ship_date,
             "last_ship_date": p.last_ship_date,

@@ -159,7 +159,7 @@ function PatientModal({ patient, onSave, onClose }) {
     ["Region",           "region"],
     ["Language",         "language"],
     ["Program Type",     "program_type"],
-    ["HIPAA Consent",    "hippa_consent"],
+    ["HIPAA Consent",    "hipaa_consent"],
     ["Referral Date",    "referral_date"],
     ["First Ship Date",  "first_ship_date"],
     ["Last Ship Date",   "last_ship_date"],
@@ -778,11 +778,11 @@ admin.user,pass123,Admin User,Home Office,admin`;
 
 const USER_HEADERS = ["username","password","name","team","role"];
 
-const PATIENT_TEMPLATE = `prescriber,referral_date,latest_sp_partner,latest_sp_status,latest_sp_substatus,aging_of_status,latest_hub_sub_status,primary_channel,primary_payer,primary_pbm,secondary_channel,territory,region,language,hippa_consent,program_type,first_ship_date,last_ship_date,last_comment
+const PATIENT_TEMPLATE = `prescriber,referral_date,latest_sp_partner,latest_sp_status,latest_sp_substatus,aging_of_status,latest_hub_sub_status,primary_channel,primary_payer,primary_pbm,secondary_channel,territory,region,language,hipaa_consent,program_type,first_ship_date,last_ship_date,last_comment
 Dr. Jane Smith,2025-01-15,Specialty Rx,Active,On Therapy,30,In Process,Commercial,Aetna,CVS Caremark,Medicare,TX-001,Southwest,English,Yes,Patient Assistance,2025-02-01,,
 Dr. Bob Lee,2025-02-01,PharmaCo,Pending,Prior Auth Required,12,Pending HUB,Medicare,Medicare Part D,,Government,CA-003,West,Spanish,Yes,Standard,,2025-02-15,Waiting on PA`;
 
-const PATIENT_HEADERS = ["prescriber","referral_date","latest_sp_partner","latest_sp_status","latest_sp_substatus","aging_of_status","latest_hub_sub_status","primary_channel","primary_payer","primary_pbm","secondary_channel","territory","region","language","hippa_consent","program_type","first_ship_date","last_ship_date","last_comment"];
+const PATIENT_HEADERS = ["prescriber","referral_date","latest_sp_partner","latest_sp_status","latest_sp_substatus","aging_of_status","latest_hub_sub_status","primary_channel","primary_payer","primary_pbm","secondary_channel","territory","region","language","hipaa_consent","program_type","first_ship_date","last_ship_date","last_comment"];
 
 function UploadSection({ title, description, templateFile, templateContent, previewHeaders, submitLabel, onSubmit, theme }) {
   const fileRef = useRef();
@@ -1128,6 +1128,22 @@ export default function SettingsPage({ themeName, onSetTheme, timezone, onSetTim
   );
 
   const RELEASES = [
+    {
+      version: "2.5.0",
+      date: "March 15, 2026",
+      title: "HIPAA Compliance Hardening",
+      badge: "Security",
+      badgeColor: "#e74c3c",
+      changes: [
+        "Security headers added (HSTS, X-Frame-Options, X-Content-Type-Options, Cache-Control: no-store)",
+        "Login rate limiting: 5 failed attempts triggers a 15-minute lockout per IP",
+        "Plaintext password fallback removed — bcrypt-only verification enforced",
+        "Corrected HIPAA consent field name from hippa_consent to hipaa_consent throughout codebase",
+        "Demo quick-login buttons removed from login screen",
+        "30-minute session inactivity timeout with 1-minute advance warning",
+        "PHI access logging added to patient list, patient detail, and shared report endpoints",
+      ],
+    },
     {
       version: "2.4.1",
       date: "March 15, 2026",

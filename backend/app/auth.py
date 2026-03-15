@@ -12,11 +12,10 @@ def hash_password(plain: str) -> str:
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    """Verify a password. Falls back to plain-text equality for accounts
-    that haven't been migrated to bcrypt yet (migration window only)."""
-    if hashed.startswith("$2"):
-        return bcrypt.checkpw(plain.encode(), hashed.encode())
-    return plain == hashed
+    """Verify a bcrypt-hashed password. Plain-text fallback removed for HIPAA compliance."""
+    if not hashed.startswith("$2"):
+        return False  # reject any un-hashed passwords
+    return bcrypt.checkpw(plain.encode(), hashed.encode())
 
 
 def get_current_user(

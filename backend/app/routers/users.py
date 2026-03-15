@@ -1,4 +1,7 @@
 import logging
+import threading
+from collections import defaultdict
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -9,6 +12,38 @@ from ..auth import hash_password, verify_password, get_current_user
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/users", tags=["users"])
+
+# ── Login rate limiting ────────────────────────────────────────────────────────
+_login_failures: dict[str, list] = defaultdict(list)
+_rl_lock = threading.Lock()
+_MAX_ATTEMPTS   = 5
+_LOCKOUT_MINUTES = 15
+
+
+def _get_ip(request: Request) -> str:
+    return (request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+            or (request.client.host if request.client else "unknown"))
+
+
+def _check_rate_limit(ip: str) -> None:
+    with _rl_lock:
+        cutoff = datetime.utcnow() - timedelta(minutes=_LOCKOUT_MINUTES)
+        _login_failures[ip] = [t for t in _login_failures[ip] if t > cutoff]
+        if len(_login_failures[ip]) >= _MAX_ATTEMPTS:
+            raise HTTPException(
+                status_code=429,
+                detail=f"Too many failed login attempts. Try again in {_LOCKOUT_MINUTES} minutes.",
+            )
+
+
+def _record_failure(ip: str) -> None:
+    with _rl_lock:
+        _login_failures[ip].append(datetime.utcnow())
+
+
+def _clear_failures(ip: str) -> None:
+    with _rl_lock:
+        _login_failures.pop(ip, None)
 
 _UPDATABLE_USER_FIELDS = {"username", "password", "name", "team", "role"}
 
@@ -23,21 +58,19 @@ def list_users(
 
 @router.post("/login", response_model=UserOut)
 def login(body: LoginRequest, request: Request, db: Session = Depends(get_db)):
+    ip = _get_ip(request)
+    _check_rate_limit(ip)
+
     user = db.query(User).filter(
         User.username == body.username.strip().lower(),
     ).first()
     if not user or not verify_password(body.password, user.password):
-        logger.warning("Failed login attempt for username '%s'", body.username)
+        _record_failure(ip)
+        logger.warning("Failed login attempt for username '%s' from %s", body.username, ip)
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
-    # Re-hash plain-text passwords on first successful login (one-time migration)
-    if not user.password.startswith("$2"):
-        user.password = hash_password(body.password)
-        db.commit()
+    _clear_failures(ip)
 
-    ip = request.headers.get("x-forwarded-for", "").split(",")[0].strip() or (
-        request.client.host if request.client else None
-    )
     ua = request.headers.get("user-agent", "")[:500]
     db.add(AuditLog(
         user_id=user.id, username=user.username,

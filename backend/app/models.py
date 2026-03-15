@@ -28,7 +28,7 @@ class Patient(Base):
     territory = Column(String)
     region = Column(String)
     language = Column(String)
-    hippa_consent = Column(String)
+    hipaa_consent = Column(String)
     program_type = Column(String)
     first_ship_date = Column(String)
     last_ship_date = Column(String)

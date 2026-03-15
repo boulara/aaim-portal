@@ -20,7 +20,7 @@ class PatientOut(BaseModel):
     territory: Optional[str]
     region: Optional[str]
     language: Optional[str]
-    hippa_consent: Optional[str]
+    hipaa_consent: Optional[str]
     program_type: Optional[str]
     first_ship_date: Optional[str]
     last_ship_date: Optional[str]
@@ -103,7 +103,7 @@ class PatientCreate(BaseModel):
     territory: Optional[str] = None
     region: Optional[str] = None
     language: Optional[str] = None
-    hippa_consent: Optional[str] = None
+    hipaa_consent: Optional[str] = None
     program_type: Optional[str] = None
     first_ship_date: Optional[str] = None
     last_ship_date: Optional[str] = None
@@ -131,7 +131,7 @@ class PatientUpdate(BaseModel):
     territory: Optional[str] = None
     region: Optional[str] = None
     language: Optional[str] = None
-    hippa_consent: Optional[str] = None
+    hipaa_consent: Optional[str] = None
     program_type: Optional[str] = None
     first_ship_date: Optional[str] = None
     last_ship_date: Optional[str] = None

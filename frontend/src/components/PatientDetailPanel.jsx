@@ -158,7 +158,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                 ["First Ship Date",   formatDate(p.first_ship_date)],
                 ["Last Ship Date",    formatDate(p.last_ship_date)],
                 ["Language",          p.language],
-                ["HIPAA Consent",     p.hippa_consent],
+                ["HIPAA Consent",     p.hipaa_consent],
               ].map(([label, val]) => (
                 <div key={label} style={{ background: theme.surfaceBg, padding: "12px 16px", borderRadius: 8 }}>
                   <div style={{ fontSize: 10, letterSpacing: 1.5, color: theme.textFaint, textTransform: "uppercase", marginBottom: 5 }}>{label}</div>

@@ -239,10 +239,10 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
   const programs = Object.entries(progMap).sort((a, b) => b[1] - a[1]);
 
   // ── Consent
-  const withConsent    = patients.filter(p => p.hippa_consent).length;
+  const withConsent    = patients.filter(p => p.hipaa_consent).length;
   const consentRate    = Math.round((withConsent / total) * 100);
-  const written        = patients.filter(p => p.hippa_consent === "Written").length;
-  const electronic     = patients.filter(p => p.hippa_consent === "Electronic").length;
+  const written        = patients.filter(p => p.hipaa_consent === "Written").length;
+  const electronic     = patients.filter(p => p.hipaa_consent === "Electronic").length;
   const noConsent      = total - withConsent;
 
   // ── Active bridge (has last_ship_date and not closed/cancelled)

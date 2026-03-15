@@ -178,6 +178,34 @@ function AppInner() {
   const handleLogin = (u) => { setUser(u); localStorage.setItem("conduit_user", JSON.stringify(u)); };
   const handleLogout = () => { setUser(null); localStorage.removeItem("conduit_user"); setView("dashboard"); };
 
+  // ── Session inactivity timeout (30 min, warn at 29 min) ────────────────────
+  const SESSION_TIMEOUT_MS = 30 * 60 * 1000;
+  const SESSION_WARN_MS    = 29 * 60 * 1000;
+  const [sessionWarning, setSessionWarning] = useState(false);
+  const sessionTimerRef = useRef(null);
+  const sessionWarnRef  = useRef(null);
+
+  const resetSessionTimer = () => {
+    clearTimeout(sessionTimerRef.current);
+    clearTimeout(sessionWarnRef.current);
+    setSessionWarning(false);
+    sessionWarnRef.current  = setTimeout(() => setSessionWarning(true), SESSION_WARN_MS);
+    sessionTimerRef.current = setTimeout(() => handleLogout(), SESSION_TIMEOUT_MS);
+  };
+
+  useEffect(() => {
+    if (!user) { clearTimeout(sessionTimerRef.current); clearTimeout(sessionWarnRef.current); return; }
+    const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
+    events.forEach(e => window.addEventListener(e, resetSessionTimer, { passive: true }));
+    resetSessionTimer();
+    return () => {
+      events.forEach(e => window.removeEventListener(e, resetSessionTimer));
+      clearTimeout(sessionTimerRef.current);
+      clearTimeout(sessionWarnRef.current);
+    };
+  }, [user?.id]);
+  // ───────────────────────────────────────────────────────────────────────────
+
   const handleNotificationUpdate = (updated) => {
     knownIdsRef.current.add(updated.id);
     setNotifications(prev => {
@@ -248,6 +276,18 @@ function AppInner() {
     <ThemeContext.Provider value={theme}>
       <div style={{ minHeight: "100vh", background: theme.pageBg, fontFamily: "FONT_SANS", color: theme.text }}>
         <style>{GLOBAL_STYLES}</style>
+
+        {/* ── SESSION TIMEOUT WARNING ── */}
+        {sessionWarning && (
+          <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 500, background: "#1E2D3D", border: "1px solid #f0a500", borderRadius: 12, padding: "14px 24px", boxShadow: "0 8px 32px rgba(0,0,0,0.6)", display: "flex", alignItems: "center", gap: 16, minWidth: 340 }}>
+            <span style={{ fontSize: 20 }}>⏱</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#f0a500" }}>Session expiring soon</div>
+              <div style={{ fontSize: 12, color: theme.textMuted, marginTop: 2 }}>You'll be signed out in 1 minute due to inactivity.</div>
+            </div>
+            <button onClick={resetSessionTimer} style={{ padding: "6px 16px", background: "#14B8A6", border: "none", borderRadius: 8, color: "#0B1829", fontSize: 12, fontWeight: 700, cursor: "pointer", flexShrink: 0 }}>Stay Signed In</button>
+          </div>
+        )}
 
         {/* ── OVERDUE FOLLOW-UP ALERT ── */}
         {overdueAlert && (
