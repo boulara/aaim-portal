@@ -128,9 +128,18 @@ function AppInner() {
     }
   }, [view, overdueNotes.length]);
 
-  useEffect(() => {
-    api.getPatients().then(setPatients).catch(console.error);
-  }, []);
+  const [patientsLoading, setPatientsLoading] = useState(true);
+  const [patientsError, setPatientsError]     = useState(false);
+
+  const loadPatients = () => {
+    setPatientsLoading(true);
+    setPatientsError(false);
+    api.getPatients()
+      .then(data => { setPatients(data); setPatientsLoading(false); })
+      .catch(err  => { console.error(err); setPatientsError(true); setPatientsLoading(false); });
+  };
+
+  useEffect(loadPatients, []);
 
   useEffect(() => {
     const load = async () => {
@@ -359,7 +368,7 @@ function AppInner() {
           {view === "settings" && <SettingsPage themeName={themeName} onSetTheme={setTheme} timezone={timezone} onSetTimezone={setTimezone} currentUser={user} />}
 
           {/* ── ANALYTICS ── */}
-          {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}
+          {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} loading={patientsLoading} error={patientsError} onRetry={loadPatients} />}
 
           {/* ── FOLLOW-UPS ── */}
           {view === "followups" && <FollowUpCalendar patients={patients} notes={myNotes} onNoteChange={handleNoteChange} />}

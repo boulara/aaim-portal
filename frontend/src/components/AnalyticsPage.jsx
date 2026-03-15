@@ -120,15 +120,39 @@ function Pill({ label, color }) {
   return <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: 0.5, padding: "2px 8px", borderRadius: 20, background: color + "22", color, border: `1px solid ${color}44` }}>{label}</span>;
 }
 
-export default function AnalyticsPage({ patients, notifications, currentUser, readOnly = false }) {
+export default function AnalyticsPage({ patients, notifications, currentUser, readOnly = false, loading = false, error = false, onRetry }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
   const [agingTab, setAgingTab] = useState("distribution"); // distribution | critical | by-region
   const [shareModal, setShareModal] = useState(null); // null | { token, expires_at } | "loading" | "error"
   const [copied, setCopied] = useState(false);
 
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0" }}>
+        <div style={{ fontSize: 28, marginBottom: 12 }}>⏳</div>
+        <div style={{ fontSize: 14, color: theme.textMuted }}>Loading analytics…</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ textAlign: "center", padding: "80px 0" }}>
+        <div style={{ fontSize: 28, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: theme.text, marginBottom: 6 }}>Failed to load analytics data</div>
+        <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>Check your connection and try again.</div>
+        {onRetry && (
+          <button onClick={onRetry} style={{ padding: "9px 22px", borderRadius: 8, border: "none", background: "#14B8A6", color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>
+            Retry
+          </button>
+        )}
+      </div>
+    );
+  }
+
   if (!patients.length) {
-    return <div style={{ textAlign: "center", padding: "60px 0", color: theme.textFaint }}>Loading analytics…</div>;
+    return <div style={{ textAlign: "center", padding: "60px 0", color: theme.textFaint }}>No patient data found.</div>;
   }
 
   const total = patients.length;
