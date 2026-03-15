@@ -11,10 +11,16 @@ router = APIRouter(prefix="/api/notes", tags=["notes"])
 
 
 @router.get("/", response_model=list[CaseNoteOut])
-def list_notes(patient_id: int | None = None, db: Session = Depends(get_db)):
+def list_notes(
+    patient_id: int | None = None,
+    user_id: str | None = None,
+    db: Session = Depends(get_db),
+):
     q = db.query(CaseNote)
     if patient_id:
         q = q.filter(CaseNote.patient_id == patient_id)
+    if user_id:
+        q = q.filter(CaseNote.user_id == user_id)
     return q.order_by(CaseNote.created_at.desc()).all()
 
 

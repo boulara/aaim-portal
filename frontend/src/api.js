@@ -44,7 +44,13 @@ export const api = {
   deletePatient:      (id)                 => req("DELETE", `/patients/${id}`),
 
   // Case notes
-  getNotes:           (patientId)          => req("GET", `/notes/${patientId ? `?patient_id=${patientId}` : ""}`),
+  getNotes:           (patientId, userId)  => {
+    const p = new URLSearchParams();
+    if (patientId) p.set("patient_id", patientId);
+    if (userId)    p.set("user_id", userId);
+    const qs = p.toString();
+    return req("GET", `/notes/${qs ? `?${qs}` : ""}`);
+  },
   createNote:         (data)               => req("POST", `/notes/`, data),
   updateNote:         (id, data)           => req("PATCH", `/notes/${id}`, data),
   deleteNote:         (id)                 => req("DELETE", `/notes/${id}`),

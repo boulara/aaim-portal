@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { BUCKETS, TEAM_COLORS, assignBuckets, initials, agingColor } from "./constants";
 import { AgingBadge, TeamBadge, GLOBAL_STYLES } from "./components/Shared";
 import { ThemeContext, dark, light } from "./ThemeContext";
-import { WalkthroughProvider, useWalkthrough } from "./WalkthroughContext";
+import { WalkthroughProvider, useWalkthrough } from "./WalkthroughContext.jsx";
 import { useIsMobile } from "./useIsMobile";
 import LoginScreen from "./components/LoginScreen";
 import PatientDetailPanel from "./components/PatientDetailPanel";
@@ -47,6 +47,7 @@ function AppInner() {
 
   const [patients, setPatients]               = useState([]);
   const [notifications, setNotifications]     = useState([]);
+  const [myNotes, setMyNotes]                 = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [search, setSearch]                   = useState("");
   const [filterRegion, setFilterRegion]       = useState("All");
@@ -59,10 +60,31 @@ function AppInner() {
   const [showAllActivity, setShowAllActivity] = useState(false);
   const [toasts, setToasts]                   = useState([]);
   const [mobileNavOpen, setMobileNavOpen]     = useState(false);
+  const [overdueAlert, setOverdueAlert]       = useState(false);
 
-  const knownIdsRef = useRef(new Set());
-  const userRef     = useRef(user);
+  const knownIdsRef       = useRef(new Set());
+  const userRef           = useRef(user);
+  const overdueShownRef   = useRef(false);
   useEffect(() => { userRef.current = user; }, [user]);
+
+  const todayKey = (() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; })();
+
+  // Load current user's notes
+  useEffect(() => {
+    if (!user) return;
+    api.getNotes(null, user.id).then(setMyNotes).catch(() => {});
+  }, [user?.id]);
+
+  const myFollowUps = myNotes.filter(n => n.follow_up_date);
+  const overdueNotes = myFollowUps.filter(n => n.follow_up_date < todayKey);
+
+  // Show overdue alert once per session on first dashboard view
+  useEffect(() => {
+    if (view === "dashboard" && !overdueShownRef.current && overdueNotes.length > 0) {
+      overdueShownRef.current = true;
+      setOverdueAlert(true);
+    }
+  }, [view, overdueNotes.length]);
 
   useEffect(() => {
     api.getPatients().then(setPatients).catch(console.error);
@@ -115,6 +137,15 @@ function AppInner() {
 
   const navigateTo = (v) => { setView(v); setMobileNavOpen(false); };
 
+  const handleNoteChange = (note, deleted = false) => {
+    setMyNotes(prev => {
+      if (deleted) return prev.filter(n => n.id !== note.id);
+      const idx = prev.findIndex(n => n.id === note.id);
+      if (idx === -1) return [note, ...prev];
+      const next = [...prev]; next[idx] = note; return next;
+    });
+  };
+
   if (!user) return (
     <ThemeContext.Provider value={theme}>
       <LoginScreen onLogin={handleLogin} />
@@ -158,6 +189,46 @@ function AppInner() {
       <div style={{ minHeight: "100vh", background: theme.pageBg, fontFamily: "'Georgia', serif", color: theme.text }}>
         <style>{GLOBAL_STYLES}</style>
 
+        {/* ── OVERDUE FOLLOW-UP ALERT ── */}
+        {overdueAlert && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
+            <div style={{ width: "min(480px,100%)", background: theme.panelBg, border: "1px solid #e74c3c55", borderTop: "4px solid #e74c3c", borderRadius: 16, padding: 28, boxShadow: "0 24px 64px rgba(0,0,0,0.6)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: "rgba(231,76,60,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>⚠️</div>
+                <div>
+                  <div style={{ fontSize: 17, fontWeight: 700, color: theme.text }}>Overdue Follow-Ups</div>
+                  <div style={{ fontSize: 13, color: theme.textMuted, marginTop: 2 }}>You have {overdueNotes.length} past-due follow-up{overdueNotes.length !== 1 ? "s" : ""} that need attention</div>
+                </div>
+              </div>
+              <div style={{ maxHeight: 220, overflowY: "auto", marginBottom: 20, display: "flex", flexDirection: "column", gap: 8 }}>
+                {overdueNotes.map(n => {
+                  const pat = patients.find(p => p.id === n.patient_id);
+                  const daysOverdue = Math.round((new Date(todayKey) - new Date(n.follow_up_date + "T12:00:00")) / 86400000);
+                  return (
+                    <div key={n.id} style={{ background: "rgba(231,76,60,0.07)", border: "1px solid rgba(231,76,60,0.25)", borderLeft: "4px solid #e74c3c", borderRadius: 10, padding: "10px 14px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8, marginBottom: 4 }}>
+                        <div style={{ fontSize: 13, fontWeight: 700, color: theme.text }}>{pat?.prescriber || `Patient #${n.patient_id}`}</div>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#e74c3c", background: "rgba(231,76,60,0.12)", border: "1px solid rgba(231,76,60,0.3)", borderRadius: 20, padding: "2px 9px", whiteSpace: "nowrap", flexShrink: 0 }}>{daysOverdue}d overdue</span>
+                      </div>
+                      <div style={{ fontSize: 12, color: theme.textMuted, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{n.text}</div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div style={{ display: "flex", gap: 10 }}>
+                <button onClick={() => { setOverdueAlert(false); navigateTo("followups"); }}
+                  style={{ flex: 1, padding: "11px", background: "#e74c3c", border: "none", borderRadius: 8, color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer" }}>
+                  📅 View Calendar
+                </button>
+                <button onClick={() => setOverdueAlert(false)}
+                  style={{ padding: "11px 20px", background: theme.inputBg, border: `1px solid ${theme.border}`, borderRadius: 8, color: theme.textMuted, fontSize: 14, cursor: "pointer" }}>
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Toasts */}
         <div style={{ position: "fixed", bottom: isMobile ? 80 : 24, right: isMobile ? 12 : 24, left: isMobile ? 12 : "auto", zIndex: 999, display: "flex", flexDirection: "column", gap: 10, pointerEvents: "none" }}>
           {toasts.map(t => (
@@ -190,9 +261,15 @@ function AppInner() {
                     {label}
                     {id === "inbox" && myInbox.length > 0 && (
                       <>
-                        <span style={{ position: "absolute", top: 4, right: 4, width: 8, height: 8, borderRadius: "50%", background: tc.accent, animation: "pulse 1.8s infinite", color: tc.accent }} />
+                        <span style={{ position: "absolute", top: 4, right: 4, width: 8, height: 8, borderRadius: "50%", background: tc.accent, animation: "pulse 1.8s infinite" }} />
                         <span style={{ marginLeft: 6, background: tc.accent, color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{myInbox.length}</span>
                       </>
+                    )}
+                    {id === "followups" && overdueNotes.length > 0 && (
+                      <span style={{ marginLeft: 6, background: "#e74c3c", color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{overdueNotes.length}</span>
+                    )}
+                    {id === "followups" && overdueNotes.length === 0 && myFollowUps.length > 0 && (
+                      <span style={{ marginLeft: 6, background: "#4f8ef7", color: "#fff", borderRadius: 10, fontSize: 10, fontWeight: 700, padding: "1px 6px" }}>{myFollowUps.length}</span>
                     )}
                   </button>
                 ))}
@@ -237,7 +314,7 @@ function AppInner() {
           {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}
 
           {/* ── FOLLOW-UPS ── */}
-          {view === "followups" && <FollowUpCalendar patients={patients} />}
+          {view === "followups" && <FollowUpCalendar patients={patients} notes={myNotes} onNoteChange={handleNoteChange} />}
 
           {/* ── DASHBOARD ── */}
           {view === "dashboard" && (
@@ -466,6 +543,12 @@ function AppInner() {
                 {id === "inbox" && myInbox.length > 0 && (
                   <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: tc.accent, color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{myInbox.length}</span>
                 )}
+                {id === "followups" && overdueNotes.length > 0 && (
+                  <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: "#e74c3c", color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{overdueNotes.length}</span>
+                )}
+                {id === "followups" && overdueNotes.length === 0 && myFollowUps.length > 0 && (
+                  <span style={{ position: "absolute", top: 6, right: "calc(50% - 16px)", background: "#4f8ef7", color: "#fff", borderRadius: 10, fontSize: 9, fontWeight: 700, padding: "1px 5px" }}>{myFollowUps.length}</span>
+                )}
               </button>
             ))}
             <button onClick={handleLogout}
@@ -483,6 +566,7 @@ function AppInner() {
             currentUser={user}
             notifications={notifications}
             onNewNotification={handleNotificationUpdate}
+            onNoteChange={handleNoteChange}
             onClose={() => setSelectedPatient(null)}
           />
         )}

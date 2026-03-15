@@ -1,5 +1,5 @@
 import { useEffect, useState, useLayoutEffect } from "react";
-import { useWalkthrough, TOUR_STEPS } from "../WalkthroughContext";
+import { useWalkthrough, TOUR_STEPS } from "../WalkthroughContext.jsx";
 
 const PAD = 12; // padding around spotlight
 

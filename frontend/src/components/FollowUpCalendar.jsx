@@ -1,31 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTheme } from "../ThemeContext";
 import { useIsMobile } from "../useIsMobile";
-import { api } from "../api";
 
 const DAYS   = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
 function toLocalDate(isoStr) {
-  // Parse YYYY-MM-DD without timezone shift
   const [y, m, d] = isoStr.split("-").map(Number);
   return new Date(y, m - 1, d);
 }
 
-export default function FollowUpCalendar({ patients }) {
+export default function FollowUpCalendar({ patients, notes = [], onNoteChange }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
 
   const today      = new Date();
   const [year,  setYear]  = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
-  const [selected, setSelected] = useState(null); // "YYYY-MM-DD"
-  const [notes, setNotes]       = useState([]);
-  const [loading, setLoading]   = useState(true);
-
-  useEffect(() => {
-    api.getNotes().then(n => { setNotes(n); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  const [selected, setSelected] = useState(null);
 
   // Only notes with a follow_up_date
   const followUps = notes.filter(n => n.follow_up_date);
@@ -90,10 +82,7 @@ export default function FollowUpCalendar({ patients }) {
         {overdue.length === 0 && "0 overdue"}
       </div>
 
-      {loading ? (
-        <div style={{ textAlign: "center", padding: 60, color: theme.textFaint }}>Loading…</div>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 340px", gap: 20, alignItems: "start" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 340px", gap: 20, alignItems: "start" }}>
           {/* ── Calendar grid ── */}
           <div>
             {/* Overdue banner */}
@@ -220,7 +209,6 @@ export default function FollowUpCalendar({ patients }) {
             </div>
           </div>
         </div>
-      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useIsMobile } from "../useIsMobile";
 import NotificationCard from "./NotificationCard";
 import { api } from "../api";
 
-export default function PatientDetailPanel({ patient: p, currentUser, notifications, onNewNotification, onClose }) {
+export default function PatientDetailPanel({ patient: p, currentUser, notifications, onNewNotification, onNoteChange, onClose }) {
   const theme    = useTheme();
   const isMobile = useIsMobile();
   const [tab, setTab]               = useState("details");
@@ -14,7 +14,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
   const [priority, setPriority]     = useState("normal");
   const [sending, setSending]       = useState(false);
 
-  // Notes state
+  // Notes state — loaded from parent (App owns notes scoped to current user)
   const [notes, setNotes]           = useState([]);
   const [noteText, setNoteText]     = useState("");
   const [followUpDate, setFollowUpDate] = useState("");
@@ -22,8 +22,9 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
   const [deletingNoteId, setDeletingNoteId] = useState(null);
 
   useEffect(() => {
-    api.getNotes(p.id).then(setNotes).catch(() => {});
-  }, [p.id]);
+    // Fetch this patient's notes for the current user
+    api.getNotes(p.id, currentUser.id).then(setNotes).catch(() => {});
+  }, [p.id, currentUser.id]);
 
   const patientNotifs = notifications
     .filter(n => n.patient_id === p.id)
@@ -44,6 +45,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
         follow_up_date: followUpDate || null,
       });
       setNotes(prev => [created, ...prev]);
+      if (onNoteChange) onNoteChange(created, false);
       setNoteText("");
       setFollowUpDate("");
     } finally { setSavingNote(false); }
@@ -51,8 +53,12 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
 
   const handleDeleteNote = async (id) => {
     setDeletingNoteId(id);
-    try { await api.deleteNote(id); setNotes(prev => prev.filter(n => n.id !== id)); }
-    finally { setDeletingNoteId(null); }
+    try {
+      await api.deleteNote(id);
+      const deleted = notes.find(n => n.id === id);
+      setNotes(prev => prev.filter(n => n.id !== id));
+      if (onNoteChange && deleted) onNoteChange(deleted, true);
+    } finally { setDeletingNoteId(null); }
   };
 
   const handleSubmit = async () => {
