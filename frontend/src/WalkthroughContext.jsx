@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 export const TOUR_STEPS = [
   {
     id: "welcome",
-    title: "Welcome to AAIM Portal",
+    title: "Welcome to Conduit",
     body: "This guided tour will walk you through every feature of the platform. Use the arrows below — or your keyboard ← → — to move between steps. Press Esc to exit at any time.",
     emoji: "👋",
     target: null,
@@ -83,7 +83,7 @@ export const TOUR_STEPS = [
   {
     id: "done",
     title: "You're all set!",
-    body: "You now know your way around AAIM Portal. Open any patient row to start exploring, or head to the Analytics page for a bird's-eye view of your case portfolio. Questions? Reach out to your FireFly Software contact.",
+    body: "You now know your way around Conduit. Open any patient row to start exploring, or head to the Analytics page for a bird's-eye view of your case portfolio. Questions? Reach out to your FireFly Software contact.",
     emoji: "🎉",
     target: null,
   },

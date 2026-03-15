@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AAIM Portal is a healthcare team collaboration tool for managing patient case workflows and interdepartmental notifications between four teams: Home Office (admin), NCM, SP, and ISS. It replaces a Power BI / Power App setup.
+Conduit is a healthcare team collaboration tool for managing patient case workflows and interdepartmental notifications between four teams: Home Office (admin), NCM, SP, and ISS. It replaces a Power BI / Power App setup.
 
 **Stack:** FastAPI (Python) + PostgreSQL backend · React + Vite frontend · deployed on Railway as a single Docker service.
 

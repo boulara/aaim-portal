@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://localhost/aaim")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://localhost/conduit")
 
 # Railway sometimes provides postgres:// instead of postgresql://
 if DATABASE_URL.startswith("postgres://"):
