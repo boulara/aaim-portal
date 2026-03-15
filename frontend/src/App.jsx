@@ -231,12 +231,14 @@ export default function App() {
               {/* Summary cards — 2 cols on mobile, 4 on desktop */}
               <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 10, marginBottom: 20 }}>
                 {[
-                  ["Showing",              filtered.length,                                           "#4f8ef7"],
-                  ["Active Notifications", notifications.filter(n => n.status === "pending").length,  "#f0a500"],
-                  ["My Inbox",             myInbox.length,                                            tc.accent],
-                  ["Avg Aging",            avgAging + "d",                                            agingColor(avgAging)],
-                ].map(([label, val, color]) => (
-                  <div key={label} style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderTop: `2px solid ${color}`, borderRadius: 10, padding: isMobile ? "12px 14px" : "16px 20px" }}>
+                  ["Showing",              filtered.length,                                           "#4f8ef7",          null],
+                  ["Active Notifications", notifications.filter(n => n.status === "pending").length,  "#f0a500",          null],
+                  ["My Inbox",             myInbox.length,                                            tc.accent,          "inbox"],
+                  ["Avg Aging",            avgAging + "d",                                            agingColor(avgAging),"analytics"],
+                ].map(([label, val, color, nav]) => (
+                  <div key={label} onClick={() => nav && navigateTo(nav)}
+                    style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderTop: `2px solid ${color}`, borderRadius: 10, padding: isMobile ? "12px 14px" : "16px 20px", cursor: nav ? "pointer" : "default", position: "relative", overflow: "hidden" }}>
+                    {nav && <div style={{ position: "absolute", top: 8, right: 10, fontSize: 10, color, opacity: 0.6 }}>→</div>}
                     <div style={{ fontSize: isMobile ? 22 : 26, fontWeight: 700, color }}>{val}</div>
                     <div style={{ fontSize: 11, color: theme.textMuted, marginTop: 3, letterSpacing: 0.5 }}>{label}</div>
                   </div>
