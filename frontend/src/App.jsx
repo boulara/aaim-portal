@@ -14,6 +14,41 @@ import TourOverlay from "./components/TourOverlay";
 import { api } from "./api";
 import { APP_VERSION } from "./version";
 
+const ALL_LOGOS = [
+  "/img/relayrx_option_A.svg",
+  "/img/relayrx_option_B.svg",
+  "/img/relayrx_option_C.svg",
+  "/img/relayrx_option_D.svg",
+  "/img/conduit_option_E.svg",
+  "/img/conduit_option_F.svg",
+  "/img/conduit_option_G.svg",
+  "/img/conduit_option_H.svg",
+];
+
+// Pick 2 different random logos once per session
+function pickTwo() {
+  const a = Math.floor(Math.random() * ALL_LOGOS.length);
+  let b = Math.floor(Math.random() * (ALL_LOGOS.length - 1));
+  if (b >= a) b++;
+  return [a, b];
+}
+const [LOGO_A, LOGO_B] = pickTwo();
+
+function NavLogo() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i + 1) % 2), 4000);
+    return () => clearInterval(t);
+  }, []);
+  const src = idx === 0 ? ALL_LOGOS[LOGO_A] : ALL_LOGOS[LOGO_B];
+  return (
+    <div style={{ borderRadius: 8, overflow: "hidden", height: 38, flexShrink: 0 }}>
+      <img key={src} src={src} alt="logo"
+        style={{ height: "100%", width: "auto", display: "block", animation: "logoFadeIn 0.5s ease" }} />
+    </div>
+  );
+}
+
 function TourToggle() {
   const { active, start, stop } = useWalkthrough();
   return (
@@ -248,10 +283,8 @@ function AppInner() {
         {!isMobile && (
           <nav style={{ background: theme.navBg, borderBottom: `1px solid ${theme.border}`, padding: "0 32px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64, backdropFilter: "blur(8px)", position: "sticky", top: 0, zIndex: 50 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-                <div style={{ fontSize: 15, fontWeight: 700, color: theme.text }}>
-                  <span style={{ color: tc.accent }}>AAIM</span> Portal
-                </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <NavLogo />
                 <span style={{ fontSize: 10, color: theme.textFaint, background: theme.isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)", border: `1px solid ${theme.border}`, borderRadius: 4, padding: "1px 6px", letterSpacing: 0.5, fontFamily: "monospace" }}>v{APP_VERSION}</span>
               </div>
               <div style={{ display: "flex", gap: 4 }}>
@@ -289,10 +322,8 @@ function AppInner() {
         {/* ── MOBILE TOP BAR ── */}
         {isMobile && (
           <nav style={{ background: theme.navBg, borderBottom: `1px solid ${theme.border}`, padding: "0 16px", display: "flex", alignItems: "center", justifyContent: "space-between", height: 56, position: "sticky", top: 0, zIndex: 50 }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-              <div style={{ fontSize: 15, fontWeight: 700, color: theme.text }}>
-                <span style={{ color: tc.accent }}>AAIM</span> Portal
-              </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <NavLogo />
               <span style={{ fontSize: 9, color: theme.textFaint, background: "rgba(255,255,255,0.06)", border: `1px solid ${theme.border}`, borderRadius: 4, padding: "1px 5px", letterSpacing: 0.5, fontFamily: "monospace" }}>v{APP_VERSION}</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>

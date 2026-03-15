@@ -36,7 +36,8 @@ export const GLOBAL_STYLES = `
   @keyframes fadeIn  { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: none } }
   @keyframes shake   { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-8px) } 75% { transform: translateX(8px) } }
   @keyframes pulse   { 0% { box-shadow: 0 0 0 0 currentColor } 70% { box-shadow: 0 0 0 6px transparent } 100% { box-shadow: 0 0 0 0 transparent } }
-  @keyframes slideIn { from { opacity: 0; transform: translateX(40px) } to { opacity: 1; transform: none } }
+  @keyframes slideIn    { from { opacity: 0; transform: translateX(40px) } to { opacity: 1; transform: none } }
+  @keyframes logoFadeIn { from { opacity: 0; transform: scale(0.97) } to { opacity: 1; transform: scale(1) } }
   * { box-sizing: border-box; }
   select option { background: #1a2030; color: #fff; }
 `;

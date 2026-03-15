@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TEAM_COLORS } from "../constants";
 import { GLOBAL_STYLES } from "./Shared";
 import { api } from "../api";
+
+const ALL_LOGOS = [
+  "/img/relayrx_option_A.svg",
+  "/img/relayrx_option_B.svg",
+  "/img/relayrx_option_C.svg",
+  "/img/relayrx_option_D.svg",
+  "/img/conduit_option_E.svg",
+  "/img/conduit_option_F.svg",
+  "/img/conduit_option_G.svg",
+  "/img/conduit_option_H.svg",
+];
 
 export default function LoginScreen({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -9,6 +20,12 @@ export default function LoginScreen({ onLogin }) {
   const [error, setError]       = useState("");
   const [shake, setShake]       = useState(false);
   const [loading, setLoading]   = useState(false);
+  const [logoIdx, setLogoIdx]   = useState(() => Math.floor(Math.random() * ALL_LOGOS.length));
+
+  useEffect(() => {
+    const t = setInterval(() => setLogoIdx(i => (i + 1) % ALL_LOGOS.length), 3500);
+    return () => clearInterval(t);
+  }, []);
 
   const handleLogin = async () => {
     if (!username || !password) return;
@@ -29,8 +46,15 @@ export default function LoginScreen({ onLogin }) {
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Georgia', serif" }}>
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 30% 40%, #1a2744 0%, transparent 60%), radial-gradient(ellipse at 70% 70%, #1a3a2a 0%, transparent 50%)", pointerEvents: "none" }} />
+      <div style={{ position: "relative", width: 420 }}>
+        {/* Cycling logo banner */}
+        <div style={{ marginBottom: 20, borderRadius: 14, overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.5)" }}>
+          <img key={logoIdx} src={ALL_LOGOS[logoIdx]} alt="logo"
+            style={{ width: "100%", display: "block", animation: "logoFadeIn 0.6s ease" }} />
+        </div>
+
       <div style={{
-        position: "relative", width: 420, padding: "48px 44px",
+        position: "relative", width: "100%", padding: "48px 44px",
         background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
         borderRadius: 16, boxShadow: "0 32px 80px rgba(0,0,0,0.6)",
         animation: shake ? "shake 0.4s ease" : "fadeIn 0.6s ease",
@@ -88,6 +112,7 @@ export default function LoginScreen({ onLogin }) {
             })}
           </div>
         </div>
+      </div>
       </div>
       <style>{GLOBAL_STYLES}</style>
     </div>
