@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -12,8 +13,8 @@ router = APIRouter(prefix="/api/notes", tags=["notes"])
 
 @router.get("/", response_model=list[CaseNoteOut])
 def list_notes(
-    patient_id: int | None = None,
-    user_id: str | None = None,
+    patient_id: Optional[int] = None,
+    user_id: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     q = db.query(CaseNote)

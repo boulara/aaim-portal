@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from sqlalchemy import text
 from .database import engine, Base
 from .routers import patients, notifications, users, notes
 from . import seed as seeder
@@ -34,10 +35,30 @@ logging.config.dictConfig({
 logger = logging.getLogger(__name__)
 
 
+def _run_migrations():
+    """Add columns that were introduced after initial deploy (PostgreSQL only)."""
+    db_url = str(engine.url)
+    if "postgresql" not in db_url:
+        return
+    migrations = [
+        "ALTER TABLE case_notes ADD COLUMN IF NOT EXISTS completed_at TIMESTAMP",
+    ]
+    with engine.connect() as conn:
+        for sql in migrations:
+            try:
+                conn.execute(text(sql))
+                conn.commit()
+                logger.info("Migration applied: %s", sql)
+            except Exception as exc:
+                conn.rollback()
+                logger.warning("Migration skipped (%s): %s", sql, exc)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting AAIM Portal")
     Base.metadata.create_all(bind=engine)
+    _run_migrations()
     seeder.run()
     logger.info("Startup complete")
     yield
