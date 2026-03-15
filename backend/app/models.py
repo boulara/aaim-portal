@@ -77,3 +77,18 @@ class NotificationReply(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     notification = relationship("Notification", back_populates="replies")
+
+
+class CaseNote(Base):
+    __tablename__ = "case_notes"
+
+    id = Column(String, primary_key=True, default=gen_uuid)
+    patient_id = Column(Integer, ForeignKey("patients.id"), nullable=False)
+    user_id = Column(String, nullable=False)
+    user_name = Column(String, nullable=False)
+    user_team = Column(String, nullable=False)
+    text = Column(Text, nullable=False)
+    follow_up_date = Column(String, nullable=True)  # ISO date YYYY-MM-DD
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    patient = relationship("Patient")

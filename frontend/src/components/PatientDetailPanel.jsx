@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TEAM_COLORS, formatDate, agingColor } from "../constants";
 import { useTheme } from "../ThemeContext";
 import { useIsMobile } from "../useIsMobile";
@@ -14,11 +14,46 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
   const [priority, setPriority]     = useState("normal");
   const [sending, setSending]       = useState(false);
 
+  // Notes state
+  const [notes, setNotes]           = useState([]);
+  const [noteText, setNoteText]     = useState("");
+  const [followUpDate, setFollowUpDate] = useState("");
+  const [savingNote, setSavingNote] = useState(false);
+  const [deletingNoteId, setDeletingNoteId] = useState(null);
+
+  useEffect(() => {
+    api.getNotes(p.id).then(setNotes).catch(() => {});
+  }, [p.id]);
+
   const patientNotifs = notifications
     .filter(n => n.patient_id === p.id)
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   const teams = ["NCM", "SP", "Sales", "Home Office"].filter(t => t !== currentUser.team);
+
+  const handleSaveNote = async () => {
+    if (!noteText.trim()) return;
+    setSavingNote(true);
+    try {
+      const created = await api.createNote({
+        patient_id: p.id,
+        user_id:    currentUser.id,
+        user_name:  currentUser.name,
+        user_team:  currentUser.team,
+        text:       noteText.trim(),
+        follow_up_date: followUpDate || null,
+      });
+      setNotes(prev => [created, ...prev]);
+      setNoteText("");
+      setFollowUpDate("");
+    } finally { setSavingNote(false); }
+  };
+
+  const handleDeleteNote = async (id) => {
+    setDeletingNoteId(id);
+    try { await api.deleteNote(id); setNotes(prev => prev.filter(n => n.id !== id)); }
+    finally { setDeletingNoteId(null); }
+  };
 
   const handleSubmit = async () => {
     if (!comment.trim()) return;
@@ -57,11 +92,16 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", borderBottom: `1px solid ${theme.border}`, padding: "0 28px" }}>
-          {["details", "notifications", "new"].map(t => (
+        <div style={{ display: "flex", borderBottom: `1px solid ${theme.border}`, padding: "0 28px", overflowX: "auto" }}>
+          {[
+            ["details",       "Patient Details"],
+            ["notes",         `Notes (${notes.length})`],
+            ["notifications", `Activity (${patientNotifs.length})`],
+            ["new",           "New Notification"],
+          ].map(([t, label]) => (
             <button key={t} onClick={() => setTab(t)}
-              style={{ padding: "14px 20px", background: "none", border: "none", borderBottom: `2px solid ${tab === t ? "#4f8ef7" : "transparent"}`, color: tab === t ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", textTransform: "capitalize", letterSpacing: 0.5 }}>
-              {t === "new" ? "New Notification" : t === "notifications" ? `Activity (${patientNotifs.length})` : "Patient Details"}
+              style={{ padding: "14px 18px", background: "none", border: "none", borderBottom: `2px solid ${tab === t ? "#4f8ef7" : "transparent"}`, color: tab === t ? "#4f8ef7" : theme.textMuted, fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", letterSpacing: 0.3 }}>
+              {label}
             </button>
           ))}
         </div>
@@ -97,6 +137,58 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
                   <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.6 }}>{p.last_comment}</div>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Notes */}
+          {tab === "notes" && (
+            <div>
+              {/* Add note form */}
+              <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: 20, marginBottom: 20 }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: theme.text, marginBottom: 14 }}>Add a Note</div>
+                <textarea value={noteText} onChange={e => setNoteText(e.target.value)} rows={3}
+                  placeholder="Private case note — not sent to any team…"
+                  style={{ width: "100%", padding: "12px 14px", background: theme.inputBg, border: `1px solid ${theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, resize: "vertical", outline: "none", lineHeight: 1.6, fontFamily: "inherit", marginBottom: 12 }} />
+                <div style={{ display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
+                  <div style={{ flex: 1, minWidth: 180 }}>
+                    <label style={{ fontSize: 10, letterSpacing: 1.5, color: theme.textMuted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>Follow-up Date (optional)</label>
+                    <input type="date" value={followUpDate} onChange={e => setFollowUpDate(e.target.value)}
+                      style={{ width: "100%", padding: "9px 12px", background: theme.inputBg, border: `1px solid ${followUpDate ? "#4f8ef7" : theme.borderInput}`, borderRadius: 8, color: theme.text, fontSize: 13, outline: "none", fontFamily: "inherit" }} />
+                  </div>
+                  <button onClick={handleSaveNote} disabled={!noteText.trim() || savingNote}
+                    style={{ padding: "10px 24px", background: noteText.trim() ? "#4f8ef7" : theme.inputBg, border: "none", borderRadius: 8, color: noteText.trim() ? "#fff" : theme.textFaint, fontSize: 13, fontWeight: 600, cursor: noteText.trim() ? "pointer" : "not-allowed" }}>
+                    {savingNote ? "Saving…" : "Save Note"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Notes list */}
+              {notes.length === 0
+                ? <div style={{ textAlign: "center", color: theme.textFaint, padding: "32px 0", fontSize: 14 }}>No notes yet for this patient</div>
+                : notes.map(n => (
+                  <div key={n.id} style={{ background: theme.surfaceBg, border: `1px solid ${n.follow_up_date ? "#4f8ef744" : theme.border}`, borderLeft: `4px solid ${n.follow_up_date ? "#4f8ef7" : theme.border}`, borderRadius: 10, padding: "14px 16px", marginBottom: 10 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, color: theme.text, lineHeight: 1.6, marginBottom: 8 }}>{n.text}</div>
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                          <span style={{ fontSize: 11, color: theme.textFaint }}>{n.user_name} · {n.user_team}</span>
+                          <span style={{ fontSize: 11, color: theme.textFaint }}>·</span>
+                          <span style={{ fontSize: 11, color: theme.textFaint }}>{new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                          {n.follow_up_date && (
+                            <span style={{ fontSize: 11, fontWeight: 700, color: "#4f8ef7", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.25)", borderRadius: 20, padding: "2px 10px" }}>
+                              📅 Follow-up: {new Date(n.follow_up_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button onClick={() => handleDeleteNote(n.id)} disabled={deletingNoteId === n.id}
+                        style={{ background: "none", border: "none", color: theme.textFaint, cursor: "pointer", fontSize: 16, padding: "2px 6px", flexShrink: 0 }}>
+                        {deletingNoteId === n.id ? "…" : "✕"}
+                      </button>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
           )}
 

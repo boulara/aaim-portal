@@ -127,3 +127,30 @@ class ReplyCreate(BaseModel):
     text: str
     from_user: str
     from_team: str
+
+
+class CaseNoteCreate(BaseModel):
+    patient_id: int
+    user_id: str
+    user_name: str
+    user_team: str
+    text: str
+    follow_up_date: Optional[str] = None
+
+
+class CaseNoteUpdate(BaseModel):
+    text: Optional[str] = None
+    follow_up_date: Optional[str] = None
+
+
+class CaseNoteOut(BaseModel):
+    id: str
+    patient_id: int
+    user_id: str
+    user_name: str
+    user_team: str
+    text: str
+    follow_up_date: Optional[str]
+    created_at: datetime
+
+    model_config = {"from_attributes": True}

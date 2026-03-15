@@ -42,4 +42,10 @@ export const api = {
   // Patients (settings)
   updatePatient:      (id, data)           => req("PATCH", `/patients/${id}`, data),
   deletePatient:      (id)                 => req("DELETE", `/patients/${id}`),
+
+  // Case notes
+  getNotes:           (patientId)          => req("GET", `/notes/${patientId ? `?patient_id=${patientId}` : ""}`),
+  createNote:         (data)               => req("POST", `/notes/`, data),
+  updateNote:         (id, data)           => req("PATCH", `/notes/${id}`, data),
+  deleteNote:         (id)                 => req("DELETE", `/notes/${id}`),
 };

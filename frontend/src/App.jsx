@@ -8,6 +8,7 @@ import PatientDetailPanel from "./components/PatientDetailPanel";
 import NotificationCard from "./components/NotificationCard";
 import SettingsPage from "./components/SettingsPage";
 import AnalyticsPage from "./components/AnalyticsPage";
+import FollowUpCalendar from "./components/FollowUpCalendar";
 import { api } from "./api";
 
 export default function App() {
@@ -127,10 +128,11 @@ export default function App() {
   const avgAging    = patients.length ? Math.round(patients.reduce((a, p) => a + p.aging_of_status, 0) / patients.length) : 0;
 
   const navItems = [
-    { id: "dashboard", label: "Dashboard", icon: "⊞" },
-    { id: "analytics", label: "Analytics", icon: "◎" },
-    { id: "inbox",     label: "Inbox",     icon: "✉" },
-    { id: "settings",  label: "Settings",  icon: "⚙" },
+    { id: "dashboard", label: "Dashboard",  icon: "⊞" },
+    { id: "analytics", label: "Analytics",  icon: "◎" },
+    { id: "followups", label: "Follow-Ups", icon: "📅" },
+    { id: "inbox",     label: "Inbox",      icon: "✉" },
+    { id: "settings",  label: "Settings",   icon: "⚙" },
   ];
 
   return (
@@ -206,6 +208,9 @@ export default function App() {
 
           {/* ── ANALYTICS ── */}
           {view === "analytics" && <AnalyticsPage patients={patients} notifications={notifications} currentUser={user} />}
+
+          {/* ── FOLLOW-UPS ── */}
+          {view === "followups" && <FollowUpCalendar patients={patients} />}
 
           {/* ── DASHBOARD ── */}
           {view === "dashboard" && (

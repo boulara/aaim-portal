@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from .database import engine, Base
-from .routers import patients, notifications, users
+from .routers import patients, notifications, users, notes
 from . import seed as seeder
 
 # ── Logging ───────────────────────────────────────────────────────────────────
@@ -49,6 +49,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(patients.router)
 app.include_router(notifications.router)
 app.include_router(users.router)
+app.include_router(notes.router)
 
 # ── Serve built React frontend ────────────────────────────────────────────────
 static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
