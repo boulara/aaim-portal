@@ -13,10 +13,10 @@ export const BUCKETS = [
 ];
 
 export const TEAM_COLORS = {
-  "Home Office": { bg: "#1a2744", accent: "#4f8ef7", light: "#e8f0fe" },
-  NCM:           { bg: "#1a3a2a", accent: "#2ecc71", light: "#e6f9f0" },
-  SP:            { bg: "#3a1a2a", accent: "#e056b0", light: "#fce8f5" },
-  ISS:           { bg: "#2a2a1a", accent: "#f0a500", light: "#fff8e1" },
+  "Home Office": { bg: "#1a2744", accent: "#4f8ef7", light: "#e8f0fe", lightText: "#1a56c4" },
+  NCM:           { bg: "#1a3a2a", accent: "#2ecc71", light: "#e6f9f0", lightText: "#1a7a45" },
+  SP:            { bg: "#3a1a2a", accent: "#e056b0", light: "#fce8f5", lightText: "#a0208a" },
+  Sales:         { bg: "#2a2a1a", accent: "#f0a500", light: "#fff8e1", lightText: "#a06800" },
 };
 
 export const STATUS_COLORS = {
@@ -26,7 +26,6 @@ export const STATUS_COLORS = {
   dismissed:    "#888",
 };
 
-/** Assign bucket IDs to a patient based on their status fields. */
 export function assignBuckets(p) {
   const sub  = (p.latest_sp_substatus    || "").toLowerCase();
   const hub  = (p.latest_hub_sub_status  || "").toLowerCase();

@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { TEAM_COLORS } from "../constants";
+import { TEAM_COLORS, initials } from "../constants";
 import { TeamBadge } from "./Shared";
-import { initials } from "../constants";
+import { useTheme } from "../ThemeContext";
 import { api } from "../api";
 
 export default function NotificationCard({ notification: n, currentUser, onUpdate }) {
-  const [reply, setReply]       = useState("");
+  const theme = useTheme();
+  const [reply, setReply]         = useState("");
   const [showReply, setShowReply] = useState(false);
-  const [ackAnim, setAckAnim]   = useState(false);
-  const [busy, setBusy]         = useState(false);
+  const [ackAnim, setAckAnim]     = useState(false);
+  const [busy, setBusy]           = useState(false);
 
-  const isRecipient   = currentUser.team === n.to_team;
+  const isRecipient    = currentUser.team === n.to_team;
   const canAcknowledge = isRecipient && n.status === "pending";
   const canReply       = n.status === "pending" || n.status === "replied";
 
@@ -62,8 +63,8 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
 
   return (
     <div style={{
-      background: ackAnim ? "rgba(46,204,113,0.08)" : "rgba(255,255,255,0.04)",
-      border: `1px solid ${ackAnim ? "rgba(46,204,113,0.3)" : "rgba(255,255,255,0.08)"}`,
+      background: ackAnim ? "rgba(46,204,113,0.08)" : theme.surfaceBg,
+      border: `1px solid ${ackAnim ? "rgba(46,204,113,0.3)" : theme.border}`,
       borderLeft: `3px solid ${n.status === "acknowledged" ? "#2ecc71" : pc}`,
       borderRadius: 10, marginBottom: 12, transition: "all 0.35s ease", overflow: "hidden",
     }}>
@@ -71,7 +72,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
       <div style={{ padding: "14px 18px 10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <TeamBadge team={n.from_team} />
-          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 12 }}>→</span>
+          <span style={{ color: theme.textFaint, fontSize: 12 }}>→</span>
           <TeamBadge team={n.to_team} />
           {n.priority !== "normal" && (
             <span style={{ fontSize: 10, color: pc, fontWeight: 700, letterSpacing: 1, padding: "2px 7px", background: pc + "18", borderRadius: 4 }}>
@@ -87,7 +88,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
       {/* Thread */}
       <div style={{ padding: "0 18px 14px" }}>
         {thread.map((entry, i) => {
-          const entryColor = TEAM_COLORS[entry.from_team]?.accent || "#fff";
+          const entryColor = TEAM_COLORS[entry.from_team]?.accent || "#888";
           const isMe = entry.from_user === currentUser.name;
           return (
             <div key={entry.id} style={{ display: "flex", gap: 10, marginBottom: i < thread.length - 1 ? 10 : 0 }}>
@@ -95,17 +96,17 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
                 <div style={{ width: 28, height: 28, borderRadius: "50%", background: entryColor + "22", border: `1.5px solid ${entryColor}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700, color: entryColor }}>
                   {initials(entry.from_user)}
                 </div>
-                {i < thread.length - 1 && <div style={{ width: 1, flex: 1, minHeight: 8, background: "rgba(255,255,255,0.08)", marginTop: 3 }} />}
+                {i < thread.length - 1 && <div style={{ width: 1, flex: 1, minHeight: 8, background: theme.border, marginTop: 3 }} />}
               </div>
               <div style={{ flex: 1, paddingBottom: 2 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 4 }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: entryColor }}>{entry.from_user}</span>
-                  <span style={{ fontSize: 10, color: "rgba(255,255,255,0.3)" }}>
+                  <span style={{ fontSize: 10, color: theme.textFaint }}>
                     {new Date(entry.created_at).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}
                   </span>
-                  {entry.isOriginal && <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", fontStyle: "italic" }}>original</span>}
+                  {entry.isOriginal && <span style={{ fontSize: 10, color: theme.textFaintest, fontStyle: "italic" }}>original</span>}
                 </div>
-                <div style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", lineHeight: 1.55, background: isMe ? "rgba(79,142,247,0.08)" : "rgba(255,255,255,0.03)", border: `1px solid ${isMe ? "rgba(79,142,247,0.15)" : "rgba(255,255,255,0.06)"}`, borderRadius: 8, padding: "8px 12px" }}>
+                <div style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.55, background: isMe ? "rgba(79,142,247,0.08)" : theme.surfaceBg2, border: `1px solid ${isMe ? "rgba(79,142,247,0.15)" : theme.border}`, borderRadius: 8, padding: "8px 12px" }}>
                   {entry.text}
                 </div>
               </div>
@@ -123,7 +124,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
 
       {/* Actions */}
       {n.status !== "acknowledged" && (
-        <div style={{ padding: "10px 18px 14px", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ padding: "10px 18px 14px", borderTop: `1px solid ${theme.border}` }}>
           {!showReply ? (
             <div style={{ display: "flex", gap: 8 }}>
               {canAcknowledge && (
@@ -134,7 +135,7 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
               )}
               {canReply && (
                 <button onClick={() => setShowReply(true)}
-                  style={{ padding: "7px 18px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 7, color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                  style={{ padding: "7px 18px", background: theme.inputBg, border: `1px solid ${theme.borderInput}`, borderRadius: 7, color: theme.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                   ↩ Reply
                 </button>
               )}
@@ -143,14 +144,14 @@ export default function NotificationCard({ notification: n, currentUser, onUpdat
             <div>
               <textarea value={reply} onChange={e => setReply(e.target.value)} autoFocus rows={3}
                 placeholder="Write your reply…"
-                style={{ width: "100%", padding: "10px 14px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 7, color: "#fff", fontSize: 13, resize: "none", outline: "none", boxSizing: "border-box", lineHeight: 1.55, fontFamily: "inherit" }} />
+                style={{ width: "100%", padding: "10px 14px", background: theme.inputBg, border: `1px solid ${theme.borderInput}`, borderRadius: 7, color: theme.text, fontSize: 13, resize: "none", outline: "none", lineHeight: 1.55, fontFamily: "inherit" }} />
               <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                 <button onClick={submitReply} disabled={!reply.trim() || busy}
-                  style={{ padding: "7px 18px", background: reply.trim() ? "rgba(79,142,247,0.2)" : "rgba(255,255,255,0.04)", border: `1px solid ${reply.trim() ? "rgba(79,142,247,0.4)" : "rgba(255,255,255,0.08)"}`, borderRadius: 7, color: reply.trim() ? "#4f8ef7" : "rgba(255,255,255,0.3)", fontSize: 12, fontWeight: 700, cursor: reply.trim() ? "pointer" : "not-allowed" }}>
+                  style={{ padding: "7px 18px", background: reply.trim() ? "rgba(79,142,247,0.2)" : theme.inputBg, border: `1px solid ${reply.trim() ? "rgba(79,142,247,0.4)" : theme.border}`, borderRadius: 7, color: reply.trim() ? "#4f8ef7" : theme.textFaint, fontSize: 12, fontWeight: 700, cursor: reply.trim() ? "pointer" : "not-allowed" }}>
                   {busy ? "Sending…" : "Send Reply"}
                 </button>
                 <button onClick={() => { setShowReply(false); setReply(""); }}
-                  style={{ padding: "7px 14px", background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 7, color: "rgba(255,255,255,0.4)", fontSize: 12, cursor: "pointer" }}>
+                  style={{ padding: "7px 14px", background: "none", border: `1px solid ${theme.border}`, borderRadius: 7, color: theme.textFaint, fontSize: 12, cursor: "pointer" }}>
                   Cancel
                 </button>
               </div>

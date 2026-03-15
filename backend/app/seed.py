@@ -1,6 +1,9 @@
 """Seed initial patients and users if the database is empty."""
+import logging
 from .database import SessionLocal
 from .models import Patient, User
+
+logger = logging.getLogger(__name__)
 
 PATIENTS = [
     {"id": 1, "prescriber": "Chorny, Volodymyr", "referral_date": "2022-06-13", "latest_sp_partner": "Biologics", "latest_sp_status": "Pending", "latest_sp_substatus": "1st level appeal – Appeal letter sent to HCP", "aging_of_status": 24, "last_comment": "3/4 - Patient recently received a bridge shipment. NCM assistance needed to ask the patient to follow up with their HCP.", "latest_hub_sub_status": "Product Shipped - Bridge", "primary_channel": "Health Exchange", "primary_payer": "Florida Health Care Plans", "primary_pbm": "OptumRx", "secondary_channel": "Medicaid", "territory": "Orlando FL", "region": "Southeast", "language": "Spanish", "hippa_consent": "Written", "program_type": "BRIDGE", "first_ship_date": "2022-08-08", "last_ship_date": "2026-02-23"},
@@ -39,8 +42,8 @@ USERS = [
     {"id": "ncm2", "username": "james.wright", "password": "pass123", "name": "James Wright", "team": "NCM", "role": "partner"},
     {"id": "sp1", "username": "amy.patel", "password": "pass123", "name": "Amy Patel", "team": "SP", "role": "partner"},
     {"id": "sp2", "username": "robert.kim", "password": "pass123", "name": "Robert Kim", "team": "SP", "role": "partner"},
-    {"id": "iss1", "username": "diana.reyes", "password": "pass123", "name": "Diana Reyes", "team": "ISS", "role": "partner"},
-    {"id": "iss2", "username": "carlos.vega", "password": "pass123", "name": "Carlos Vega", "team": "ISS", "role": "partner"},
+    {"id": "iss1", "username": "diana.reyes", "password": "pass123", "name": "Diana Reyes", "team": "Sales", "role": "partner"},
+    {"id": "iss2", "username": "carlos.vega", "password": "pass123", "name": "Carlos Vega", "team": "Sales", "role": "partner"},
 ]
 
 
@@ -51,6 +54,14 @@ def run():
             db.bulk_insert_mappings(User, USERS)
             db.bulk_insert_mappings(Patient, PATIENTS)
             db.commit()
-            print("Database seeded.")
+            logger.info("Database seeded with %d users and %d patients", len(USERS), len(PATIENTS))
+        else:
+            # Migrate: rename ISS → Sales for existing deployments
+            iss_users = db.query(User).filter(User.team == "ISS").all()
+            if iss_users:
+                for u in iss_users:
+                    u.team = "Sales"
+                db.commit()
+                logger.info("Migrated %d ISS users → Sales", len(iss_users))
     finally:
         db.close()

@@ -44,27 +44,27 @@ export default function LoginScreen({ onLogin }) {
         <div style={{ marginBottom: 16 }}>
           <label style={{ fontSize: 11, letterSpacing: 2, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", display: "block", marginBottom: 8 }}>Username</label>
           <input value={username} onChange={e => setUsername(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
-            style={{ width: "100%", padding: "12px 16px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+            style={{ width: "100%", padding: "12px 16px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none" }}
             placeholder="Enter username" autoFocus />
         </div>
 
         <div style={{ marginBottom: 24 }}>
           <label style={{ fontSize: 11, letterSpacing: 2, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", display: "block", marginBottom: 8 }}>Password</label>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()}
-            style={{ width: "100%", padding: "12px 16px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+            style={{ width: "100%", padding: "12px 16px", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 8, color: "#fff", fontSize: 14, outline: "none" }}
             placeholder="Enter password" />
         </div>
 
         {error && <div style={{ fontSize: 13, color: "#e74c3c", marginBottom: 16, textAlign: "center" }}>{error}</div>}
 
         <button onClick={handleLogin} disabled={loading}
-          style={{ width: "100%", padding: "14px", background: loading ? "#3a5cb0" : "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 15, fontWeight: 600, cursor: loading ? "wait" : "pointer", letterSpacing: 0.5 }}>
+          style={{ width: "100%", padding: "14px", background: loading ? "#3a5cb0" : "#4f8ef7", border: "none", borderRadius: 8, color: "#fff", fontSize: 15, fontWeight: 600, cursor: loading ? "wait" : "pointer" }}>
           {loading ? "Signing in…" : "Sign In"}
         </button>
 
         <div style={{ marginTop: 24, padding: "16px", background: "rgba(255,255,255,0.04)", borderRadius: 8, border: "1px solid rgba(255,255,255,0.07)" }}>
           <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginBottom: 8, letterSpacing: 1 }}>DEMO CREDENTIALS</div>
-          {[["Home Office", "sarah.johnson"], ["NCM", "lisa.torres"], ["SP", "amy.patel"], ["ISS", "diana.reyes"]].map(([team, user]) => (
+          {[["Home Office", "sarah.johnson"], ["NCM", "lisa.torres"], ["SP", "amy.patel"], ["Sales", "diana.reyes"]].map(([team, user]) => (
             <div key={team} style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginBottom: 4 }}>
               <span style={{ color: TEAM_COLORS[team]?.accent || "#fff", fontWeight: 600 }}>{team}:</span>{" "}
               <span style={{ cursor: "pointer", textDecoration: "underline" }} onClick={() => { setUsername(user); setPassword("pass123"); }}>{user}</span> / pass123

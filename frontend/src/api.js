@@ -21,10 +21,21 @@ async function req(method, path, body) {
 }
 
 export const api = {
-  login:              (username, password)  => req("POST", "/users/login", { username, password }),
-  getPatients:        (params = {})         => req("GET", `/patients/?${new URLSearchParams(params)}`),
-  getNotifications:   ()                    => req("GET", "/notifications/"),
-  createNotification: (data)                => req("POST", "/notifications/", data),
-  updateNotification: (id, data)            => req("PATCH", `/notifications/${id}`, data),
-  addReply:           (id, data)            => req("POST", `/notifications/${id}/replies`, data),
+  // Auth
+  login:              (username, password) => req("POST", "/users/login", { username, password }),
+
+  // Patients
+  getPatients:        (params = {})        => req("GET", `/patients/?${new URLSearchParams(params)}`),
+
+  // Notifications
+  getNotifications:   ()                   => req("GET", "/notifications/"),
+  createNotification: (data)               => req("POST", "/notifications/", data),
+  updateNotification: (id, data)           => req("PATCH", `/notifications/${id}`, data),
+  addReply:           (id, data)           => req("POST", `/notifications/${id}/replies`, data),
+
+  // Users (settings)
+  getUsers:           ()                   => req("GET", "/users/"),
+  createUser:         (data)               => req("POST", "/users/", data),
+  updateUser:         (id, data)           => req("PATCH", `/users/${id}`, data),
+  deleteUser:         (id)                 => req("DELETE", `/users/${id}`),
 };

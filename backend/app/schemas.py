@@ -43,6 +43,22 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class UserCreate(BaseModel):
+    username: str
+    password: str
+    name: str
+    team: str
+    role: str = "partner"
+
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    password: Optional[str] = None
+    name: Optional[str] = None
+    team: Optional[str] = None
+    role: Optional[str] = None
+
+
 class ReplyOut(BaseModel):
     id: str
     text: str
