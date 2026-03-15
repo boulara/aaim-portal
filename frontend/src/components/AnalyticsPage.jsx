@@ -89,7 +89,7 @@ function GBar({ label, value, max, color, sublabel, height = 28 }) {
 function Card({ title, children, accent, style = {} }) {
   const theme = useTheme();
   return (
-    <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "20px 22px", ...style }}>
+    <div style={{ background: theme.panelBgBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "20px 22px", ...style }}>
       {title && (
         <div style={{ fontSize: 10, letterSpacing: 2.5, color: accent || theme.textFaint, textTransform: "uppercase", fontWeight: 700, marginBottom: 18, display: "flex", alignItems: "center", gap: 6 }}>
           {accent && <span style={{ width: 3, height: 14, background: accent, borderRadius: 2, display: "inline-block" }} />}
@@ -303,7 +303,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
               <button
                 className="no-print"
                 onClick={() => window.print()}
-                style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 8, border: `1px solid ${theme.border}`, background: theme.surfaceBg, color: theme.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 8, border: `1px solid ${theme.border}`, background: theme.panelBgBg, color: theme.textMuted, fontSize: 12, fontWeight: 600, cursor: "pointer" }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
                 Export PDF
@@ -326,7 +326,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
               </button>
             </>
           )}
-          <div style={{ fontSize: 11, color: theme.textFaint, background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 8, padding: "6px 12px" }}>
+          <div style={{ fontSize: 11, color: theme.textFaint, background: theme.panelBgBg, border: `1px solid ${theme.border}`, borderRadius: 8, padding: "6px 12px" }}>
             As of today
           </div>
         </div>
@@ -336,7 +336,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
       {shareModal && shareModal !== "loading" && shareModal !== "error" && (
         <div className="no-print" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
           onClick={() => { setShareModal(null); setCopied(false); }}>
-          <div style={{ background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 16, padding: "28px 28px 24px", maxWidth: 480, width: "100%", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }}
+          <div style={{ background: theme.panelBg, border: `1px solid ${theme.border}`, borderRadius: 16, padding: "28px 28px 24px", maxWidth: 480, width: "100%", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" }}
             onClick={e => e.stopPropagation()}>
             <div style={{ fontSize: 16, fontWeight: 700, color: theme.text, marginBottom: 6 }}>Shareable Analytics Link</div>
             <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 18 }}>
@@ -347,7 +347,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
               <input
                 readOnly
                 value={`${window.location.origin}/shared/${shareModal.token}`}
-                style={{ flex: 1, padding: "8px 12px", borderRadius: 8, border: `1px solid ${theme.border}`, background: theme.surfaceBg, color: theme.text, fontSize: 12, fontFamily: "monospace", outline: "none" }}
+                style={{ flex: 1, padding: "8px 12px", borderRadius: 8, border: `1px solid ${theme.border}`, background: theme.panelBgBg, color: theme.text, fontSize: 12, fontFamily: "monospace", outline: "none" }}
                 onFocus={e => e.target.select()}
               />
               <button
@@ -372,7 +372,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
       )}
       {shareModal === "loading" && (
         <div className="no-print" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, padding: "24px 32px", color: theme.textMuted, fontSize: 13 }}>
+          <div style={{ background: theme.panelBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: "24px 32px", color: theme.textMuted, fontSize: 13 }}>
             Generating link…
           </div>
         </div>
@@ -380,7 +380,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
       {shareModal === "error" && (
         <div className="no-print" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
           onClick={() => setShareModal(null)}>
-          <div style={{ background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 12, padding: "24px 28px", color: "#e74c3c", fontSize: 13, maxWidth: 360 }}>
+          <div style={{ background: theme.panelBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: "24px 28px", color: "#e74c3c", fontSize: 13, maxWidth: 360 }}>
             Failed to generate link. Please try again.
           </div>
         </div>
@@ -396,7 +396,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
           { label: "Consent Rate",    value: `${consentRate}%`,                                         color: consentRate >= 80 ? "#2ecc71" : "#f0a500", sub: `${withConsent} / ${total}` },
           { label: "Notif Resolution",value: `${resolutionRate}%`,                                      color: resolutionRate >= 60 ? "#2ecc71" : "#f0a500", sub: `${totalNotifs} total` },
         ].map(({ label, value, color, sub }) => (
-          <div key={label} style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderLeft: `4px solid ${color}`, borderRadius: 12, padding: isMobile ? "14px 12px" : "16px 18px", position: "relative", overflow: "hidden" }}>
+          <div key={label} style={{ background: theme.panelBgBg, border: `1px solid ${theme.border}`, borderLeft: `4px solid ${color}`, borderRadius: 12, padding: isMobile ? "14px 12px" : "16px 18px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", right: -10, top: -10, width: 60, height: 60, borderRadius: "50%", background: color + "10" }} />
             <div style={{ fontSize: isMobile ? 20 : 24, fontWeight: 700, color, fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif" }}>{value}</div>
             <div style={{ fontSize: 11, color: theme.textMuted, marginTop: 3, letterSpacing: 0.3 }}>{label}</div>
@@ -406,7 +406,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
       </div>
 
       {/* ── AGING DEEP DIVE ── */}
-      <div style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "22px 24px", marginBottom: 16 }}>
+      <div style={{ background: theme.panelBgBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: "22px 24px", marginBottom: 16 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
           <div>
             <div style={{ fontSize: 10, letterSpacing: 2.5, color: "#e74c3c", textTransform: "uppercase", fontWeight: 700, display: "flex", alignItems: "center", gap: 6 }}>
@@ -704,7 +704,7 @@ export default function AnalyticsPage({ patients, notifications, currentUser, re
               ))}
             </div>
             {/* Resolution ring */}
-            <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 16px", background: theme.surfaceBg2 || theme.inputBg, borderRadius: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "14px 16px", background: theme.panelBgBg2 || theme.inputBg, borderRadius: 10 }}>
               <div style={{ position: "relative", width: 64, height: 64, flexShrink: 0 }}>
                 <svg width={64} height={64} viewBox="0 0 64 64">
                   <circle cx={32} cy={32} r={26} fill="none" stroke={theme.isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)"} strokeWidth={7} />

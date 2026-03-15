@@ -11,7 +11,7 @@ function ExpiredMessage() {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      background: conduit.bg,
+      background: conduit.pageBg,
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
       padding: 32,
       textAlign: "center",
@@ -35,7 +35,7 @@ function LoadingMessage() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: conduit.bg,
+      background: conduit.pageBg,
       color: conduit.textMuted,
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
       fontSize: 14,
@@ -71,7 +71,7 @@ export default function SharedReportPage({ token }) {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      background: conduit.bg,
+      background: conduit.pageBg,
       color: conduit.textMuted,
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
       fontSize: 14,
@@ -89,12 +89,12 @@ export default function SharedReportPage({ token }) {
     <ThemeContext.Provider value={conduit}>
       <div style={{
         minHeight: "100vh",
-        background: conduit.bg,
+        background: conduit.pageBg,
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
       }}>
         {/* Shared report banner */}
         <div style={{
-          background: conduit.surface,
+          background: conduit.panelBg,
           borderBottom: `1px solid ${conduit.border}`,
           padding: "10px 24px",
           display: "flex",
