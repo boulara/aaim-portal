@@ -19,8 +19,8 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
   const [month, setMonth] = useState(today.getMonth());
   const [selected, setSelected] = useState(null);
 
-  // Only notes with a follow_up_date
-  const followUps = notes.filter(n => n.follow_up_date);
+  // Only active (non-completed) notes with a follow_up_date
+  const followUps = notes.filter(n => n.follow_up_date && !n.completed_at);
 
   // Group by date string
   const byDate = {};
@@ -51,6 +51,8 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
   const overdue = followUps
     .filter(n => n.follow_up_date < todayKey)
     .sort((a, b) => b.follow_up_date.localeCompare(a.follow_up_date));
+
+  const completed = notes.filter(n => n.follow_up_date && n.completed_at);
 
   const selectedNotes = selected ? (byDate[selected] || []) : [];
   const patientMap = Object.fromEntries((patients || []).map(p => [p.id, p]));
@@ -194,12 +196,13 @@ export default function FollowUpCalendar({ patients, notes = [], onNoteChange })
             </div>
 
             {/* Stats */}
-            <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
               {[
-                { label: "Total Notes",     value: notes.length,     color: "#4f8ef7" },
-                { label: "With Follow-Up",  value: followUps.length, color: "#2ecc71" },
-                { label: "Upcoming",        value: upcoming.length,  color: "#4f8ef7" },
-                { label: "Overdue",         value: overdue.length,   color: overdue.length > 0 ? "#e74c3c" : "#2ecc71" },
+                { label: "Total Notes",    value: notes.length,       color: "#4f8ef7" },
+                { label: "With Follow-Up", value: notes.filter(n => n.follow_up_date).length, color: "#2ecc71" },
+                { label: "Upcoming",       value: upcoming.length,    color: "#4f8ef7" },
+                { label: "Overdue",        value: overdue.length,     color: overdue.length > 0 ? "#e74c3c" : "#2ecc71" },
+                { label: "Completed",      value: completed.length,   color: "#2ecc71" },
               ].map(({ label, value, color }) => (
                 <div key={label} style={{ background: theme.surfaceBg, border: `1px solid ${theme.border}`, borderRadius: 10, padding: "12px 14px" }}>
                   <div style={{ fontSize: 20, fontWeight: 700, color }}>{value}</div>

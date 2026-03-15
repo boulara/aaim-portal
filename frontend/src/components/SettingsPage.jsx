@@ -309,25 +309,28 @@ function Slide3() {
 
 function Slide4() {
   const features = [
-    { icon: "🔔", title: "Smart Notifications", desc: "Priority-based alerts with email escalation" },
-    { icon: "📊", title: "Case Analytics", desc: "Aging, pipeline, regional breakdowns" },
-    { icon: "🗂", title: "Patient Tracking", desc: "26 data fields, full history" },
-    { icon: "📱", title: "Mobile First", desc: "Works on any device" },
-    { icon: "🎨", title: "Branded Themes", desc: "Dark and light mode" },
-    { icon: "🔐", title: "Access Control", desc: "Role-based team permissions" },
+    { icon: "🔔", title: "Smart Notifications", desc: "Priority-based alerts with auto email escalation to Sales" },
+    { icon: "📊", title: "Deep Analytics", desc: "Aging analysis, SP partner performance, regional & channel breakdowns" },
+    { icon: "🗂", title: "Patient Tracking", desc: "26 data fields per case — SP status, payer, language, referral dates & more" },
+    { icon: "📝", title: "Private Case Notes", desc: "Add personal notes to any case without alerting other teams" },
+    { icon: "📅", title: "Follow-Up Calendar", desc: "Set follow-up dates on notes with a full calendar view — overdue cases flagged in red" },
+    { icon: "🗺", title: "Guided Tour", desc: "Interactive 11-step walkthrough helps new users learn the platform in minutes" },
+    { icon: "📱", title: "Mobile First", desc: "Fully responsive — works on any device with a native-feel bottom nav" },
+    { icon: "🔐", title: "Access Control", desc: "Role-based team permissions and per-user data isolation" },
+    { icon: "🎨", title: "Branded Themes", desc: "Dark and light mode with persistent user preference" },
   ];
-  const colors = ["#4f8ef7", "#2ecc71", "#e67e22", "#9b59b6", "#f39c12", "#1abc9c"];
+  const colors = ["#4f8ef7", "#1abc9c", "#e67e22", "#2ecc71", "#4f8ef7", "#f39c12", "#9b59b6", "#e74c3c", "#aaaaff"];
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg, #080e1f 0%, #0d1530 100%)", padding: "28px 24px" }}>
-      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 10, fontWeight: 700 }}>Features</div>
-      <div style={{ fontSize: 26, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 22 }}>Everything Your Team Needs</div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, width: "100%", maxWidth: 580 }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "linear-gradient(160deg, #080e1f 0%, #0d1530 100%)", padding: "20px 24px" }}>
+      <div style={{ fontSize: 11, letterSpacing: 3, color: "#4f8ef7", textTransform: "uppercase", marginBottom: 8, fontWeight: 700 }}>Features</div>
+      <div style={{ fontSize: 24, fontWeight: 800, color: "#fff", textAlign: "center", marginBottom: 16 }}>Everything Your Team Needs</div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, width: "100%", maxWidth: 680 }}>
         {features.map((f, i) => (
-          <div key={f.title} style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${colors[i]}44`, borderLeft: `3px solid ${colors[i]}`, borderRadius: 10, padding: "14px 16px", display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <span style={{ fontSize: 22, flexShrink: 0 }}>{f.icon}</span>
+          <div key={f.title} style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${colors[i]}44`, borderLeft: `3px solid ${colors[i]}`, borderRadius: 10, padding: "10px 12px", display: "flex", gap: 10, alignItems: "flex-start" }}>
+            <span style={{ fontSize: 18, flexShrink: 0, lineHeight: 1.4 }}>{f.icon}</span>
             <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 3 }}>{f.title}</div>
-              <div style={{ fontSize: 11, color: "rgba(180,210,255,0.65)", lineHeight: 1.4 }}>{f.desc}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{f.title}</div>
+              <div style={{ fontSize: 10, color: "rgba(180,210,255,0.6)", lineHeight: 1.4 }}>{f.desc}</div>
             </div>
           </div>
         ))}
@@ -367,10 +370,10 @@ function Slide5() {
 
 function Slide6() {
   const stats = [
-    { value: "26", label: "Patients Tracked" },
+    { value: "26+", label: "Patients Tracked" },
     { value: "5", label: "Case Stage Buckets" },
-    { value: "4", label: "Team Coverage" },
-    { value: "5s", label: "Real-Time Refresh" },
+    { value: "4", label: "Teams Connected" },
+    { value: "5s", label: "Live Refresh Rate" },
   ];
   // SVG bar chart: sample case stage data
   const bars = [

@@ -19,6 +19,9 @@ Teams — **Home Office**, **NCM**, **SP**, and **Sales** — can view a shared 
 - **Favicon** — FireFly Software SVG firefly logo as browser tab icon (glowing green abdomen, blue body, wings, antennae on dark circle background).
 - **Version badge** — `vX.Y.Z` version tag displayed in the nav bar next to the AAIM Portal logo on both desktop and mobile.
 - **Guided Tour** — 🗺 Guide button in the nav launches an 11-step interactive walkthrough. Spotlight effect dims the page and highlights each feature with a pulsing blue ring. Keyboard ← → and Esc supported. Progress dots allow jumping to any step.
+- **Per-user follow-up privacy** — Follow-up notes and calendar are scoped to the logged-in user. You see only your own follow-ups; other users' private notes are never surfaced.
+- **Follow-up nav badge** — Live badge on the Follow-Ups nav item: red count if any follow-ups are overdue, blue count if upcoming, no badge if none. Updates immediately as notes are added or deleted.
+- **Overdue alert popup** — On first dashboard load after login, a modal warns the user if they have any past-due follow-ups, listing each patient with a direct "View Calendar" shortcut to the follow-up calendar.
 
 ### v1.4.0 — 2026-03-14
 - **Case Notes** — Add private notes to any case without sending a team notification. Notes are visible only in the patient detail panel.
@@ -125,7 +128,7 @@ Or click any user card on the login screen for one-click login.
 | `POST` | `/api/notifications/` | Create notification (triggers email if `to_team=Sales`) |
 | `PATCH` | `/api/notifications/{id}` | Update status (acknowledge) |
 | `POST` | `/api/notifications/{id}/replies` | Add reply |
-| `GET` | `/api/notes/` | List case notes (optional `?patient_id=`) |
+| `GET` | `/api/notes/` | List case notes (optional `?patient_id=` and `?user_id=` for per-user scoping) |
 | `POST` | `/api/notes/` | Create case note |
 | `PATCH` | `/api/notes/{id}` | Update note |
 | `DELETE` | `/api/notes/{id}` | Delete note |

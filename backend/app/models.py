@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Date, Boolean
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -89,6 +89,7 @@ class CaseNote(Base):
     user_team = Column(String, nullable=False)
     text = Column(Text, nullable=False)
     follow_up_date = Column(String, nullable=True)  # ISO date YYYY-MM-DD
+    completed_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     patient = relationship("Patient")

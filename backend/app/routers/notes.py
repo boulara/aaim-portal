@@ -39,7 +39,7 @@ def update_note(note_id: str, body: CaseNoteUpdate, db: Session = Depends(get_db
     note = db.query(CaseNote).filter(CaseNote.id == note_id).first()
     if not note:
         raise HTTPException(status_code=404, detail="Note not found")
-    for k, v in body.model_dump(exclude_none=True).items():
+    for k, v in body.model_dump(exclude_unset=True).items():
         setattr(note, k, v)
     db.commit()
     db.refresh(note)

@@ -20,6 +20,7 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
   const [followUpDate, setFollowUpDate] = useState("");
   const [savingNote, setSavingNote] = useState(false);
   const [deletingNoteId, setDeletingNoteId] = useState(null);
+  const [updatingNoteId, setUpdatingNoteId] = useState(null);
 
   useEffect(() => {
     // Fetch this patient's notes for the current user
@@ -59,6 +60,33 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
       setNotes(prev => prev.filter(n => n.id !== id));
       if (onNoteChange && deleted) onNoteChange(deleted, true);
     } finally { setDeletingNoteId(null); }
+  };
+
+  const handleClearDate = async (id) => {
+    setUpdatingNoteId(id);
+    try {
+      const updated = await api.updateNote(id, { follow_up_date: null });
+      setNotes(prev => prev.map(n => n.id === id ? updated : n));
+      if (onNoteChange) onNoteChange(updated, false);
+    } finally { setUpdatingNoteId(null); }
+  };
+
+  const handleMarkDone = async (id) => {
+    setUpdatingNoteId(id);
+    try {
+      const updated = await api.updateNote(id, { completed_at: new Date().toISOString() });
+      setNotes(prev => prev.map(n => n.id === id ? updated : n));
+      if (onNoteChange) onNoteChange(updated, false);
+    } finally { setUpdatingNoteId(null); }
+  };
+
+  const handleUndoDone = async (id) => {
+    setUpdatingNoteId(id);
+    try {
+      const updated = await api.updateNote(id, { completed_at: null });
+      setNotes(prev => prev.map(n => n.id === id ? updated : n));
+      if (onNoteChange) onNoteChange(updated, false);
+    } finally { setUpdatingNoteId(null); }
   };
 
   const handleSubmit = async () => {
@@ -171,29 +199,57 @@ export default function PatientDetailPanel({ patient: p, currentUser, notificati
               {/* Notes list */}
               {notes.length === 0
                 ? <div style={{ textAlign: "center", color: theme.textFaint, padding: "32px 0", fontSize: 14 }}>No notes yet for this patient</div>
-                : notes.map(n => (
-                  <div key={n.id} style={{ background: theme.surfaceBg, border: `1px solid ${n.follow_up_date ? "#4f8ef744" : theme.border}`, borderLeft: `4px solid ${n.follow_up_date ? "#4f8ef7" : theme.border}`, borderRadius: 10, padding: "14px 16px", marginBottom: 10 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 13, color: theme.text, lineHeight: 1.6, marginBottom: 8 }}>{n.text}</div>
-                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-                          <span style={{ fontSize: 11, color: theme.textFaint }}>{n.user_name} · {n.user_team}</span>
-                          <span style={{ fontSize: 11, color: theme.textFaint }}>·</span>
-                          <span style={{ fontSize: 11, color: theme.textFaint }}>{new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                : notes.map(n => {
+                  const isDone = !!n.completed_at;
+                  const accentColor = isDone ? "#2ecc71" : n.follow_up_date ? "#4f8ef7" : theme.border;
+                  const isBusy = updatingNoteId === n.id;
+                  return (
+                    <div key={n.id} style={{ background: theme.surfaceBg, border: `1px solid ${accentColor}44`, borderLeft: `4px solid ${accentColor}`, borderRadius: 10, padding: "14px 16px", marginBottom: 10, opacity: isDone ? 0.75 : 1 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 13, color: theme.text, lineHeight: 1.6, marginBottom: 8, textDecoration: isDone ? "line-through" : "none" }}>{n.text}</div>
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                            <span style={{ fontSize: 11, color: theme.textFaint }}>{n.user_name} · {n.user_team}</span>
+                            <span style={{ fontSize: 11, color: theme.textFaint }}>·</span>
+                            <span style={{ fontSize: 11, color: theme.textFaint }}>{new Date(n.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                            {isDone && (
+                              <span style={{ fontSize: 11, fontWeight: 700, color: "#2ecc71", background: "rgba(46,204,113,0.12)", border: "1px solid rgba(46,204,113,0.3)", borderRadius: 20, padding: "2px 10px" }}>
+                                ✓ Done {new Date(n.completed_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                              </span>
+                            )}
+                            {!isDone && n.follow_up_date && (
+                              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, fontWeight: 700, color: "#4f8ef7", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.25)", borderRadius: 20, padding: "2px 8px 2px 10px" }}>
+                                📅 {new Date(n.follow_up_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                                <button onClick={() => handleClearDate(n.id)} disabled={isBusy} title="Clear follow-up date"
+                                  style={{ background: "none", border: "none", color: "#4f8ef7", cursor: "pointer", fontSize: 12, padding: "0 0 0 2px", lineHeight: 1, opacity: 0.7 }}>✕</button>
+                              </span>
+                            )}
+                          </div>
+                          {/* Action buttons */}
                           {n.follow_up_date && (
-                            <span style={{ fontSize: 11, fontWeight: 700, color: "#4f8ef7", background: "rgba(79,142,247,0.12)", border: "1px solid rgba(79,142,247,0.25)", borderRadius: 20, padding: "2px 10px" }}>
-                              📅 Follow-up: {new Date(n.follow_up_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                            </span>
+                            <div style={{ marginTop: 10, display: "flex", gap: 6 }}>
+                              {isDone ? (
+                                <button onClick={() => handleUndoDone(n.id)} disabled={isBusy}
+                                  style={{ padding: "4px 12px", background: "rgba(46,204,113,0.1)", border: "1px solid rgba(46,204,113,0.3)", borderRadius: 6, color: "#2ecc71", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                                  {isBusy ? "…" : "↩ Undo"}
+                                </button>
+                              ) : (
+                                <button onClick={() => handleMarkDone(n.id)} disabled={isBusy}
+                                  style={{ padding: "4px 12px", background: "rgba(46,204,113,0.1)", border: "1px solid rgba(46,204,113,0.3)", borderRadius: 6, color: "#2ecc71", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                                  {isBusy ? "…" : "✓ Mark Done"}
+                                </button>
+                              )}
+                            </div>
                           )}
                         </div>
+                        <button onClick={() => handleDeleteNote(n.id)} disabled={deletingNoteId === n.id}
+                          style={{ background: "none", border: "none", color: theme.textFaint, cursor: "pointer", fontSize: 16, padding: "2px 6px", flexShrink: 0 }}>
+                          {deletingNoteId === n.id ? "…" : "✕"}
+                        </button>
                       </div>
-                      <button onClick={() => handleDeleteNote(n.id)} disabled={deletingNoteId === n.id}
-                        style={{ background: "none", border: "none", color: theme.textFaint, cursor: "pointer", fontSize: 16, padding: "2px 6px", flexShrink: 0 }}>
-                        {deletingNoteId === n.id ? "…" : "✕"}
-                      </button>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               }
             </div>
           )}

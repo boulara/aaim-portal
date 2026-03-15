@@ -141,6 +141,7 @@ class CaseNoteCreate(BaseModel):
 class CaseNoteUpdate(BaseModel):
     text: Optional[str] = None
     follow_up_date: Optional[str] = None
+    completed_at: Optional[datetime] = None
 
 
 class CaseNoteOut(BaseModel):
@@ -151,6 +152,7 @@ class CaseNoteOut(BaseModel):
     user_team: str
     text: str
     follow_up_date: Optional[str]
+    completed_at: Optional[datetime]
     created_at: datetime
 
     model_config = {"from_attributes": True}

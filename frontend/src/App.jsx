@@ -76,7 +76,7 @@ function AppInner() {
     api.getNotes(null, user.id).then(setMyNotes).catch(() => {});
   }, [user?.id]);
 
-  const myFollowUps = myNotes.filter(n => n.follow_up_date);
+  const myFollowUps = myNotes.filter(n => n.follow_up_date && !n.completed_at);
   const overdueNotes = myFollowUps.filter(n => n.follow_up_date < todayKey);
 
   // Show overdue alert once per session on first dashboard view
