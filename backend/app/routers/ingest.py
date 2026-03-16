@@ -20,6 +20,7 @@ import logging
 import secrets
 import time
 from datetime import datetime
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Header, HTTPException, UploadFile, File, Query
 from sqlalchemy.orm import Session
@@ -86,12 +87,12 @@ def parse_csv(upload: UploadFile) -> list[dict]:
 def _log_ingest(
     db: Session,
     table_name: str,
-    key: IngestKey | None,
+    key: Optional[IngestKey],
     rows_received: int,
     rows_upserted: int,
     rows_deleted: int,
     status: str,
-    error_msg: str | None,
+    error_msg: Optional[str],
     duration_ms: int,
 ):
     entry = IngestLog(

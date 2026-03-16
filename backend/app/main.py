@@ -72,6 +72,13 @@ def _run_migrations():
             last_used_at TIMESTAMP,
             is_active BOOLEAN DEFAULT TRUE
         )""",
+        "CREATE INDEX IF NOT EXISTS ix_patients_region ON patients (region)",
+        "CREATE INDEX IF NOT EXISTS ix_patients_primary_channel ON patients (primary_channel)",
+        "CREATE INDEX IF NOT EXISTS ix_patients_prescriber ON patients (prescriber)",
+        "CREATE INDEX IF NOT EXISTS ix_patients_territory ON patients (territory)",
+        "CREATE INDEX IF NOT EXISTS ix_notifications_to_team ON notifications (to_team)",
+        "CREATE INDEX IF NOT EXISTS ix_notifications_status ON notifications (status)",
+        "CREATE INDEX IF NOT EXISTS ix_notifications_patient_id ON notifications (patient_id)",
         """CREATE TABLE IF NOT EXISTS ingest_logs (
             id VARCHAR PRIMARY KEY,
             table_name VARCHAR NOT NULL,

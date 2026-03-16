@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Date, Boolean
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Date, Boolean, Index
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -35,6 +35,13 @@ class Patient(Base):
 
     notifications = relationship("Notification", back_populates="patient")
 
+    __table_args__ = (
+        Index("ix_patients_region",          "region"),
+        Index("ix_patients_primary_channel", "primary_channel"),
+        Index("ix_patients_prescriber",      "prescriber"),
+        Index("ix_patients_territory",       "territory"),
+    )
+
 
 class User(Base):
     __tablename__ = "users"
@@ -64,6 +71,12 @@ class Notification(Base):
 
     patient = relationship("Patient", back_populates="notifications")
     replies = relationship("NotificationReply", back_populates="notification", order_by="NotificationReply.created_at")
+
+    __table_args__ = (
+        Index("ix_notifications_to_team",   "to_team"),
+        Index("ix_notifications_status",    "status"),
+        Index("ix_notifications_patient_id","patient_id"),
+    )
 
 
 class NotificationReply(Base):
