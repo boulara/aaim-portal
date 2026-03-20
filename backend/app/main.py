@@ -60,8 +60,6 @@ def _run_migrations():
             created_at TIMESTAMP DEFAULT NOW(),
             expires_at TIMESTAMP NOT NULL
         )""",
-        # Rename misspelled column hippa_consent → hipaa_consent
-        "ALTER TABLE patients RENAME COLUMN hippa_consent TO hipaa_consent",
         """CREATE TABLE IF NOT EXISTS ingest_keys (
             id VARCHAR PRIMARY KEY,
             name VARCHAR NOT NULL,
